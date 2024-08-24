@@ -34,6 +34,8 @@ async def handle_github_push(request: Request):
     cst = datetime.timezone(datetime.timedelta(hours=8))  # 定义 CST 时区
     current_time = datetime.datetime.now(cst).strftime('%H:%M:%S')
     if event_type == "push":
+        if "refs/tags/" in payload['ref']:
+            return {"message": "阻止Tag推送..."}
         commits_message = ""
         for i in payload['commits']:
             commits_message += f"#️⃣ ({i['id'][:7]}) {i['message']} (by {i['author']['username']})\n"
