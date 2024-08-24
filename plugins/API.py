@@ -45,7 +45,28 @@ async def handle_github_push(request: Request):
         return {"message": "推送成功!"}
     if event_type == "ping":
         return {"message": "pong"}
-
+    if event_type == "pull_request":
+        if payload['action'] == "opened":
+            pull_message = (f"↙️ 新拉取请求 {payload['repository']['full_name']} [{payload['repository']['default_branch']}]\n"
+                            f"by {payload['pull_request']['user']['login']} | CST {current_time}\n\n"
+                            f"#️⃣ {payload['pull_request']['title']}\n\n"
+                            f"查看详细 > {payload['pull_request']['html_url']}")
+            if payload['repository']['name'] == "TShockPlugin":
+                await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, pull_message)
+            if payload['repository']['name'] == "CaiBot":
+                await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, pull_message)
+            return {"message": "推送成功!"}
+    if event_type == "issues":
+        if payload['action'] == "opened":
+            issues_message = (f"❓ 新议题 {payload['repository']['full_name']} [{payload['repository']['default_branch']}]\n"
+                            f"by {payload['issue']['user']['login']} | CST {current_time}\n\n"
+                            f"#️⃣ {payload['issue']['title']}\n\n"
+                            f"查看详细 > {payload['issue']['html_url']}")
+            if payload['repository']['name'] == "TShockPlugin":
+                await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, issues_message)
+            if payload['repository']['name'] == "CaiBot":
+                await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, issues_message)
+            return {"message": "推送成功!"}
     return {"message": "未处理"}
 
 
