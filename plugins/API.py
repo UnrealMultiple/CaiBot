@@ -36,7 +36,7 @@ async def handle_github_push(request: Request):
     if event_type == "push":
         commits_message = ""
         for i in payload['commits']:
-            commits_message += f"#️⃣ ({i['id'][:7]}) {i['message']} by {i['author']['username']}\n"
+            commits_message += f"#️⃣ ({i['id'][:7]}) {i['message']} (by {i['author']['username']})\n"
 
         push_message = (f"⬆️ 新提交 {payload['repository']['full_name']} [{payload['ref'].split('/')[-1]}]\n"
                         f"by {payload['head_commit']['author']['name']}({payload['head_commit']['author']['username']}) | CST {current_time}\n\n"
