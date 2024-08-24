@@ -35,8 +35,8 @@ async def handle_github_push(request: Request):
     current_time = datetime.datetime.now(cst).strftime('%H:%M:%S')
     if event_type == "push":
         push_message = (f"⬆️ 新提交 {payload['repository']['full_name']} [{payload['ref'].split('/')[-1]}]\n"
-                        f"by {payload['head_commit']['author']['name']}({payload['head_commit']['author']['username']}) | CST {current_time}\n"
-                        f"##️⃣ ({payload['after'][:5]}) {payload['head_commit']['message']}\n"
+                        f"by {payload['head_commit']['author']['name']}({payload['head_commit']['author']['username']}) | CST {current_time}\n\n"
+                        f"#️⃣ ({payload['after'][:7]}) {payload['head_commit']['message']}\n\n"
                         f"查看差异 > {payload['compare']}")
         if payload['repository']['name'] == "TShockPlugin":
             await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, push_message)
