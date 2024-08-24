@@ -9,13 +9,11 @@ import nonebot
 import requests
 import uvicorn
 from PIL import Image, ImageDraw, ImageFont
-from fastapi import FastAPI, WebSocket, HTTPException ,Request
+from fastapi import FastAPI, WebSocket, HTTPException, Request
 from nonebot import get_driver
 from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.log import logger
-from pydantic import BaseModel
 from starlette.websockets import WebSocketDisconnect
-
 import plugins.event_handle
 from utils import statistics
 from utils.bag_png_helper import get_bag_png
@@ -29,41 +27,26 @@ from utils.user import User, LoginRequest
 app = FastAPI()
 
 
-class GitHubPushPayload(BaseModel):
-    ref: str
-    before: str
-    after: str
-    compare: str
-    repository: dict
-    pusher: dict
-    head_commit: dict
-
-"""
-⬆️ 新提交 Org/Name [branch]
-by Author | CST 10:00:17
-
-#️⃣ (190e5e0) Add linear format from LinearPurpur - MrHua269
-
-查看差异 > https://github.com/LuminolMC/Luminol/compare/17e9d04db0f4...190e5e094a1f
-"""
-@app.post("/plugins/github")
-async def handle_github_push(request: Request, payload: GitHubPushPayload):
+@app.post("/plugins/github/")
+async def handle_github_push(request: Request):
+    payload = await request.json()
     event_type = request.headers.get("X-GitHub-Event")
-    print(f"收到 Push 事件: {payload}")
     cst = datetime.timezone(datetime.timedelta(hours=8))  # 定义 CST 时区
     current_time = datetime.datetime.now(cst).strftime('%H:%M:%S')
     if event_type == "push":
-        push_message = f"""⬆️ 新提交 {payload.repository['full_name']} [{payload.ref.split('/')[-1]}]
-        by {payload.head_commit['author']['name']}({payload.head_commit['author']['username']}) | CST {current_time}
-        #️⃣ ({payload.after[:5]}) {payload.head_commit['message']}
-        查看差异 > {payload.compare}
-        """
-        if payload.repository['name'] == "TShockPlugin":
+        push_message = (f"⬆️ 新提交 {payload['repository']['full_name']} [{payload['ref'].split('/')[-1]}]\n"
+                        f"by {payload['head_commit']['author']['name']}({payload['head_commit']['author']['username']}) | CST {current_time}\n"
+                        f"##️⃣ ({payload['after'][:5]}) {payload['head_commit']['message']}\n"
+                        f"查看差异 > {payload['compare']}")
+        if payload['repository']['name'] == "TShockPlugin":
             await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, push_message)
-        if payload.repository['name'] == "CaiBot":
+        if payload['repository']['name'] == "CaiBot":
             await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, push_message)
+        return {"message": "推送成功!"}
+    if event_type == "ping":
+        return {"message": "pong"}
 
-    return {"message": "成功!"}
+    return {"message": "未处理"}
 
 
 tokens = {}
