@@ -1,6 +1,7 @@
 import asyncio
 import base64
 import datetime
+import gzip
 import io
 import json
 import threading
@@ -23,6 +24,18 @@ from utils.group_helper import GroupHelper
 from utils.server import Server
 from utils.text_handle import TextHandle
 from utils.user import User, LoginRequest
+
+
+def decompress_base64_gzip(base64_string):
+    # 将Base64字符串解码为字节
+    compressed_data = base64.b64decode(base64_string)
+
+    # 使用GZip解压缩字节数据
+    with gzip.GzipFile(fileobj=io.BytesIO(compressed_data)) as gzip_file:
+        decompressed_data = gzip_file.read()
+
+    return decompressed_data.decode('utf-8')
+
 
 app = FastAPI()
 
@@ -402,6 +415,10 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         base64_string = data['result']
         decoded_bytes = base64.b64decode(base64_string)
         await GroupHelper.send_group(group.id, message=MessageSegment.image(decoded_bytes))
+    elif data['type'] == "mappngV2":
+        base64_string = data['result']
+        decoded_bytes = base64.b64decode(decompress_base64_gzip(base64_string))
+        await GroupHelper.send_group(group.id, message=MessageSegment.image(decoded_bytes))
     elif data['type'] == "lookbag":
         if data['exist'] == 0:
             await GroupHelper.send_group(group.id, f"『查背包』\n" +
@@ -439,9 +456,26 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         await GroupHelper.send_group(group.id, f"『下载地图』\n" +
                                      f"下载成功!\n" +
                                      f"PC导入路径: 文档/My Games/Terraria/Worlds\n"
+                                     f"PE导入路径: Android/data/com.and.games505.TerrariaPaid/Worlds\n"
+                                     f"*使用新版CaiBot插件可以大幅提高下载速度哦~")
+    elif data['type'] == "worldfileV2":
+        await nonebot.get_bot().call_api("upload_group_file", group_id=group.id, file=f"base64://{decompress_base64_gzip(data['base64'])}",
+                                         name=data['name'])
+        await GroupHelper.send_group(group.id, f"『下载地图』\n" +
+                                     f"下载成功!\n" +
+                                     f"PC导入路径: 文档/My Games/Terraria/Worlds\n"
                                      f"PE导入路径: Android/data/com.and.games505.TerrariaPaid/Worlds")
     elif data['type'] == "mapfile":
         await nonebot.get_bot().call_api("upload_group_file", group_id=group.id, file=f"base64://{data['base64']}",
+                                         name=data['name'])
+        await GroupHelper.send_group(group.id, f"『下载小地图』\n" +
+                                     f"下载成功!\n" +
+                                     f"PC导入路径: 文档/My Games/Terraria/Players/你的玩家名\n"
+                                     f"PE导入路径: Android/data/com.and.games505.TerrariaPaid/Players/你的玩家名\n"
+                                     f"请替换原来小地图文件，不要重命名!\n"
+                                     f"*使用新版CaiBot插件可以大幅提高下载速度哦~")
+    elif data['type'] == "mapfileV2":
+        await nonebot.get_bot().call_api("upload_group_file", group_id=group.id, file=f"base64://{decompress_base64_gzip(data['base64'])}",
                                          name=data['name'])
         await GroupHelper.send_group(group.id, f"『下载小地图』\n" +
                                      f"下载成功!\n" +
