@@ -154,12 +154,15 @@ class GroupHelper:
         return result
 
     @staticmethod
-    def replace_at(data: str) -> str:
+    def replace_at(data: str) -> str: # 把cq消息中@用户 替换成纯qq
         message_text = data
-        at_qq = re.findall(r'\[CQ:at,qq=(\d+)\]', data)
-        for qq in at_qq:
-            message_text = message_text.replace(f'[CQ:at,qq={qq}]', qq)
-        return message_text
+        # 更新正则表达式以匹配新格式的AT消息
+        at_qq = re.findall(r'\[CQ:at,qq=(\d+),name=.*\]', data) 
+        at_name = re.findall(r'\[CQ:at,qq=\d+,name=(.*)\]', data) 
+        for qq in at_qq: 
+            for name in at_name:# 不知道怎么写了先这样吧
+                message_text = message_text.replace(f'[CQ:at,qq={qq},name={name}]', qq) 
+        return message_text 
 
     @staticmethod
     def at_to_name(data: str) -> str:
