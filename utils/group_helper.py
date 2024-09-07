@@ -164,17 +164,19 @@ class GroupHelper:
                 message_text = message_text.replace(f'[CQ:at,qq={qq},name={name}]', qq) 
         return message_text 
 
+
     @staticmethod
     def at_to_name(data: str) -> str:
         message_text = data
-        at_qq = re.findall(r'\[CQ:at,qq=(\d+)\]', data)
+        at_qq = re.findall(r'\[CQ:at,qq=(\d+),name=.*\]', data)
+        at_name = re.findall(r'\[CQ:at,qq=\d+,name=(.*)\]', data)
         for qq in at_qq:
-            user = User.get_user(qq)
-            if user is None:
-                message_text = message_text.replace(f'[CQ:at,qq={qq}]', "[未绑定]")
-            else:
-                message_text = message_text.replace(f'[CQ:at,qq={qq}]', user.name)
-            message_text = message_text.replace(f'[CQ:at,qq={qq}]', qq)
+            for name in at_name:
+                user = User.get_user(qq)
+                if user is None:
+                    message_text = message_text.replace(f'[CQ:at,qq={qq},name={name}]', "[未绑定]")
+                else:
+                    message_text = message_text.replace(f'[CQ:at,qq={qq},name={name}]', user.name)
         return message_text
 
     @staticmethod
