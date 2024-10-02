@@ -1,0 +1,1772 @@
+[
+  {
+    "BuffId": 1,
+    "Description": "对熔岩免疫",
+    "Name": "黑曜石皮"
+  },
+  {
+    "BuffId": 2,
+    "Description": "提供生命再生",
+    "Name": "再生"
+  },
+  {
+    "BuffId": 3,
+    "Description": "移动速度提高25%",
+    "Name": "敏捷"
+  },
+  {
+    "BuffId": 4,
+    "Description": "可在水中而非空气中呼吸",
+    "Name": "鱼鳃"
+  },
+  {
+    "BuffId": 5,
+    "Description": "防御力增加8",
+    "Name": "铁皮"
+  },
+  {
+    "BuffId": 6,
+    "Description": "提高魔力再生速度",
+    "Name": "魔力再生"
+  },
+  {
+    "BuffId": 7,
+    "Description": "魔法伤害提高20%",
+    "Name": "魔能"
+  },
+  {
+    "BuffId": 8,
+    "Description": "按向上键或向下键来控制下降速度",
+    "Name": "羽落"
+  },
+  {
+    "BuffId": 9,
+    "Description": "显示宝藏和矿石的位置",
+    "Name": "洞穴探险"
+  },
+  {
+    "BuffId": 10,
+    "Description": "隐身",
+    "Name": "隐身"
+  },
+  {
+    "BuffId": 11,
+    "Description": "发光",
+    "Name": "光芒"
+  },
+  {
+    "BuffId": 12,
+    "Description": "提升夜视能力",
+    "Name": "夜猫子"
+  },
+  {
+    "BuffId": 13,
+    "Description": "提高敌人生成速度",
+    "Name": "战斗"
+  },
+  {
+    "BuffId": 14,
+    "Description": "攻击者也会受到伤害",
+    "Name": "荆棘"
+  },
+  {
+    "BuffId": 15,
+    "Description": "按向下键进入水中",
+    "Name": "水上漂"
+  },
+  {
+    "BuffId": 16,
+    "Description": "弓伤害提高10%，箭速度提高20%",
+    "Name": "箭术"
+  },
+  {
+    "BuffId": 17,
+    "Description": "显示敌人位置",
+    "Name": "猎人"
+  },
+  {
+    "BuffId": 18,
+    "Description": "按向上键可逆转重力",
+    "Name": "重力"
+  },
+  {
+    "BuffId": 19,
+    "Description": "提供照明的魔法珠",
+    "Name": "暗影珠"
+  },
+  {
+    "BuffId": 20,
+    "Description": "缓慢损失生命值",
+    "Name": "中毒"
+  },
+  {
+    "BuffId": 21,
+    "Description": "不能再使用治疗物品",
+    "Name": "耐药性"
+  },
+  {
+    "BuffId": 22,
+    "Description": "光视力下降",
+    "Name": "黑暗"
+  },
+  {
+    "BuffId": 23,
+    "Description": "无法使用任何物品",
+    "Name": "诅咒"
+  },
+  {
+    "BuffId": 24,
+    "Description": "缓慢损失生命值",
+    "Name": "着火了！"
+  },
+  {
+    "BuffId": 25,
+    "Description": "提高近战能力，降低防御力",
+    "Name": "踉跄"
+  },
+  {
+    "BuffId": 26,
+    "Description": "所有属性小幅提升",
+    "Name": "吃得好"
+  },
+  {
+    "BuffId": 27,
+    "Description": "仙灵正跟着你",
+    "Name": "仙灵"
+  },
+  {
+    "BuffId": 28,
+    "Description": "体能提高",
+    "Name": "狼人"
+  },
+  {
+    "BuffId": 29,
+    "Description": "魔法能力提高",
+    "Name": "灵视"
+  },
+  {
+    "BuffId": 30,
+    "Description": "无法再生生命",
+    "Name": "流血"
+  },
+  {
+    "BuffId": 31,
+    "Description": "移动方向逆转",
+    "Name": "困惑"
+  },
+  {
+    "BuffId": 32,
+    "Description": "移动速度降低",
+    "Name": "缓慢"
+  },
+  {
+    "BuffId": 33,
+    "Description": "体能降低",
+    "Name": "软弱"
+  },
+  {
+    "BuffId": 34,
+    "Description": "可在水下顺畅呼吸和移动",
+    "Name": "人鱼"
+  },
+  {
+    "BuffId": 35,
+    "Description": "无法使用需要魔力的物品",
+    "Name": "沉默"
+  },
+  {
+    "BuffId": 36,
+    "Description": "防御力减半",
+    "Name": "破损盔甲"
+  },
+  {
+    "BuffId": 37,
+    "Description": "你已看到污秽之物，无可逃脱。",
+    "Name": "惊恐"
+  },
+  {
+    "BuffId": 38,
+    "Description": "你被吸入嘴中",
+    "Name": "狂卷之舌"
+  },
+  {
+    "BuffId": 39,
+    "Description": "正在损失生命值",
+    "Name": "诅咒狱火"
+  },
+  {
+    "BuffId": 40,
+    "Description": "我想它想要你的胡萝卜",
+    "Name": "宠物兔兔"
+  },
+  {
+    "BuffId": 41,
+    "Description": "我想它想要你的鱼",
+    "Name": "企鹅宝宝"
+  },
+  {
+    "BuffId": 42,
+    "Description": "欢乐乌龟时光！",
+    "Name": "宠物海龟"
+  },
+  {
+    "BuffId": 43,
+    "Description": "所受伤害的25%将被转移到另一名玩家身上",
+    "Name": "圣骑士护盾"
+  },
+  {
+    "BuffId": 44,
+    "Description": "不是特别烫就是特别冻。反正都是特别特别痛",
+    "Name": "霜冻"
+  },
+  {
+    "BuffId": 45,
+    "Description": "噬魂怪宝宝正跟着你",
+    "Name": "吞噬怪宝宝"
+  },
+  {
+    "BuffId": 46,
+    "Description": "你的移动速度已降低",
+    "Name": "冷冻"
+  },
+  {
+    "BuffId": 47,
+    "Description": "你不能动！",
+    "Name": "冰冻"
+  },
+  {
+    "BuffId": 48,
+    "Description": "生命再生速度提高",
+    "Name": "蜂蜜"
+  },
+  {
+    "BuffId": 49,
+    "Description": "矮人将为你而战",
+    "Name": "矮人"
+  },
+  {
+    "BuffId": 50,
+    "Description": "别问了……",
+    "Name": "骷髅王头宝宝"
+  },
+  {
+    "BuffId": 51,
+    "Description": "它认为你是它的妈妈",
+    "Name": "黄蜂宝宝"
+  },
+  {
+    "BuffId": 52,
+    "Description": "友好幽魂正跟着你",
+    "Name": "提基幽魂"
+  },
+  {
+    "BuffId": 53,
+    "Description": "像爬行动物一样冰凉",
+    "Name": "宠物蜥蜴"
+  },
+  {
+    "BuffId": 54,
+    "Description": "波利想要饼干",
+    "Name": "宠物鹦鹉"
+  },
+  {
+    "BuffId": 55,
+    "Description": "这简直太太太可爱了！",
+    "Name": "松露人宝宝"
+  },
+  {
+    "BuffId": 56,
+    "Description": "小树苗正跟着你",
+    "Name": "宠物树苗"
+  },
+  {
+    "BuffId": 57,
+    "Description": "妖灵正跟着你",
+    "Name": "妖灵"
+  },
+  {
+    "BuffId": 58,
+    "Description": "生命再生速度大幅提高",
+    "Name": "快速治疗"
+  },
+  {
+    "BuffId": 59,
+    "Description": "你将躲避下一次攻击",
+    "Name": "神圣防护"
+  },
+  {
+    "BuffId": 60,
+    "Description": "朝附近的敌人射出水晶叶",
+    "Name": "叶状水晶"
+  },
+  {
+    "BuffId": 61,
+    "Description": "恐龙宝宝正跟着你",
+    "Name": "恐龙宝宝"
+  },
+  {
+    "BuffId": 62,
+    "Description": "所受伤害降低25%",
+    "Name": "冰障"
+  },
+  {
+    "BuffId": 63,
+    "Description": "移动速度提高",
+    "Name": "恐慌！"
+  },
+  {
+    "BuffId": 64,
+    "Description": "史莱姆宝宝将为你而战",
+    "Name": "史莱姆宝宝"
+  },
+  {
+    "BuffId": 65,
+    "Description": "弹簧眼正跟着你",
+    "Name": "弹簧眼"
+  },
+  {
+    "BuffId": 66,
+    "Description": "雪人宝宝正跟着你",
+    "Name": "雪人宝宝"
+  },
+  {
+    "BuffId": 67,
+    "Description": "正在损失生命值且移动已放缓",
+    "Name": "燃烧"
+  },
+  {
+    "BuffId": 68,
+    "Description": "正在损失生命值",
+    "Name": "窒息"
+  },
+  {
+    "BuffId": 69,
+    "Description": "降低防御力",
+    "Name": "灵液"
+  },
+  {
+    "BuffId": 70,
+    "Description": "正在损失生命值",
+    "Name": "酸性毒液"
+  },
+  {
+    "BuffId": 71,
+    "Description": "近战攻击会对你的目标施放酸性毒液",
+    "Name": "武器灌注：酸性毒液"
+  },
+  {
+    "BuffId": 72,
+    "Description": "死亡时掉落更多钱",
+    "Name": "迈达斯"
+  },
+  {
+    "BuffId": 73,
+    "Description": "近战攻击会对敌人施放诅咒焰",
+    "Name": "武器灌注：诅咒焰"
+  },
+  {
+    "BuffId": 74,
+    "Description": "近战攻击会使敌人着火",
+    "Name": "武器灌注：火焰"
+  },
+  {
+    "BuffId": 75,
+    "Description": "近战攻击会使敌人掉落更多金子",
+    "Name": "武器灌注：金"
+  },
+  {
+    "BuffId": 76,
+    "Description": "近战攻击会降低敌人防御力",
+    "Name": "武器灌注：灵液"
+  },
+  {
+    "BuffId": 77,
+    "Description": "近战攻击会使敌人困惑",
+    "Name": "武器灌注：纳米机器人"
+  },
+  {
+    "BuffId": 78,
+    "Description": "近战攻击会喷撒彩纸",
+    "Name": "武器灌注：彩纸"
+  },
+  {
+    "BuffId": 79,
+    "Description": "近战攻击会使敌人中毒",
+    "Name": "武器灌注：毒药"
+  },
+  {
+    "BuffId": 80,
+    "Description": "光视能力严重下降",
+    "Name": "黑视"
+  },
+  {
+    "BuffId": 81,
+    "Description": "蜘蛛正跟着你",
+    "Name": "宠物蜘蛛"
+  },
+  {
+    "BuffId": 82,
+    "Description": "南瓜娃娃正跟着你",
+    "Name": "南瓜娃娃"
+  },
+  {
+    "BuffId": 83,
+    "Description": "乌鸦将攻击你的敌人",
+    "Name": "乌鸦"
+  },
+  {
+    "BuffId": 84,
+    "Description": "黑猫正跟着你",
+    "Name": "黑猫"
+  },
+  {
+    "BuffId": 85,
+    "Description": "诅咒树苗正跟着你",
+    "Name": "诅咒树苗"
+  },
+  {
+    "BuffId": 86,
+    "Description": "提高怪物生成速度",
+    "Name": "水蜡烛"
+  },
+  {
+    "BuffId": 87,
+    "Description": "生命再生速度略有提高",
+    "Name": "温馨之火"
+  },
+  {
+    "BuffId": 88,
+    "Description": "使用混沌传送杖会夺走生命值",
+    "Name": "混沌状态"
+  },
+  {
+    "BuffId": 89,
+    "Description": "生命再生速度提高",
+    "Name": "心灯"
+  },
+  {
+    "BuffId": 90,
+    "Description": "骑上红鼻子驯鹿",
+    "Name": "鲁道夫"
+  },
+  {
+    "BuffId": 91,
+    "Description": "小狗正跟着你",
+    "Name": "小狗"
+  },
+  {
+    "BuffId": 92,
+    "Description": "格林奇宝宝正跟着你",
+    "Name": "格林奇宝宝"
+  },
+  {
+    "BuffId": 93,
+    "Description": "20%几率省下弹药",
+    "Name": "弹药箱"
+  },
+  {
+    "BuffId": 94,
+    "Description": "魔法伤害降低",
+    "Name": "耐魔性"
+  },
+  {
+    "BuffId": 95,
+    "Description": "所受伤害降低15%",
+    "Name": "甲虫耐力"
+  },
+  {
+    "BuffId": 96,
+    "Description": "所受伤害降低30%",
+    "Name": "甲虫耐力"
+  },
+  {
+    "BuffId": 97,
+    "Description": "所受伤害降低45%",
+    "Name": "甲虫耐力"
+  },
+  {
+    "BuffId": 98,
+    "Description": "近战伤害和近战速度各提高10%",
+    "Name": "甲虫力量"
+  },
+  {
+    "BuffId": 99,
+    "Description": "近战伤害和近战速度各提高20%",
+    "Name": "甲虫力量"
+  },
+  {
+    "BuffId": 100,
+    "Description": "近战伤害和近战速度各提高30%",
+    "Name": "甲虫力量"
+  },
+  {
+    "BuffId": 101,
+    "Description": "仙灵正跟着你",
+    "Name": "仙灵"
+  },
+  {
+    "BuffId": 102,
+    "Description": "仙灵正跟着你",
+    "Name": "仙灵"
+  },
+  {
+    "BuffId": 103,
+    "Description": "你在滴水",
+    "Name": "潮湿"
+  },
+  {
+    "BuffId": 104,
+    "Description": "采矿速度提高25%",
+    "Name": "采矿"
+  },
+  {
+    "BuffId": 105,
+    "Description": "扩大心的拾取范围",
+    "Name": "拾心"
+  },
+  {
+    "BuffId": 106,
+    "Description": "敌人生成速度降低",
+    "Name": "冷静"
+  },
+  {
+    "BuffId": 107,
+    "Description": "提高放置速度、扩大放置范围",
+    "Name": "建筑工"
+  },
+  {
+    "BuffId": 108,
+    "Description": "提高击退力",
+    "Name": "泰坦"
+  },
+  {
+    "BuffId": 109,
+    "Description": "在水中移动如常",
+    "Name": "脚蹼"
+  },
+  {
+    "BuffId": 110,
+    "Description": "提高仆从数量上限",
+    "Name": "召唤"
+  },
+  {
+    "BuffId": 111,
+    "Description": "你可以看到附近的危险",
+    "Name": "危险感"
+  },
+  {
+    "BuffId": 112,
+    "Description": "20%几率省下弹药",
+    "Name": "弹药储备"
+  },
+  {
+    "BuffId": 113,
+    "Description": "最大生命提高20%",
+    "Name": "生命力"
+  },
+  {
+    "BuffId": 114,
+    "Description": "所受伤害降低10%",
+    "Name": "耐力"
+  },
+  {
+    "BuffId": 115,
+    "Description": "暴击率提高10%",
+    "Name": "暴怒"
+  },
+  {
+    "BuffId": 116,
+    "Description": "附近的敌人被点燃",
+    "Name": "狱火"
+  },
+  {
+    "BuffId": 117,
+    "Description": "伤害提高10%",
+    "Name": "怒气"
+  },
+  {
+    "BuffId": 118,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 119,
+    "Description": "你已坠入爱河！",
+    "Name": "热恋"
+  },
+  {
+    "BuffId": 120,
+    "Description": "你的味道真难闻",
+    "Name": "恶臭"
+  },
+  {
+    "BuffId": 121,
+    "Description": "提高渔力",
+    "Name": "钓鱼"
+  },
+  {
+    "BuffId": 122,
+    "Description": "你能看到是什么在咬你的鱼钩",
+    "Name": "声呐"
+  },
+  {
+    "BuffId": 123,
+    "Description": "钓上宝匣的几率更大",
+    "Name": "宝匣"
+  },
+  {
+    "BuffId": 124,
+    "Description": "降低所受冷系伤害",
+    "Name": "温暖"
+  },
+  {
+    "BuffId": 125,
+    "Description": "黄蜂将为你而战",
+    "Name": "黄蜂"
+  },
+  {
+    "BuffId": 126,
+    "Description": "小鬼将为你而战",
+    "Name": "小鬼"
+  },
+  {
+    "BuffId": 127,
+    "Description": "它喜欢在你周围游泳",
+    "Name": "和风鱼"
+  },
+  {
+    "BuffId": 128,
+    "Description": "你渴望胡萝卜",
+    "Name": "兔兔坐骑"
+  },
+  {
+    "BuffId": 129,
+    "Description": "你现在看到我了……",
+    "Name": "猪龙坐骑"
+  },
+  {
+    "BuffId": 130,
+    "Description": "啵嘤！",
+    "Name": "史莱姆坐骑"
+  },
+  {
+    "BuffId": 131,
+    "Description": "陆地上速度缓慢，海上则可急速疾行",
+    "Name": "海龟坐骑"
+  },
+  {
+    "BuffId": 132,
+    "Description": "嗡嗡嗡嗡",
+    "Name": "蜜蜂坐骑"
+  },
+  {
+    "BuffId": 133,
+    "Description": "蜘蛛将为你而战",
+    "Name": "蜘蛛"
+  },
+  {
+    "BuffId": 134,
+    "Description": "双子魔眼将为你而战",
+    "Name": "双子魔眼"
+  },
+  {
+    "BuffId": 135,
+    "Description": "海盗将为你而战",
+    "Name": "海盗"
+  },
+  {
+    "BuffId": 136,
+    "Description": "你是怎么打败迷你牛头怪的？",
+    "Name": "迷你牛头怪"
+  },
+  {
+    "BuffId": 137,
+    "Description": "你黏糊糊的",
+    "Name": "史莱姆"
+  },
+  {
+    "BuffId": 138,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 139,
+    "Description": "鲨鱼旋风将为你而战",
+    "Name": "鲨鱼旋风"
+  },
+  {
+    "BuffId": 140,
+    "Description": "UFO将为你而战",
+    "Name": "UFO"
+  },
+  {
+    "BuffId": 141,
+    "Description": "幸好你有MAC",
+    "Name": "UFO坐骑"
+  },
+  {
+    "BuffId": 142,
+    "Description": "骑上飞行钻头",
+    "Name": "钻头坐骑"
+  },
+  {
+    "BuffId": 143,
+    "Description": "piu piu",
+    "Name": "鳞甲怪坐骑"
+  },
+  {
+    "BuffId": 144,
+    "Description": "一动就痛！",
+    "Name": "带电"
+  },
+  {
+    "BuffId": 145,
+    "Description": "你无法吸收治疗效果",
+    "Name": "月噬"
+  },
+  {
+    "BuffId": 146,
+    "Description": "移动速度提高，怪物生成减少",
+    "Name": "快乐！"
+  },
+  {
+    "BuffId": 147,
+    "Description": "提高对以下怪的伤害和防御力：",
+    "Name": "旗帜"
+  },
+  {
+    "BuffId": 148,
+    "Description": "提高伤害，降低生命再生速度，对状态造成影响",
+    "Name": "野性咬噬"
+  },
+  {
+    "BuffId": 149,
+    "Description": "你动不了",
+    "Name": "被网住"
+  },
+  {
+    "BuffId": 150,
+    "Description": "提高仆从数量上限",
+    "Name": "着魔"
+  },
+  {
+    "BuffId": 151,
+    "Description": "提高生命再生速度",
+    "Name": "夺命杖"
+  },
+  {
+    "BuffId": 152,
+    "Description": "附魔灯笼照亮前路",
+    "Name": "魔法灯笼"
+  },
+  {
+    "BuffId": 153,
+    "Description": "正在损失生命值",
+    "Name": "暗影焰"
+  },
+  {
+    "BuffId": 154,
+    "Description": "脸怪宝宝正跟着你",
+    "Name": "脸怪宝宝"
+  },
+  {
+    "BuffId": 155,
+    "Description": "提供照明的魔法心",
+    "Name": "猩红之心"
+  },
+  {
+    "BuffId": 156,
+    "Description": "你彻底石化了！",
+    "Name": "石化"
+  },
+  {
+    "BuffId": 157,
+    "Description": "怪物生成速度降低",
+    "Name": "和平蜡烛"
+  },
+  {
+    "BuffId": 158,
+    "Description": "提高魔力再生速度",
+    "Name": "星星瓶"
+  },
+  {
+    "BuffId": 159,
+    "Description": "近战武器具有盔甲穿透力",
+    "Name": "锋利"
+  },
+  {
+    "BuffId": 160,
+    "Description": "移动大大减慢",
+    "Name": "眩晕"
+  },
+  {
+    "BuffId": 161,
+    "Description": "致命球将为你而战",
+    "Name": "致命球"
+  },
+  {
+    "BuffId": 162,
+    "Description": "向前冲……太棒了！",
+    "Name": "独角兽坐骑"
+  },
+  {
+    "BuffId": 163,
+    "Description": "你看不见了！",
+    "Name": "遮挡"
+  },
+  {
+    "BuffId": 164,
+    "Description": "你周围的重力是扭曲的",
+    "Name": "扭曲"
+  },
+  {
+    "BuffId": 165,
+    "Description": "自然的力量保护你",
+    "Name": "树妖祝福"
+  },
+  {
+    "BuffId": 166,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 167,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 168,
+    "Description": "不要让它爬行。",
+    "Name": "可爱猪龙鱼坐骑"
+  },
+  {
+    "BuffId": 169,
+    "Description": "血流不止",
+    "Name": "穿透"
+  },
+  {
+    "BuffId": 170,
+    "Description": "所受伤害降低30%，受到伤害时推开敌人",
+    "Name": "日耀烈焰"
+  },
+  {
+    "BuffId": 171,
+    "Description": "所受伤害降低30%，受到伤害时推开敌人",
+    "Name": "日耀烈焰"
+  },
+  {
+    "BuffId": 172,
+    "Description": "所受伤害降低30%，受到伤害时推开敌人",
+    "Name": "日耀烈焰"
+  },
+  {
+    "BuffId": 173,
+    "Description": "提高生命再生速度",
+    "Name": "生命星云"
+  },
+  {
+    "BuffId": 174,
+    "Description": "提高生命再生速度",
+    "Name": "生命星云"
+  },
+  {
+    "BuffId": 175,
+    "Description": "提高生命再生速度",
+    "Name": "生命星云"
+  },
+  {
+    "BuffId": 176,
+    "Description": "提高魔力再生速度",
+    "Name": "魔力星云"
+  },
+  {
+    "BuffId": 177,
+    "Description": "提高魔力再生速度",
+    "Name": "魔力星云"
+  },
+  {
+    "BuffId": 178,
+    "Description": "提高魔力再生速度",
+    "Name": "魔力星云"
+  },
+  {
+    "BuffId": 179,
+    "Description": "伤害提高15%",
+    "Name": "伤害星云"
+  },
+  {
+    "BuffId": 180,
+    "Description": "伤害提高30%",
+    "Name": "伤害星云"
+  },
+  {
+    "BuffId": 181,
+    "Description": "伤害提高45%",
+    "Name": "伤害星云"
+  },
+  {
+    "BuffId": 182,
+    "Description": "星尘细胞将为你而战",
+    "Name": "星尘细胞"
+  },
+  {
+    "BuffId": 183,
+    "Description": "被细胞吞噬",
+    "Name": "Celled"
+  },
+  {
+    "BuffId": 184,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 185,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 186,
+    "Description": "自然的力量逼迫你",
+    "Name": "树妖祸害"
+  },
+  {
+    "BuffId": 187,
+    "Description": "星尘守卫会保护你",
+    "Name": "星尘守卫"
+  },
+  {
+    "BuffId": 188,
+    "Description": "星尘之龙会保护你",
+    "Name": "星尘之龙"
+  },
+  {
+    "BuffId": 189,
+    "Description": "被日耀射线焚烧",
+    "Name": "破晓"
+  },
+  {
+    "BuffId": 190,
+    "Description": "提供照明的可疑眼球",
+    "Name": "可疑眼球"
+  },
+  {
+    "BuffId": 191,
+    "Description": "永远不会威胁要刺伤你，而且，其实，不会说话",
+    "Name": "同伴方块"
+  },
+  {
+    "BuffId": 192,
+    "Description": "移动速度和采矿速度各提高20%",
+    "Name": "糖果冲刺"
+  },
+  {
+    "BuffId": 193,
+    "Description": "谁都敢撞……谁都要撞！",
+    "Name": "蛇蜥怪坐骑"
+  },
+  {
+    "BuffId": 194,
+    "Description": "风将你吹动！",
+    "Name": "强风"
+  },
+  {
+    "BuffId": 195,
+    "Description": "你的盔甲降级了！",
+    "Name": "枯萎盔甲"
+  },
+  {
+    "BuffId": 196,
+    "Description": "你的攻击变弱了！",
+    "Name": "枯萎武器"
+  },
+  {
+    "BuffId": 197,
+    "Description": "移动速度显著降低",
+    "Name": "分泌物"
+  },
+  {
+    "BuffId": 198,
+    "Description": "下次近战攻击伤害提高400%",
+    "Name": "惊人一刻"
+  },
+  {
+    "BuffId": 199,
+    "Description": "你已失去创造能力！",
+    "Name": "创意震撼"
+  },
+  {
+    "BuffId": 200,
+    "Description": "飞翔Gato正跟着你",
+    "Name": "飞翔Gato"
+  },
+  {
+    "BuffId": 201,
+    "Description": "闪烁灯芯正跟着你",
+    "Name": "闪烁灯芯"
+  },
+  {
+    "BuffId": 202,
+    "Description": "Hoardagron正跟着你",
+    "Name": "Hoardagron"
+  },
+  {
+    "BuffId": 203,
+    "Description": "防御力降低",
+    "Name": "双足翼龙诅咒"
+  },
+  {
+    "BuffId": 204,
+    "Description": "提高因着火而受到的伤害",
+    "Name": "涂油"
+  },
+  {
+    "BuffId": 205,
+    "Description": "你的弩车在恐慌之中快速射击！",
+    "Name": "弩车恐慌！"
+  },
+  {
+    "BuffId": 206,
+    "Description": "所有属性中幅提升",
+    "Name": "很满意"
+  },
+  {
+    "BuffId": 207,
+    "Description": "所有属性大幅提升",
+    "Name": "酒足饭饱"
+  },
+  {
+    "BuffId": 208,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 209,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 210,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 211,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 212,
+    "Description": "穿过球道的好方法",
+    "Name": "高尔夫球车"
+  },
+  {
+    "BuffId": 213,
+    "Description": "血红蝙蝠将为你而战",
+    "Name": "血红蝙蝠"
+  },
+  {
+    "BuffId": 214,
+    "Description": "吸血鬼青蛙将为你而战",
+    "Name": "吸血鬼青蛙"
+  },
+  {
+    "BuffId": 215,
+    "Description": "防御力增加5点",
+    "Name": "巴斯特防御"
+  },
+  {
+    "BuffId": 216,
+    "Description": "雀宝宝将为你而战",
+    "Name": "雀宝宝"
+  },
+  {
+    "BuffId": 217,
+    "Description": "埃斯蒂正跟着你",
+    "Name": "埃斯蒂"
+  },
+  {
+    "BuffId": 218,
+    "Description": "蜜袋鼯正跟着你",
+    "Name": "蜜袋鼯"
+  },
+  {
+    "BuffId": 219,
+    "Description": "嘟嘟嘟嘟嘟嘟",
+    "Name": "小鲨鱼"
+  },
+  {
+    "BuffId": 220,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 221,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 222,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 223,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 224,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 225,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 226,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 227,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 228,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 229,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 230,
+    "Description": "它飞起来了！这是巫术！",
+    "Name": "女巫扫帚"
+  },
+  {
+    "BuffId": 231,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 232,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 233,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 234,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 235,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 236,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 237,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 238,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 239,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 240,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 241,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 242,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 243,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 244,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 245,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 246,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 247,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 248,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 249,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 250,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 251,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 252,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 253,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 254,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 255,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 256,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 257,
+    "Description": "你觉得自己很幸运",
+    "Name": "幸运"
+  },
+  {
+    "BuffId": 258,
+    "Description": "从天而降的可爱",
+    "Name": "小鸟妖"
+  },
+  {
+    "BuffId": 259,
+    "Description": "狐狸说了什么？更进一步，狐狸听到了什么？！",
+    "Name": "耳廓狐"
+  },
+  {
+    "BuffId": 260,
+    "Description": "真的真的荒唐",
+    "Name": "闪光蝴蝶"
+  },
+  {
+    "BuffId": 261,
+    "Description": "等到他两岁的时候走着瞧吧！",
+    "Name": "小鬼宝宝"
+  },
+  {
+    "BuffId": 262,
+    "Description": "小熊猫宝宝正跟着你",
+    "Name": "小熊猫宝宝"
+  },
+  {
+    "BuffId": 263,
+    "Description": "沙漠虎将与你并肩作战",
+    "Name": "沙漠虎"
+  },
+  {
+    "BuffId": 264,
+    "Description": "小小世纪之花正跟着你",
+    "Name": "微型世纪之花"
+  },
+  {
+    "BuffId": 265,
+    "Description": "火烈鸟冲冲冲",
+    "Name": "火烈鸟"
+  },
+  {
+    "BuffId": 266,
+    "Description": "不可用于大炮",
+    "Name": "雷管小猫"
+  },
+  {
+    "BuffId": 267,
+    "Description": "狼人宝宝正跟着你",
+    "Name": "狼人宝宝"
+  },
+  {
+    "BuffId": 268,
+    "Description": "暗影宝箱怪正跟着你",
+    "Name": "暗影宝箱怪"
+  },
+  {
+    "BuffId": 269,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 270,
+    "Description": "驾驶矿车",
+    "Name": "矿车"
+  },
+  {
+    "BuffId": 271,
+    "Description": "千刀万剐",
+    "Name": "附魔飞刀"
+  },
+  {
+    "BuffId": 272,
+    "Description": "鼹鼠矿车将为你挖掘",
+    "Name": "挖掘鼹鼠矿车"
+  },
+  {
+    "BuffId": 273,
+    "Description": "鼹鼠矿车将为你挖掘",
+    "Name": "挖掘鼹鼠矿车"
+  },
+  {
+    "BuffId": 274,
+    "Description": "伏特兔迷上你了",
+    "Name": "伏特兔"
+  },
+  {
+    "BuffId": 275,
+    "Description": "骑上一匹花马",
+    "Name": "花马坐骑"
+  },
+  {
+    "BuffId": 276,
+    "Description": "骑上一匹骏马",
+    "Name": "骏马坐骑"
+  },
+  {
+    "BuffId": 277,
+    "Description": "骑上一匹黑马",
+    "Name": "黑马坐骑"
+  },
+  {
+    "BuffId": 278,
+    "Description": "咔咝唏嗑！咔咝唏嗑！咔咝唏嗑！",
+    "Name": "蹦蹦跷坐骑"
+  },
+  {
+    "BuffId": 279,
+    "Description": "你现在是船长了",
+    "Name": "海盗船坐骑"
+  },
+  {
+    "BuffId": 280,
+    "Description": "向前跑，小树，别回头！",
+    "Name": "阴森树坐骑"
+  },
+  {
+    "BuffId": 281,
+    "Description": "从淘气名单上划掉……",
+    "Name": "圣诞老人坦克坐骑"
+  },
+  {
+    "BuffId": 282,
+    "Description": "这完全是金属摇滚范儿！",
+    "Name": "山羊坐骑"
+  },
+  {
+    "BuffId": 283,
+    "Description": "这本书在你的指引下现在有点用了",
+    "Name": "书坐骑"
+  },
+  {
+    "BuffId": 284,
+    "Description": "他听命于上级",
+    "Name": "史莱姆王子"
+  },
+  {
+    "BuffId": 285,
+    "Description": "盯着点……",
+    "Name": "可疑眼睛"
+  },
+  {
+    "BuffId": 286,
+    "Description": "可能会毁掉几个后院",
+    "Name": "蠕虫吞噬怪"
+  },
+  {
+    "BuffId": 287,
+    "Description": "它在爬来爬去……真恶心",
+    "Name": "蜘蛛脑"
+  },
+  {
+    "BuffId": 288,
+    "Description": "小骷髅王正跟着你",
+    "Name": "小骷髅王"
+  },
+  {
+    "BuffId": 289,
+    "Description": "宝贝蜜蜂正跟着你",
+    "Name": "宝贝蜜蜂"
+  },
+  {
+    "BuffId": 290,
+    "Description": "随时随地准备摧毁",
+    "Name": "微型毁灭者"
+  },
+  {
+    "BuffId": 291,
+    "Description": "你有一双特别的眼睛！",
+    "Name": "激光眼和魔焰眼"
+  },
+  {
+    "BuffId": 292,
+    "Description": "每一种武器都致命",
+    "Name": "小机械骷髅王"
+  },
+  {
+    "BuffId": 293,
+    "Description": "它到底吃什么呢？",
+    "Name": "世纪之花幼苗"
+  },
+  {
+    "BuffId": 294,
+    "Description": "给自己一个会哭、会说话、会睡觉、会走路的活神像！",
+    "Name": "玩具石巨人"
+  },
+  {
+    "BuffId": 295,
+    "Description": "海绿色的深渊侯爵",
+    "Name": "小猪龙鱼"
+  },
+  {
+    "BuffId": 296,
+    "Description": "它一直看着月亮",
+    "Name": "小幻影龙"
+  },
+  {
+    "BuffId": 297,
+    "Description": "有朋自远方来",
+    "Name": "月精灵"
+  },
+  {
+    "BuffId": 298,
+    "Description": "仙灵之光普照众生",
+    "Name": "仙灵公主"
+  },
+  {
+    "BuffId": 299,
+    "Description": "一盏小杰克南瓜灯恶魔似地照亮道路",
+    "Name": "杰克南瓜灯"
+  },
+  {
+    "BuffId": 300,
+    "Description": "带着这棵树散步！",
+    "Name": "常绿尖叫怪树苗"
+  },
+  {
+    "BuffId": 301,
+    "Description": "冰雪女王已经重生为你的同伴",
+    "Name": "冰雪女王"
+  },
+  {
+    "BuffId": 302,
+    "Description": "你们好，人类同胞们？",
+    "Name": "异星滑板小子"
+  },
+  {
+    "BuffId": 303,
+    "Description": "他有一根大棒，但不知道怎么用它",
+    "Name": "食人魔宝宝"
+  },
+  {
+    "BuffId": 304,
+    "Description": "小双足翼龙正跟着你",
+    "Name": "小双足翼龙"
+  },
+  {
+    "BuffId": 305,
+    "Description": "在熔岩海中冲浪！",
+    "Name": "熔岩鲨坐骑"
+  },
+  {
+    "BuffId": 306,
+    "Description": "防御碎片环绕着你",
+    "Name": "钛金屏障"
+  },
+  {
+    "BuffId": 307,
+    "Description": "BuffDescription.BlandWhipEnemyDebuff",
+    "Name": "BuffName.BlandWhipEnemyDebuff"
+  },
+  {
+    "BuffId": 308,
+    "Description": "鞭的速度提高",
+    "Name": "迪朗达尔祝福"
+  },
+  {
+    "BuffId": 309,
+    "Description": "BuffDescription.SwordWhipNPCDebuff",
+    "Name": "BuffName.SwordWhipNPCDebuff"
+  },
+  {
+    "BuffId": 310,
+    "Description": "BuffDescription.ScytheWhipEnemyDebuff",
+    "Name": "BuffName.ScytheWhipEnemyDebuff"
+  },
+  {
+    "BuffId": 311,
+    "Description": "鞭的速度提高",
+    "Name": "收割时刻"
+  },
+  {
+    "BuffId": 312,
+    "Description": "召唤雪花来为你战斗",
+    "Name": "一种不错的增益"
+  },
+  {
+    "BuffId": 313,
+    "Description": "BuffDescription.FlameWhipEnemyDebuff",
+    "Name": "BuffName.FlameWhipEnemyDebuff"
+  },
+  {
+    "BuffId": 314,
+    "Description": "鞭的速度提高",
+    "Name": "丛林之怒"
+  },
+  {
+    "BuffId": 315,
+    "Description": "BuffDescription.ThornWhipNPCDebuff",
+    "Name": "BuffName.ThornWhipNPCDebuff"
+  },
+  {
+    "BuffId": 316,
+    "Description": "BuffDescription.RainbowWhipNPCDebuff",
+    "Name": "BuffName.RainbowWhipNPCDebuff"
+  },
+  {
+    "BuffId": 317,
+    "Description": "她就是上级",
+    "Name": "史莱姆公主"
+  },
+  {
+    "BuffId": 318,
+    "Description": "啵嘤扑扑啵嘤！",
+    "Name": "羽翼史莱姆坐骑"
+  },
+  {
+    "BuffId": 319,
+    "Description": "BuffDescription.MaceWhipNPCDebuff",
+    "Name": "BuffName.MaceWhipNPCDebuff"
+  },
+  {
+    "BuffId": 320,
+    "Description": "你黏糊糊的，还闪光",
+    "Name": "闪耀史莱姆"
+  },
+  {
+    "BuffId": 321,
+    "Description": "提高暴击率",
+    "Name": "控脑术"
+  },
+  {
+    "BuffId": 322,
+    "Description": "女皇之刃将为你而战",
+    "Name": "泰拉棱镜"
+  },
+  {
+    "BuffId": 323,
+    "Description": "缓慢损失生命值",
+    "Name": "狱炎"
+  },
+  {
+    "BuffId": 324,
+    "Description": "不是特别烫就是特别冻。反正都是特别特别痛",
+    "Name": "冻伤"
+  },
+  {
+    "BuffId": 325,
+    "Description": "小雪怪将为你而战",
+    "Name": "小雪怪"
+  },
+  {
+    "BuffId": 326,
+    "Description": "BuffDescription.BoneWhipNPCDebuff",
+    "Name": "BuffName.BoneWhipNPCDebuff"
+  },
+  {
+    "BuffId": 327,
+    "Description": "伯尼，你总是陪在我身边",
+    "Name": "伯尼"
+  },
+  {
+    "BuffId": 328,
+    "Description": "毛茸茸！还黏糊糊……",
+    "Name": "咕噜咪"
+  },
+  {
+    "BuffId": 329,
+    "Description": "我的天啊！",
+    "Name": "小独眼巨鹿"
+  },
+  {
+    "BuffId": 330,
+    "Description": "行走的培根！",
+    "Name": "猪"
+  },
+  {
+    "BuffId": 331,
+    "Description": "奥特·冯·切斯特菲尔德先生",
+    "Name": "切斯特"
+  },
+  {
+    "BuffId": 332,
+    "Description": "你可以吃东西，但情况并没那么糟。",
+    "Name": "稍饿"
+  },
+  {
+    "BuffId": 333,
+    "Description": "你很饿，而且感觉很虚弱。",
+    "Name": "饥饿"
+  },
+  {
+    "BuffId": 334,
+    "Description": "你快饿死了！马上吃点东西！",
+    "Name": "极饿"
+  },
+  {
+    "BuffId": 335,
+    "Description": "阿比盖尔会为了保护你而战",
+    "Name": "阿比盖尔"
+  },
+  {
+    "BuffId": 336,
+    "Description": "提高生命再生速度",
+    "Name": "丰盛大餐"
+  },
+  {
+    "BuffId": 337,
+    "Description": "BuffDescription.TentacleSpike",
+    "Name": "BuffName.TentacleSpike"
+  },
+  {
+    "BuffId": 338,
+    "Description": "驾驶矿车",
+    "Name": "放屁车"
+  },
+  {
+    "BuffId": 339,
+    "Description": "驾驶矿车",
+    "Name": "放屁车"
+  },
+  {
+    "BuffId": 340,
+    "Description": "BuffDescription.CoolWhipNPCDebuff",
+    "Name": "BuffName.CoolWhipNPCDebuff"
+  },
+  {
+    "BuffId": 341,
+    "Description": "最终的权威，他们将统一王国！",
+    "Name": "皇家史莱姆"
+  },
+  {
+    "BuffId": 342,
+    "Description": "你变成了狼！",
+    "Name": "月亮祝福"
+  },
+  {
+    "BuffId": 343,
+    "Description": "显示感染物块的位置",
+    "Name": "生物群系视觉"
+  },
+  {
+    "BuffId": 344,
+    "Description": "迅速出血",
+    "Name": "血腥屠宰"
+  },
+  {
+    "BuffId": 345,
+    "Description": "森林守护者",
+    "Name": "祝尼魔"
+  },
+  {
+    "BuffId": 346,
+    "Description": "驾驶矿车",
+    "Name": "泰拉放屁车"
+  },
+  {
+    "BuffId": 347,
+    "Description": "驾驶矿车",
+    "Name": "泰拉放屁车"
+  },
+  {
+    "BuffId": 348,
+    "Description": "提高哨兵数量上限",
+    "Name": "战略家"
+  },
+  {
+    "BuffId": 349,
+    "Description": "名牌上写着“Shane”",
+    "Name": "蓝鸡"
+  },
+  {
+    "BuffId": 350,
+    "Description": "驱散城镇的宁静",
+    "Name": "暗影蜡烛"
+  },
+  {
+    "BuffId": 351,
+    "Description": "“你就是这样没命的”",
+    "Name": "Spiffo"
+  },
+  {
+    "BuffId": 352,
+    "Description": "哈嘿啊忒！",
+    "Name": "洞穴园丁"
+  },
+  {
+    "BuffId": 353,
+    "Description": "你虚化了！",
+    "Name": "微光闪烁"
+  },
+  {
+    "BuffId": 354,
+    "Description": "你可以从这些额外的土看出来",
+    "Name": "最土的块"
+  }
+]

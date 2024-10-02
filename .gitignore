@@ -1,0 +1,6 @@
+/build/
+/pyvenv/
+/plugins/__pycache__/
+/utils/__pycache__/
+/__pycache__/
+config.py

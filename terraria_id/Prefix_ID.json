@@ -1,0 +1,338 @@
+[
+  {
+    "Name": "大",
+    "PrefixId": 1
+  },
+  {
+    "Name": "巨大",
+    "PrefixId": 2
+  },
+  {
+    "Name": "危险",
+    "PrefixId": 3
+  },
+  {
+    "Name": "凶残",
+    "PrefixId": 4
+  },
+  {
+    "Name": "锋利",
+    "PrefixId": 5
+  },
+  {
+    "Name": "尖锐",
+    "PrefixId": 6
+  },
+  {
+    "Name": "微小",
+    "PrefixId": 7
+  },
+  {
+    "Name": "可怕",
+    "PrefixId": 8
+  },
+  {
+    "Name": "小",
+    "PrefixId": 9
+  },
+  {
+    "Name": "钝",
+    "PrefixId": 10
+  },
+  {
+    "Name": "倒霉",
+    "PrefixId": 11
+  },
+  {
+    "Name": "笨重",
+    "PrefixId": 12
+  },
+  {
+    "Name": "可耻",
+    "PrefixId": 13
+  },
+  {
+    "Name": "重",
+    "PrefixId": 14
+  },
+  {
+    "Name": "轻",
+    "PrefixId": 15
+  },
+  {
+    "Name": "精准",
+    "PrefixId": 16
+  },
+  {
+    "Name": "迅速",
+    "PrefixId": 17
+  },
+  {
+    "Name": "急速",
+    "PrefixId": 18
+  },
+  {
+    "Name": "恐怖",
+    "PrefixId": 19
+  },
+  {
+    "Name": "致命",
+    "PrefixId": 20
+  },
+  {
+    "Name": "可靠",
+    "PrefixId": 21
+  },
+  {
+    "Name": "讨厌",
+    "PrefixId": 22
+  },
+  {
+    "Name": "无力",
+    "PrefixId": 23
+  },
+  {
+    "Name": "粗笨",
+    "PrefixId": 24
+  },
+  {
+    "Name": "强大",
+    "PrefixId": 25
+  },
+  {
+    "Name": "神秘",
+    "PrefixId": 26
+  },
+  {
+    "Name": "精巧",
+    "PrefixId": 27
+  },
+  {
+    "Name": "精湛",
+    "PrefixId": 28
+  },
+  {
+    "Name": "笨拙",
+    "PrefixId": 29
+  },
+  {
+    "Name": "无知",
+    "PrefixId": 30
+  },
+  {
+    "Name": "错乱",
+    "PrefixId": 31
+  },
+  {
+    "Name": "威猛",
+    "PrefixId": 32
+  },
+  {
+    "Name": "禁忌",
+    "PrefixId": 33
+  },
+  {
+    "Name": "天界",
+    "PrefixId": 34
+  },
+  {
+    "Name": "狂怒",
+    "PrefixId": 35
+  },
+  {
+    "Name": "锐利",
+    "PrefixId": 36
+  },
+  {
+    "Name": "高端",
+    "PrefixId": 37
+  },
+  {
+    "Name": "强力",
+    "PrefixId": 38
+  },
+  {
+    "Name": "碎裂",
+    "PrefixId": 39
+  },
+  {
+    "Name": "破损",
+    "PrefixId": 40
+  },
+  {
+    "Name": "粗劣",
+    "PrefixId": 41
+  },
+  {
+    "Name": "迅捷",
+    "PrefixId": 42
+  },
+  {
+    "Name": "致命",
+    "PrefixId": 43
+  },
+  {
+    "Name": "灵活",
+    "PrefixId": 44
+  },
+  {
+    "Name": "灵巧",
+    "PrefixId": 45
+  },
+  {
+    "Name": "残暴",
+    "PrefixId": 46
+  },
+  {
+    "Name": "缓慢",
+    "PrefixId": 47
+  },
+  {
+    "Name": "迟钝",
+    "PrefixId": 48
+  },
+  {
+    "Name": "呆滞",
+    "PrefixId": 49
+  },
+  {
+    "Name": "惹恼",
+    "PrefixId": 50
+  },
+  {
+    "Name": "凶险",
+    "PrefixId": 51
+  },
+  {
+    "Name": "狂躁",
+    "PrefixId": 52
+  },
+  {
+    "Name": "致伤",
+    "PrefixId": 53
+  },
+  {
+    "Name": "强劲",
+    "PrefixId": 54
+  },
+  {
+    "Name": "粗鲁",
+    "PrefixId": 55
+  },
+  {
+    "Name": "软弱",
+    "PrefixId": 56
+  },
+  {
+    "Name": "无情",
+    "PrefixId": 57
+  },
+  {
+    "Name": "暴怒",
+    "PrefixId": 58
+  },
+  {
+    "Name": "神级",
+    "PrefixId": 59
+  },
+  {
+    "Name": "恶魔",
+    "PrefixId": 60
+  },
+  {
+    "Name": "狂热",
+    "PrefixId": 61
+  },
+  {
+    "Name": "坚硬",
+    "PrefixId": 62
+  },
+  {
+    "Name": "守护",
+    "PrefixId": 63
+  },
+  {
+    "Name": "装甲",
+    "PrefixId": 64
+  },
+  {
+    "Name": "护佑",
+    "PrefixId": 65
+  },
+  {
+    "Name": "奥秘",
+    "PrefixId": 66
+  },
+  {
+    "Name": "精确",
+    "PrefixId": 67
+  },
+  {
+    "Name": "幸运",
+    "PrefixId": 68
+  },
+  {
+    "Name": "锯齿",
+    "PrefixId": 69
+  },
+  {
+    "Name": "尖刺",
+    "PrefixId": 70
+  },
+  {
+    "Name": "愤怒",
+    "PrefixId": 71
+  },
+  {
+    "Name": "险恶",
+    "PrefixId": 72
+  },
+  {
+    "Name": "轻快",
+    "PrefixId": 73
+  },
+  {
+    "Name": "快速",
+    "PrefixId": 74
+  },
+  {
+    "Name": "急速",
+    "PrefixId": 75
+  },
+  {
+    "Name": "迅捷",
+    "PrefixId": 76
+  },
+  {
+    "Name": "狂野",
+    "PrefixId": 77
+  },
+  {
+    "Name": "鲁莽",
+    "PrefixId": 78
+  },
+  {
+    "Name": "勇猛",
+    "PrefixId": 79
+  },
+  {
+    "Name": "暴力",
+    "PrefixId": 80
+  },
+  {
+    "Name": "传奇",
+    "PrefixId": 81
+  },
+  {
+    "Name": "虚幻",
+    "PrefixId": 82
+  },
+  {
+    "Name": "神话",
+    "PrefixId": 83
+  },
+  {
+    "Name": "传奇",
+    "PrefixId": 84
+  }
+]
