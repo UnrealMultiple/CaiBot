@@ -97,7 +97,7 @@ async def handle_github_push(request: Request):
                         f"查看差异 > {payload['compare']}")
         if payload['repository']['name'] == "TShockPlugin":
             await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, push_message)
-        if payload['repository']['name'] == "CaiBot":
+        if payload['repository']['name'] == "CaiBot" and {payload['ref'].split('/')[-1]} == "master":
             await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, push_message + "\n✨已发起自动更新...")
             url = 'https://github.com/UnrealMultiple/CaiBot/archive/refs/heads/master.zip'
             headers = {'Authorization': f'token {config.GITHUB_TOKEN}'}
