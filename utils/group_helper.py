@@ -4,11 +4,15 @@ import re
 import nonebot
 from nonebot.log import logger
 
+from plugins.commands.group_commands import FEED_BACK_GROUP
 from utils.ban_user import UserBan
 from utils.user import User
 
 
 class GroupHelper:
+
+
+
     @staticmethod
     async def send_group(group: int, message):
         try:
@@ -223,3 +227,7 @@ class GroupHelper:
             name = "未知群"
 
         return name
+
+    @staticmethod
+    async def is_superadmin(user_id: int):
+        return await GroupHelper.is_admin(user_id,FEED_BACK_GROUP)

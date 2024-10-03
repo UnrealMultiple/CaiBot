@@ -98,24 +98,25 @@ async def handle_github_push(request: Request):
         if payload['repository']['name'] == "TShockPlugin":
             await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, push_message)
         if payload['repository']['name'] == "CaiBot" and {payload['ref'].split('/')[-1]} == "master":
-            await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, push_message + "\n✨已发起自动更新...")
-            url = 'https://github.com/UnrealMultiple/CaiBot/archive/refs/heads/master.zip'
-            headers = {'Authorization': f'token {config.GITHUB_TOKEN}'}
-            response = requests.get(url, headers=headers)
-            # 获取当前运行目录
-            current_dir = os.getcwd()
-
-            # 解压并覆盖本地代码
-            with zipfile.ZipFile(io.BytesIO(response.content)) as z:
-                for member in z.namelist():
-                    # 去掉文件路径中的顶层文件夹
-                    member_path = os.path.join(current_dir, os.path.relpath(member, start=z.namelist()[0]))
-                    if member.endswith('/'):
-                        os.makedirs(member_path, exist_ok=True)
-                    else:
-                        with z.open(member) as source, open(member_path, 'wb') as target:
-                            target.write(source.read())
-            await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, "#️⃣代码下载完成, 需要手动重启")
+            await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, push_message)
+            # + "\n✨已发起自动更新..."
+            # url = 'https://github.com/UnrealMultiple/CaiBot/archive/refs/heads/master.zip'
+            # headers = {'Authorization': f'token {config.GITHUB_TOKEN}'}
+            # response = requests.get(url, headers=headers)
+            # # 获取当前运行目录
+            # current_dir = os.getcwd()
+            #
+            # # 解压并覆盖本地代码
+            # with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+            #     for member in z.namelist():
+            #         # 去掉文件路径中的顶层文件夹
+            #         member_path = os.path.join(current_dir, os.path.relpath(member, start=z.namelist()[0]))
+            #         if member.endswith('/'):
+            #             os.makedirs(member_path, exist_ok=True)
+            #         else:
+            #             with z.open(member) as source, open(member_path, 'wb') as target:
+            #                 target.write(source.read())
+            # await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, "#️⃣代码下载完成, 需要手动重启")
         return {"message": "推送成功!"}
     if event_type == "ping":
         return {"message": "pong"}

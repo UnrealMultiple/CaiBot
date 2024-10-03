@@ -34,6 +34,7 @@ async def help_handle(event: GroupMessageEvent):
                            f'\n『菜单』\n'
                            f'⚡服务器管理\n'
                            f'⚡云黑菜单\n'
+                           f'⚡群配置\n'
                            f'⚡快捷功能菜单\n'
                            f'⚡地图功能菜单\n'
                            f'⚡白名单菜单\n'
@@ -154,3 +155,15 @@ async def help5_handle(event: GroupMessageEvent):
                        f'⚡sp <名字|ID> [搜弹幕]\n'
                        f'⚡sb <名字|ID> [搜Buff]\n'
                        f'⚡sx <名字|ID> [搜修饰语]')
+
+help6 = on_command("群配置", force_whitespace=True)
+
+
+@help6.handle()
+async def help6_handle(event: GroupMessageEvent):
+    group = Group.get_group(event.group_id)
+    if group is None or not group.enable_server_bot:
+        return
+    await help6.finish(MessageSegment.at(event.user_id) +
+                       f'\n『菜单•群配置』\n'
+                       f'⚡开启\关闭群管理员权限 群管理是否自动有权限管理BOT')
