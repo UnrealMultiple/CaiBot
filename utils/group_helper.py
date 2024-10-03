@@ -114,27 +114,36 @@ class GroupHelper:
 
     @staticmethod
     async def is_bot_admin(group_id: int):
-        bot = nonebot.get_bot()
-        result = await bot.call_api("get_group_member_info", group_id=group_id, user_id=bot.self_id)
-        if result['role'] == 'admin' or result['role'] == 'owner':
-            return True
-        else:
+        try:
+            bot = nonebot.get_bot()
+            result = await bot.call_api("get_group_member_info", group_id=group_id, user_id=bot.self_id)
+            if result['role'] == 'admin' or result['role'] == 'owner':
+                return True
+            else:
+                return False
+        except:
             return False
 
     @staticmethod
     async def is_owner(group_id: int, qq: int):
-        result = await nonebot.get_bot().call_api("get_group_member_info", group_id=group_id, user_id=qq)
-        if result['role'] == 'owner':
-            return True
-        else:
+        try:
+            result = await nonebot.get_bot().call_api("get_group_member_info", group_id=group_id, user_id=qq)
+            if result['role'] == 'owner':
+                return True
+            else:
+                return False
+        except:
             return False
 
     @staticmethod
     async def is_admin(group_id: int, qq: int):
-        result = await nonebot.get_bot().call_api("get_group_member_info", group_id=group_id, user_id=qq)
-        if result['role'] == 'admin' or result['role'] == 'owner':
-            return True
-        else:
+        try:
+            result = await nonebot.get_bot().call_api("get_group_member_info", group_id=group_id, user_id=qq)
+            if result['role'] == 'admin' or result['role'] == 'owner':
+                return True
+            else:
+                return False
+        except:
             return False
 
     @staticmethod
@@ -230,8 +239,11 @@ class GroupHelper:
 
     @staticmethod
     async def is_superadmin(user_id: int):
-        result = await nonebot.get_bot().call_api("get_group_member_info", group_id=FEEDBACK_GROUP, user_id=user_id)
-        if result['role'] == 'admin' or result['role'] == 'owner':
-            return True
-        else:
+        try:
+            result = await nonebot.get_bot().call_api("get_group_member_info", group_id=FEEDBACK_GROUP, user_id=user_id)
+            if result['role'] == 'admin' or result['role'] == 'owner':
+                return True
+            else:
+                return False
+        except:
             return False
