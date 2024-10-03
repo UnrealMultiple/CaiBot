@@ -4,11 +4,8 @@ import datetime
 import gzip
 import io
 import json
-import os
 import threading
 import time
-import zipfile
-
 import aiohttp
 import nonebot
 import requests
@@ -18,13 +15,11 @@ from nonebot import get_driver
 from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.log import logger
 from starlette.websockets import WebSocketDisconnect
-
-import config
 import plugins.event_handle
-from plugins.event_handle import TSHOCK_GROUP
 from utils import statistics
 from utils.bag_png_helper import get_bag_png
 from utils.ban_user import UserBan
+from utils.global_const import FEEDBACK_GROUP,TSHOCK_GROUP
 from utils.group import Group
 from utils.group_helper import GroupHelper
 from utils.process_png_helper import get_process_png
@@ -96,9 +91,9 @@ async def handle_github_push(request: Request):
                         f"{commits_message}\n"
                         f"查看差异 > {payload['compare']}")
         if payload['repository']['name'] == "TShockPlugin":
-            await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP, push_message)
+            await GroupHelper.send_group(TSHOCK_GROUP, push_message)
         if payload['repository']['name'] == "CaiBot" and {payload['ref'].split('/')[-1]} == "master":
-            await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, push_message)
+            await GroupHelper.send_group(FEEDBACK_GROUP, push_message)
             # + "\n✨已发起自动更新..."
             # url = 'https://github.com/UnrealMultiple/CaiBot/archive/refs/heads/master.zip'
             # headers = {'Authorization': f'token {config.GITHUB_TOKEN}'}

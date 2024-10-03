@@ -18,9 +18,6 @@ def paginate(data, page_size, page_number):
     # 返回分页后的数据
     return data[start:end]
 
-
-FEED_BACK_GROUP = 991556763
-
 del_admin = on_command("云黑管理删除", aliases={"删除管理", "管理删除"}, force_whitespace=True)
 
 
@@ -188,11 +185,9 @@ agreement4 = on_command('开启群管理员权限', force_whitespace=True)
 async def agreement4_handle(event: GroupMessageEvent):
     if not await GroupHelper.is_owner(event.group_id, event.user_id):
         await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '只允许群主设置')
-        return
     group = Group.get_group(event.group_id)
     if group is None:
         await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '无法获取群信息')
-        return
     has_perm = group.config.get('group_admin_has_permission')
     if has_perm != False:
         await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限已开启')
@@ -209,11 +204,9 @@ agreement5 = on_command('关闭群管理员权限', force_whitespace=True)
 async def agreement5_handle(event: GroupMessageEvent):
     if not await GroupHelper.is_owner(event.group_id, event.user_id):
         await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '只允许群主设置')
-        return
     group = Group.get_group(event.group_id)
     if group is None:
         await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '无法获取群信息')
-        return
     has_perm = group.config.get('group_admin_has_permission')
     if has_perm != False:
         group.config['group_admin_has_permission'] = False
