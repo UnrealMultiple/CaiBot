@@ -18,9 +18,6 @@ def paginate(data, page_size, page_number):
     # 返回分页后的数据
     return data[start:end]
 
-
-FEED_BACK_GROUP = 991556763
-
 del_admin = on_command("云黑管理删除", aliases={"删除管理", "管理删除"}, force_whitespace=True)
 
 

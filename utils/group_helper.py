@@ -4,10 +4,9 @@ import re
 import nonebot
 from nonebot.log import logger
 
-from plugins.commands.group_commands import FEED_BACK_GROUP
+from plugins.event_handle import FEEDBACK_GROUP
 from utils.ban_user import UserBan
 from utils.user import User
-
 
 class GroupHelper:
 
@@ -226,4 +225,4 @@ class GroupHelper:
 
     @staticmethod
     async def is_superadmin(user_id: int):
-        return await GroupHelper.is_admin(user_id,FEED_BACK_GROUP)
+        return await GroupHelper.is_admin(user_id,FEEDBACK_GROUP)
