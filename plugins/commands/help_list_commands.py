@@ -3,9 +3,6 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
 from utils.group import Group
 
-FEED_BACK_GROUP = 991556763
-
-
 def msg_cut(msg: str) -> list:
     msg = msg.split(" ")
     msg = [word for word in msg if word]

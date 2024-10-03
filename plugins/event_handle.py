@@ -1,15 +1,12 @@
 from nonebot import on_request, on_notice
 from nonebot.adapters.onebot.v11 import MessageSegment, Event, Bot, GroupRequestEvent, GroupIncreaseNoticeEvent, \
     RequestEvent
-
+from utils.global_const import FEEDBACK_GROUP,TSHOCK_GROUP
 from utils.ban_user import UserBan
 from utils.group_helper import GroupHelper
 from utils.statistics import Statistics
 
 dict1 = {}
-
-FEEDBACK_GROUP = 991556763
-TSHOCK_GROUP = 816771079
 
 
 def _check2(event: Event):
@@ -78,7 +75,7 @@ async def _(event: GroupRequestEvent, bot: Bot):
             f'\n'.join([await x.to_string() for x in
                         ban.bans]))
         ban.has_kicked += 1
-        ban.update()
+        ban.update_user()
         Statistics.add_kick()
         await request.finish()
 

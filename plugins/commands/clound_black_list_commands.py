@@ -3,6 +3,7 @@ import random
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageSegment
 
+from utils.global_const import FEEDBACK_GROUP
 from utils.ban_user import UserBan
 from utils.group import Group
 from utils.group_helper import GroupHelper
@@ -20,9 +21,6 @@ def paginate(data, page_size, page_number):
     end = start + page_size
     # 返回分页后的数据
     return data[start:end]
-
-
-FEED_BACK_GROUP = 991556763
 
 check_details = on_command("云黑详细", force_whitespace=True)
 
@@ -150,7 +148,7 @@ async def del_ban_handle(bot: Bot, event: GroupMessageEvent):
                 await del_ban.send(MessageSegment.at(event.user_id) +
                                    f'\n『添加云黑』\n' +
                                    "云黑删除成功!")
-                await bot.send_group_msg(group_id=FEED_BACK_GROUP, message=
+                await bot.send_group_msg(group_id=FEEDBACK_GROUP, message=
                 f'🔄️删除云黑 {await GroupHelper.GetName(int(msg[1]))} ({int(msg[1])})\n' +
                 f"剩余云黑数: {len(ban.bans)}\n" +
                 f"操作群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})")
@@ -220,14 +218,14 @@ async def add_ban_handle(bot: Bot, event: GroupMessageEvent):
         else:
             ban = UserBan.add_user(int(msg[1]))
 
-        if await group.can_add() or event.group_id == FEED_BACK_GROUP:
+        if await group.can_add() or event.group_id == FEEDBACK_GROUP:
             ban.add_ban(event.group_id, event.user_id, msg[2])
             group.add_ban(int(msg[1]))
             await add_ban.send(MessageSegment.at(event.user_id) +
                                f'\n『添加云黑』\n' +
                                f"云黑已添加!({int(msg[1])})")
-            if event.group_id != FEED_BACK_GROUP:
-                await bot.send_group_msg(group_id=FEED_BACK_GROUP, message=
+            if event.group_id != FEEDBACK_GROUP:
+                await bot.send_group_msg(group_id=FEEDBACK_GROUP, message=
                 f'⬇️新云黑 {await GroupHelper.GetName(int(msg[1]))} ({int(msg[1])})\n' +
                 f"理由: {msg[2]}\n"
                 f"添加群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})")
