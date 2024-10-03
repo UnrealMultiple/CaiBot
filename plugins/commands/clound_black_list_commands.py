@@ -364,10 +364,10 @@ async def group_ban_clean_handle(event: GroupMessageEvent):
                                      f'\n『云黑删除』\n'
                                      + "请启用云黑!\n"
                                        "发送'启用云黑'在本群启用本BOT")
-    if not await GroupHelper.is_admin(FEED_BACK_GROUP, event.user_id):
-        await group_ban_clean.finish(MessageSegment.at(event.user_id) +
-                                     f'\n『云黑删除』\n'
-                                     + "没有权限")
+    if not await GroupHelper.is_superadmin(event.user_id):
+        await group_ban_del.finish(MessageSegment.at(event.user_id) +
+                                   f'\n『云黑删除』\n'
+                                   + "没有权限,此命令需要CaiBot管理成员才能执行!")
     msg = msg_cut(event.get_plaintext())
     group_num = 0
     if len(msg) != 2:
@@ -414,10 +414,10 @@ async def group_ban_list_handle(event: GroupMessageEvent):
                                    f'\n『群云黑封禁』\n'
                                    + "请启用云黑!\n"
                                      "发送'启用云黑'在本群启用本BOT")
-    if not await GroupHelper.is_admin(FEED_BACK_GROUP, event.user_id):
-        await group_ban_add.finish(MessageSegment.at(event.user_id) +
+    if not await GroupHelper.is_superadmin(event.user_id):
+        await group_ban_del.finish(MessageSegment.at(event.user_id) +
                                    f'\n『群云黑封禁』\n'
-                                   + "没有权限")
+                                   + "没有权限,此命令需要CaiBot管理成员才能执行!")
     msg = msg_cut(event.get_plaintext())
     if len(msg) != 2:
         await group_ban_add.finish(MessageSegment.at(event.user_id) +
@@ -458,13 +458,13 @@ async def group_ban_list_handle(event: GroupMessageEvent):
     group = Group.get_group(event.group_id)
     if group is None:
         await group_ban_del.finish(MessageSegment.at(event.user_id) +
-                                   f'\n『随机云黑』\n'
+                                   f'\n『云黑删除』\n'
                                    + "请启用云黑!\n"
                                      "发送'启用云黑'在本群启用本BOT")
-    if not await GroupHelper.is_admin(FEED_BACK_GROUP, event.user_id):
+    if not await GroupHelper.is_superadmin(event.user_id):
         await group_ban_del.finish(MessageSegment.at(event.user_id) +
                                    f'\n『云黑删除』\n'
-                                   + "没有权限")
+                                   + "没有权限,此命令需要CaiBot管理成员才能执行!")
     msg = msg_cut(event.get_plaintext())
     group = 0
     target = 0

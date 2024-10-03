@@ -1,6 +1,10 @@
+import io
+import os
 import re
 import socket
+import zipfile
 
+import requests
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
@@ -22,6 +26,31 @@ def paginate(data, page_size, page_number):
     end = start + page_size
     # 返回分页后的数据
     return data[start:end]
+
+restart = on_command("CaiBot更新重启", force_whitespace=True)
+
+
+@restart.handle()
+async def restart_handle(event: GroupMessageEvent):
+    if await GroupHelper.is_superadmin(event.user_id):
+        url = 'https://github.com/UnrealMultiple/CaiBot/archive/refs/heads/master.zip'
+        response = requests.get(url)
+        current_dir = os.getcwd()
+        with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+            for member in z.namelist():
+                member_path = os.path.join(current_dir, os.path.relpath(member, start=z.namelist()[0]))
+                if member.endswith('/'):
+                    os.makedirs(member_path, exist_ok=True)
+                else:
+                    with z.open(member) as source, open(member_path, 'wb') as target:
+                        target.write(source.read())
+        await restart.send(MessageSegment.at(event.user_id) +
+                           "\n#️⃣代码下载完成, 正在关闭CaiBot...")
+        exit(0)
+    else:
+        await lookfor.finish(MessageSegment.at(event.user_id) +
+                             f'\n『一键更新』\n'
+                             + "没有权限,非CaiBot管理成员")
 
 
 about = on_command("关于", force_whitespace=True)

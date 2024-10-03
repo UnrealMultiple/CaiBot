@@ -3,6 +3,7 @@ from nonebot.adapters.onebot.v11 import MessageSegment, Event, Bot, GroupRequest
     RequestEvent
 
 from utils.ban_user import UserBan
+from utils.group_helper import GroupHelper
 from utils.statistics import Statistics
 
 dict1 = {}
@@ -42,6 +43,15 @@ async def _(event: GroupRequestEvent, bot: Bot):
     Statistics.add_check()
     if event.group_id == FEEDBACK_GROUP:
         return
+
+    if await GroupHelper.is_superadmin(event.user_id):
+        await bot.call_api("set_group_add_request", flag=event.flag, sub_type=event.sub_type,
+                           approve=True)
+        await bot.call_api("send_group_msg", group_id=event.group_id, message=
+        f'『自动批准』\n' +
+        f'[{event.user_id}]是CaiBot管理成员.')
+        return
+
     ban = UserBan.get_user(event.user_id)
     if ban is not None and len(ban.bans) > 1:
         await bot.call_api("set_group_add_request", flag=event.flag, sub_type=event.sub_type,
