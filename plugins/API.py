@@ -480,9 +480,11 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                      f"请替换原来小地图文件，不要重命名!")
     elif data['type'] == "pluginlist":
         update_check_result = ""
+        tshock_plugins = data['plugins']
+        tshock_plugins.sort(key=lambda x: x['Name'])
         has_new_version = False
         remote_plugins = requests.get("https://gitee.com/kksjsj/TShockPlugin/raw/master/Plugins.json").json()
-        for local in data['plugins']:
+        for local in tshock_plugins:
             for remote in remote_plugins:
                 if local["Name"] == remote["Name"]:
                     if list(map(int, local['Version'].split('.'))) < list(map(int, remote['Version'].split('.'))):
@@ -492,14 +494,22 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         if has_new_version:
             await GroupHelper.send_group(group.id, f"『插件列表』\n" +
                                          "\n".join([f"{i['Name']} v{i['Version']} (by {i['Author']})" for i in
-                                                    data['plugins']]) +
+                                                    tshock_plugins]) +
                                          "\n🔭插件新版本:\n" + update_check_result
                                          + "*数据来源于UnrealMultiple/TShockPlugin仓库")
         else:
             await GroupHelper.send_group(group.id, f"『插件列表』\n" +
                                          "\n".join(
                                              [f"{i['Name']} v{i['Version']} (by {i['Author']})" for i in
-                                              data['plugins']]))
+                                              tshock_plugins]))
+
+    elif data['type'] == "modlist":
+         mods = data['mods']
+         mods.sort(key=lambda x: x['Name'])
+         await GroupHelper.send_group(group.id, f"『TMOD列表』\n" +
+                                         "\n".join(
+                                             [f"{i['Name']} v{i['Version']}" for i in
+                                              mods]))
 
 
 # 外部方法：查询服务器是否连接
