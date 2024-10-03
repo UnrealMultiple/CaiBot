@@ -179,7 +179,7 @@ class GroupHelper:
         return message_text
 
     @staticmethod
-    async def HasPermission(group_id: int, qq: int):
+    async def HasPermission(group_id: int, qq: int) -> bool:
         if qq == 3042538328:
             return True
         from utils.group import Group
@@ -189,8 +189,12 @@ class GroupHelper:
                 return True
         bot = nonebot.get_bot()
         result = await bot.call_api("get_group_member_info", group_id=group_id, user_id=qq)
-        if result['role'] == 'admin' or result['role'] == 'owner':
+        if result['role'] == 'owner':
             return True
+        if result['role'] == 'admin':
+            if group is None:
+                return True
+            return group.config.get('group_admin_has_permission') != False
         else:
             return False
 
