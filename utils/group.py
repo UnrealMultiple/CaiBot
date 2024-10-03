@@ -9,7 +9,7 @@ from utils.sql import Sql
 
 class Group:
     def __init__(self, id: int, admins: [int], today_bans: {datetime, int}, reject_edition: bool, auto_kick: bool,
-                 kick_titled: bool, enable_server_bot: bool, servers: List[Server], config) -> None:
+                 kick_titled: bool, enable_server_bot: bool, servers: List[Server], config: dict) -> None:
         self.id = id
         self.admins = admins
         self.today_bans = today_bans
