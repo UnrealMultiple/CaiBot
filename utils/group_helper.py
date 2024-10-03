@@ -4,7 +4,7 @@ import re
 import nonebot
 from nonebot.log import logger
 
-from plugins.commands.group_commands import FEED_BACK_GROUP
+from utils.global_const import FEEDBACK_GROUP
 from utils.ban_user import UserBan
 from utils.user import User
 
@@ -230,4 +230,8 @@ class GroupHelper:
 
     @staticmethod
     async def is_superadmin(user_id: int):
-        return await GroupHelper.is_admin(user_id,FEED_BACK_GROUP)
+        result = await nonebot.get_bot().call_api("get_group_member_info", group_id=FEEDBACK_GROUP, user_id=user_id)
+        if result['role'] == 'admin' or result['role'] == 'owner':
+            return True
+        else:
+            return False
