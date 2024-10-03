@@ -179,3 +179,45 @@ async def agreement3_handle(event: GroupMessageEvent):
                                 f'\n『群机器人』\n' +
                                 "没有权限!\n"
                                 "只允许群主和管理员设置")
+
+
+agreement4 = on_command('开启群管理员权限', force_whitespace=True)
+
+
+@agreement4.handle()
+async def agreement4_handle(event: GroupMessageEvent):
+    if not await GroupHelper.is_owner(event.group_id, event.user_id):
+        await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '只允许群主设置')
+        return
+    group = Group.get_group(event.group_id)
+    if group is None:
+        await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '无法获取群信息')
+        return
+    has_perm = group.config.get('group_admin_has_permission')
+    if has_perm != False:
+        await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限已开启')
+    else:
+        group.config['group_admin_has_permission'] = True
+        group.update()
+        await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限启用成功')
+
+
+agreement5 = on_command('关闭群管理员权限', force_whitespace=True)
+
+
+@agreement5.handle()
+async def agreement5_handle(event: GroupMessageEvent):
+    if not await GroupHelper.is_owner(event.group_id, event.user_id):
+        await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '只允许群主设置')
+        return
+    group = Group.get_group(event.group_id)
+    if group is None:
+        await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '无法获取群信息')
+        return
+    has_perm = group.config.get('group_admin_has_permission')
+    if has_perm != False:
+        group.config['group_admin_has_permission'] = False
+        group.update()
+        await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限关闭成功')
+    else:
+        await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限未启用')
