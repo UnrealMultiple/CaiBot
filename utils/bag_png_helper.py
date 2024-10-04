@@ -1,3 +1,4 @@
+import json
 import os
 
 from PIL import Image, ImageDraw, ImageFont
@@ -55,6 +56,34 @@ Red_Drug = Image.open("img/Item/item_678.png").convert('RGBA')
 Red_Drug = Red_Drug.resize((32, 45), Image.LANCZOS)
 _, _, _, aRed_Drug = Red_Drug.split()
 
+Arkhalis = Image.open("img/Item/item_3368.png").convert('RGBA')
+Arkhalis = Arkhalis.resize((44, 45), Image.LANCZOS)
+_, _, _, aArkhalis = Arkhalis.split()
+
+book = Image.open("img/Item/item_149.png").convert('RGBA')
+book = book.resize((44, 45), Image.LANCZOS)
+_, _, _, abook = book.split()
+
+life_item = Image.open("img/Item/item_58.png").convert('RGBA')
+life_item = life_item.resize((30, 31), Image.LANCZOS)
+_, _, _, alife_item = life_item.split()
+
+mana_item = Image.open("img/Item/item_184.png").convert('RGBA')
+mana_item = mana_item.resize((30, 31), Image.LANCZOS)
+_, _, _, amana_item = mana_item.split()
+
+sitting_duck_fishing_pole = Image.open("img/Item/item_2296.png").convert('RGBA')
+sitting_duck_fishing_pole = sitting_duck_fishing_pole.resize((30, 31), Image.LANCZOS)
+_, _, _, asitting_duck_fishing_pole = sitting_duck_fishing_pole.split()
+
+golden_fishing_rod = Image.open("img/Item/item_2294.png").convert('RGBA')
+golden_fishing_rod = golden_fishing_rod.resize((30, 31), Image.LANCZOS)
+_, _, _, agolden_fishing_rod = golden_fishing_rod.split()
+
+advanced_combat_techniques = Image.open("img/Item/item_4382.png").convert('RGBA')
+advanced_combat_techniques = advanced_combat_techniques.resize((30, 31), Image.LANCZOS)
+_, _, _, aadvanced_combat_techniques = advanced_combat_techniques.split()
+
 Trash = Image.open("img/Item/Trash.png").convert('RGBA')
 _, _, _, aTrash = Trash.split()
 
@@ -78,18 +107,16 @@ back6 = Image.open("img/Item/Inventory_Back12.png").convert('RGBA')
 back2 = Image.open("img/Item/Inventory_Back11.png").convert('RGBA')
 _, _, _, a = back1.split()
 _, _, _, a2 = back2.split()
-
+font = "font/LXGWWenKaiMono-Medium.ttf"
 load_all_images()
 
 print("[查背包]图片缓存完毕...")
 
 
-def get_bag_png(name: str, inv, buffs):
-    font = "font/LXGWWenKaiMono-Medium.ttf"
+def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: str, mana: str,
+                quests_completed: int) -> Image:
     img = Image.open("img/lookbag_bg.png").convert('RGBA')
-
     ft = ImageFont.truetype(font=font, size=100)
-
     w, h = img.size
     text_w, text_h = ft.getsize(name)
     draw = ImageDraw.Draw(img)
@@ -117,12 +144,12 @@ def get_bag_png(name: str, inv, buffs):
 
             item = original_image.resize((new_width, new_height))
 
-            ft = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=14)
+            item_font = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=14)
 
             r, g, b, a = item.split()
             img.paste(item, (x + 13, y + 13), mask=a)
             if stack != 1 and stack != 0:
-                draw.text((x + 6, y + 30), str(stack), font=ft)
+                draw.text((x + 6, y + 30), str(stack), font=item_font)
         except Exception as e:
             print(f"Error: {e}")
             pass
@@ -276,11 +303,11 @@ def get_bag_png(name: str, inv, buffs):
         index += 1
 
     img.paste(WoodenArrow, (915 - 50, 120 + 280 + 30), mask=aWoodenArrow)
-
     img.paste(back6, (900 + back2.width, back2.height * 4 + 120 + 280 + 30), mask=a)
     img.paste(back6, (900, back2.height * 4 + 120 + 280 + 30), mask=a)
     img.paste(Trash, (900 + 10, back2.height * 4 + 120 + 280 + 30 + 10), mask=aTrash)
     draw_item(900 + back2.width, back2.height * 4 + 120 + 280 + 30, inv[179][0], inv[179][1])
+
     buffs = [i for i in buffs if i != 0]
     if len(buffs) != 0:
         index = 0
@@ -292,5 +319,42 @@ def get_bag_png(name: str, inv, buffs):
                     break
                 draw_buff(750 + 34 * b, + 120 + 600 + 30 + 34 * h, buffs[index])
                 index += 1
+
+    img.paste(book, (915 + 50 + 60, 120 + 280 + 30), mask=abook)
+    font1 = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=38)
+    draw.text((915 + 50 + 60 + 50, 120 + 280 + 30), "玩家信息", font=font1)
+    font2 = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=30)
+
+    img.paste(life_item, (915 + 50 + 75, 120 + 280 + 30 + 30 + 30), mask=alife_item)
+    draw.text((915 + 50 + 60 + 50, 120 + 280 + 30 + 30 + 30), "生命:" + life, font=font2, fill=(255, 106, 106))
+
+    img.paste(mana_item, (915 + 50 + 75, 120 + 280 + 30 + 30 + 30 + 40), mask=amana_item)
+    draw.text((915 + 50 + 60 + 50, 120 + 280 + 30 + 30 + 30 + 40), "魔力:" + mana, font=font2, fill=(30, 144, 255))
+
+    if quests_completed >= 50:
+        img.paste(golden_fishing_rod, (915 + 50 + 75, 120 + 280 + 30 + 30 + 30 + 40 + 40), mask=agolden_fishing_rod)
+        draw.text((915 + 50 + 60 + 50, 120 + 280 + 30 + 30 + 30 + 40 + 40), f"渔夫任务数:{quests_completed}次",
+                  font=font2, fill=(255, 223, 0))
+    else:
+        img.paste(sitting_duck_fishing_pole, (915 + 50 + 75, 120 + 280 + 30 + 30 + 30 + 40 + 40),
+                  mask=asitting_duck_fishing_pole)
+        draw.text((915 + 50 + 60 + 50, 120 + 280 + 30 + 30 + 30 + 40 + 40), f"渔夫任务数:{quests_completed}次",
+                  font=font2, fill=(0, 0, 205))
+
+    img.paste(advanced_combat_techniques, (915 + 50 + 75, 120 + 280 + 30 + 30 + 30 + 40 + 40 + 40),
+              mask=aadvanced_combat_techniques)
+    if len(enhances) == 0:
+        draw.text((915 + 50 + 60 + 50, 120 + 280 + 30 + 30 + 30 + 40 + 40 + 40), f"永久增益:无", font=font2,
+                  fill=(112, 128, 144))
+    else:
+        draw.text((915 + 50 + 60 + 50, 120 + 280 + 30 + 30 + 30 + 40 + 40 + 40), f"永久增益:", font=font2,
+                  fill=(255, 20, 147))
+
+    if len(enhances) != 0:
+        index = 0
+        for b in range(len(enhances)):
+            draw_item(915 + 50 + 60 + 50 + 130 + 35 * b, 120 + 280 + 30 + 30 + 30 + 40 + 40 + 30 + 5, enhances[index],
+                      1)
+            index += 1
 
     return img

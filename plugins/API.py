@@ -419,7 +419,12 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                          f"查询失败!\n" +
                                          f"查询的玩家不存在！")
         else:
-            img = get_bag_png(data['name'], data['inventory'], data['buffs'])
+            if not data['life']:
+                await GroupHelper.send_group(group.id, f"『查背包』\n" +
+                                             f"查询失败!\n" +
+                                             f"至少需要CaiBot插件v2024.10.4！")
+                return
+            img = get_bag_png(data['name'], data['inventory'], data['buffs'],data['enhances'],data['life'],data['mana'],data['quests_completed'])
             byte_arr = io.BytesIO()
             img.save(byte_arr, format='PNG')
             byte_value = byte_arr.getvalue()
@@ -498,7 +503,6 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                          "\n".join(
                                              [f"{i['Name']} v{i['Version']} (by {i['Author']})" for i in
                                               tshock_plugins]))
-
     elif data['type'] == "modlist":
          mods = data['mods']
          mods.sort(key=lambda x: x['Name'])
