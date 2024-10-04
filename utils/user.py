@@ -89,7 +89,7 @@ class User:
     @staticmethod
     def get_users_group(group: int) -> list['User']:
         query = 'SELECT * FROM "Users" WHERE "join_group" LIKE ?'
-        result = Sql.query(query, '%' + str(group) + '%')
+        results = Sql.query(query, '%' + str(group) + '%')
         re = []
         for result in results:
             re.append(User(result['id'], result['name'], json.loads(result['join_group']), result['money'],

@@ -1,5 +1,5 @@
-import json
 import os
+import time
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -64,6 +64,22 @@ book = Image.open("img/Item/item_149.png").convert('RGBA')
 book = book.resize((44, 45), Image.LANCZOS)
 _, _, _, abook = book.split()
 
+advanced_combat_techniques_two = Image.open("img/Item/item_5336.png").convert('RGBA')
+advanced_combat_techniques_two = advanced_combat_techniques_two.resize((44, 45), Image.LANCZOS)
+_, _, _, aadvanced_combat_techniques_two = advanced_combat_techniques_two.split()
+
+defender_medal = Image.open("img/Item/item_3817.png").convert('RGBA')
+defender_medal = defender_medal.resize((30, 31), Image.LANCZOS)
+_, _, _, adefender_medal = defender_medal.split()
+
+warrior_emblem = Image.open("img/Item/item_490.png").convert('RGBA')
+warrior_emblem = warrior_emblem.resize((30, 31), Image.LANCZOS)
+_, _, _, awarrior_emblem = warrior_emblem.split()
+
+the_plan = Image.open("img/Item/item_903.png").convert('RGBA')
+the_plan = the_plan.resize((30, 31), Image.LANCZOS)
+_, _, _, athe_plan = the_plan.split()
+
 life_item = Image.open("img/Item/item_58.png").convert('RGBA')
 life_item = life_item.resize((30, 31), Image.LANCZOS)
 _, _, _, alife_item = life_item.split()
@@ -114,7 +130,7 @@ print("[查背包]图片缓存完毕...")
 
 
 def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: str, mana: str,
-                quests_completed: int) -> Image:
+                quests_completed: int, economic: dict) -> Image:
     img = Image.open("img/lookbag_bg.png").convert('RGBA')
     ft = ImageFont.truetype(font=font, size=100)
     w, h = img.size
@@ -122,6 +138,9 @@ def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: s
     draw = ImageDraw.Draw(img)
     draw.text(((w - text_w) / 2, 0), name, font=ft)
     draw = ImageDraw.Draw(img)
+    ft = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=30)
+    draw.text((10, 1040), "By Cai", font=ft)
+    draw.text((160, 1040), time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), font=ft)
     size = 25
 
     def draw_item(x: int, y: int, id: int, stack: int):
@@ -322,7 +341,7 @@ def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: s
 
     img.paste(book, (915 + 50 + 60, 120 + 280 + 30), mask=abook)
     font1 = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=38)
-    draw.text((915 + 50 + 60 + 50, 120 + 280 + 30), "玩家信息", font=font1)
+    draw.text((915 + 50 + 60 + 50, 120 + 280 + 30), "玩家信息", font=font1, fill=(0, 0, 0))
     font2 = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=30)
 
     img.paste(life_item, (915 + 50 + 75, 120 + 280 + 30 + 30 + 30), mask=alife_item)
@@ -356,5 +375,27 @@ def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: s
             draw_item(915 + 50 + 60 + 50 + 130 + 35 * b, 120 + 280 + 30 + 30 + 30 + 40 + 40 + 30 + 5, enhances[index],
                       1)
             index += 1
+
+    if len(economic) != 0 and economic['Coins'] != "":
+        img.paste(advanced_combat_techniques_two, (915 + 50 + 60, 250 + 120 + 280 + 30),
+                  mask=aadvanced_combat_techniques_two)
+        draw.text((915 + 50 + 60 + 50, 250 + 120 + 280 + 30), "Economic", font=font1, fill=(138, 43, 226))
+
+        img.paste(defender_medal, (915 + 50 + 75, 250 + 120 + 280 + 30 + 30 + 30), mask=adefender_medal)
+        draw.text((915 + 50 + 60 + 50, 120 + 250 + 280 + 30 + 30 + 30), economic['Coins'], font=font2,
+                  fill=(255, 215, 0))
+
+        h = 1
+        if economic['LevelName'] != "":
+            img.paste(warrior_emblem, (915 + 50 + 75, 250 + 120 + 280 + 30 + 30 + 30 + 40 * h), mask=awarrior_emblem)
+            draw.text((915 + 50 + 60 + 50, 250 + 120 + 280 + 30 + 30 + 30 + 40 * h), economic['LevelName'], font=font2,
+                      fill=(30, 144, 255))
+            h += 1
+
+        if economic['Skill'] != "":
+            img.paste(the_plan, (915 + 50 + 75, 250 + 120 + 280 + 30 + 30 + 30 + 40 * h),
+                      mask=the_plan)
+            draw.text((915 + 50 + 60 + 50, 250 + 120 + 280 + 30 + 30 + 30 + 40 * h), economic['Skill'],
+                      font=font2, fill=(0, 0, 205))
 
     return img

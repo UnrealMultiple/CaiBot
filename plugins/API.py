@@ -446,12 +446,22 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                          f"查询失败!\n" +
                                          f"查询的玩家不存在！")
         else:
-            if data.get('life') is None:
+            if 'life' not in data:
+                data['life'] = "插件过旧"
+                data['mana'] = "插件过旧"
+                data['quests_completed'] = -1
+                data['enhances'] = []
                 await GroupHelper.send_group(group.id, f"『查背包』\n" +
-                                             f"查询失败!\n" +
-                                             f"至少需要CaiBot插件v2024.10.4！")
-                return
-            img = get_bag_png(data['name'], data['inventory'], data['buffs'],data['enhances'],data['life'],data['mana'],data['quests_completed'])
+                                             f"✨新版插件新增基本信息和Economic查询\n"
+                                             f"请及时升级插件哦~")
+
+            if 'life' in data and 'economic' not in data :
+                data['economic'] = {"Coins":"","LevelName":"","Skill":""}
+                await GroupHelper.send_group(group.id, f"『查背包』\n" +
+                                             f"✨新版插件新增Economic查询\n"
+                                             f"请及时升级插件哦~")
+
+            img = get_bag_png(data['name'], data['inventory'], data['buffs'],data['enhances'],data['life'],data['mana'],data['quests_completed'],data['economic'])
             byte_arr = io.BytesIO()
             img.save(byte_arr, format='PNG')
             byte_value = byte_arr.getvalue()
