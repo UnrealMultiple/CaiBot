@@ -6,6 +6,8 @@ import io
 import json
 import threading
 import time
+import traceback
+
 import aiohttp
 import nonebot
 import requests
@@ -243,8 +245,8 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
             data = await websocket.receive_text()
             try:
                 await handle_message(data, group, token, server, websocket)
-            except Exception as ex:
-                logger.warning(f"群服务器{group.id}({token}):{ex}")
+            except Exception:
+                logger.warning(f"群服务器{group.id}({token}):{traceback.format_exc()}")
     except WebSocketDisconnect as e:
         # 连接关闭时移除WebSocket连接
         if token in websocket_connections:
@@ -388,23 +390,48 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             login_attempts[ip] = current_time
             addr = requests.get(f"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}&json=true", timeout=5.0).json()[
                 'addr']
+
+            same_device_users = User.get_users_uuid(uuid)
             user.login_request = LoginRequest(datetime.datetime.now(), uuid)
             user.update()
-            if await GroupHelper.is_member(server.owner, user.id):
-                await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
-                                                                   f"\n『登录请求』\n" +
-                                                                   f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
-                                                                   f"✅回复'登录'允许登录\n" +
-                                                                   f"❌回复'拒绝'拒绝登录")
-                return
-            for i in server.shared:
-                if await GroupHelper.is_member(i, user.id):
-                    await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
-                                                            f"\n『登录请求』\n" +
-                                                            f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
-                                                            f"✅回复'登录'允许登录\n" +
-                                                            f"❌回复'拒绝'拒绝登录")
+            if len(same_device_users) == 0:
+                if await GroupHelper.is_member(server.owner, user.id):
+                    await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
+                                                                       f"\n『登录请求』\n" +
+                                                                       f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                       f"✅回复'登录'允许登录\n" +
+                                                                       f"❌回复'拒绝'拒绝登录")
                     return
+                for i in server.shared:
+                    if await GroupHelper.is_member(i, user.id):
+                        await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
+                                                                f"\n『登录请求』\n" +
+                                                                f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                f"✅回复'登录'允许登录\n" +
+                                                                f"❌回复'拒绝'拒绝登录")
+                        return
+            else:
+                if await GroupHelper.is_member(server.owner, user.id):
+                    await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
+                                                                       f"\n『登录请求』\n" +
+                                                                       f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                       "⚠️此设备登录过以下账户:\n" +
+                                                                       ",".join([f"{i.name}({i.id})" for i in
+                                                                                 same_device_users]) +
+                                                                       f"\n✅回复'登录'允许登录\n" +
+                                                                       f"❌回复'拒绝'拒绝登录")
+                    return
+                for i in server.shared:
+                    if await GroupHelper.is_member(i, user.id):
+                        await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
+                                                                f"\n『登录请求』\n" +
+                                                                f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                "⚠️此设备登录过以下账户:\n" +
+                                                                ",".join([f"{i.name}({i.id})" for i in
+                                                                          same_device_users]) +
+                                                                f"\n✅回复'登录'允许登录\n" +
+                                                                f"❌回复'拒绝'拒绝登录")
+                        return
     elif data['type'] == "mappng":
         base64_string = data['result']
         decoded_bytes = base64.b64decode(base64_string)
@@ -419,7 +446,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                          f"查询失败!\n" +
                                          f"查询的玩家不存在！")
         else:
-            if not data['life']:
+            if data.get('life') is None:
                 await GroupHelper.send_group(group.id, f"『查背包』\n" +
                                              f"查询失败!\n" +
                                              f"至少需要CaiBot插件v2024.10.4！")

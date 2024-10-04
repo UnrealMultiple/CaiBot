@@ -1,5 +1,6 @@
 import datetime
 import json
+from typing import Optional
 
 from utils.sql import Sql
 
@@ -35,11 +36,11 @@ class User:
         self.last_rename = last_rename
 
     @staticmethod
-    def get_sign_rank():
+    def get_sign_rank() -> int:
         return Sql.query("SELECT COUNT(*) as num FROM Users WHERE DATE(last_sign) = DATE('now','localtime');")[0]['num']
 
     @staticmethod
-    def add_user(id: int, name: str, group: int):
+    def add_user(id: int, name: str, group: int) -> Optional['User'] | None:
         Sql.query(
             'INSERT INTO "Users" ("id", "name", "join_group", "money", "last_sign","sign_count","uuid",'
             '"login_request","last_rename") '
@@ -49,7 +50,7 @@ class User:
                     datetime.datetime.min)
 
     @staticmethod
-    def get_user(id: int):
+    def get_user(id: int) -> Optional['User'] | None:
         result = Sql.query('SELECT * FROM "Users" WHERE "id" = ?', id)
         if len(result) == 0:
             return None
@@ -61,7 +62,7 @@ class User:
                         datetime.datetime.fromisoformat(result['last_rename']))
 
     @staticmethod
-    def get_user_name(name: str):
+    def get_user_name(name: str) -> Optional['User'] | None:
         result = Sql.query('SELECT * FROM "Users" WHERE "name" = ?', name)
         if len(result) == 0:
             return None
@@ -73,16 +74,31 @@ class User:
                         datetime.datetime.fromisoformat(result['last_rename']))
 
     @staticmethod
-    def get_users_group(group: int):
-        result = Sql.query('SELECT * FROM "Users" WHERE "join_group" like ?', group)
+    def get_users_uuid(uuid: str) -> list['User']:
+        query = 'SELECT * FROM "Users" WHERE "uuid" LIKE ?'
+        results = Sql.query(query, '%' + uuid + '%')
         re = []
-        for i in result:
-            re.append(User(i['id'], i['name'], json.loads(i['join_group']), i['money'],
-                           datetime.datetime.fromisoformat(i['last_sign']), i['sign_count'],
-                           json.loads(i['uuid']), LoginRequest.from_dict(json.loads(result['login_request'])),
-                           datetime.datetime.fromisoformat(result['last_rename'])))
+        for result in results:
+            re.append(User(result['id'], result['name'], json.loads(result['join_group']), result['money'],
+                        datetime.datetime.fromisoformat(result['last_sign']), result['sign_count'],
+                        json.loads(result['uuid']), LoginRequest.from_dict(json.loads(result['login_request'])),
+                        datetime.datetime.fromisoformat(result['last_rename'])))
+        return re
 
-    def update(self):
+
+    @staticmethod
+    def get_users_group(group: int) -> list['User']:
+        query = 'SELECT * FROM "Users" WHERE "join_group" LIKE ?'
+        result = Sql.query(query, '%' + str(group) + '%')
+        re = []
+        for result in results:
+            re.append(User(result['id'], result['name'], json.loads(result['join_group']), result['money'],
+                           datetime.datetime.fromisoformat(result['last_sign']), result['sign_count'],
+                           json.loads(result['uuid']), LoginRequest.from_dict(json.loads(result['login_request'])),
+                           datetime.datetime.fromisoformat(result['last_rename'])))
+        return re
+
+    def update(self) ->None :
         Sql.query('UPDATE "Users" SET "name" = ?, "join_group" = ?, "money" = ?, '
                   '"last_sign" = ? ,"sign_count" = ?,"uuid" = ? , "login_request" = ? ,"last_rename" = ?  WHERE "id" '
                   '= ?;', self.name,
