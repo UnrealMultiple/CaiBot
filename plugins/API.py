@@ -460,7 +460,9 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                 await GroupHelper.send_group(group.id, f"『查背包』\n" +
                                              f"✨新版插件新增Economic查询\n"
                                              f"请及时升级插件哦~")
-
+            data['economic']['Coins'] = TextHandle.all(data['economic']['Coins'])
+            data['economic']['LevelName']= TextHandle.all(data['economic']['LevelName'])
+            data['economic']['Skill']= TextHandle.add_line_break(TextHandle.all(data['economic']['Skill']),9)
             img = get_bag_png(data['name'], data['inventory'], data['buffs'],data['enhances'],data['life'],data['mana'],data['quests_completed'],data['economic'])
             byte_arr = io.BytesIO()
             img.save(byte_arr, format='PNG')

@@ -76,3 +76,8 @@ class TextHandle:
     @staticmethod
     def html_decode(text: str):
         return html.unescape(text)
+
+    @staticmethod
+    def add_line_break(text:str, n:int) -> str:
+        lines = [text[i:i + n] for i in range(0, len(text), n)]
+        return "\n".join(lines)
