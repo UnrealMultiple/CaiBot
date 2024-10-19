@@ -291,8 +291,8 @@ async def wait_for_online(group_id: int, servers: list[Server]) -> [str]:
 
 login_attempts = {}
 
+last_sent_warning_times = {}
 
-# noinspection PyTypeChecker
 async def handle_message(data: str, group: Group, token: str, server: Server, websocket) -> None:
     data = json.loads(data)
     if 'group' in data:
@@ -302,7 +302,24 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
     index = server.get_server_index(group.id)
     if data['type'] != 'HeartBeat':
         logger.log(233, f"收到来自{group.id}({token})的数据: {data['type']}")
-    if data['type'] == "cmd":
+    if data['type'] == "hello":
+        # "tshock_version":"5.2.0.0","plugin_version":"2024.6.7.0","terraria_version":"v1.4.4.9","cai_whitelist":false,"os":"win10-x64"
+        websocket.tshock_version = data['tshock_version']
+        websocket.plugin_version = data['plugin_version']
+        websocket.terraria_version = data['terraria_version']
+        websocket.whitelist = data['cai_whitelist']
+        websocket.world = data['world']
+        websocket.os = data['os']
+
+        plugins.API.websocket_connections[token] = websocket
+        group_info = {
+            "type": "groupid",
+            "groupid": int(group.id)
+        }
+        logger.log(233, f"获取到{group.id}({token})的服务器信息: \n"
+                        f"CaiBot版本: {data['plugin_version']}, TShock版本: {data['tshock_version']}, Cai白名单: {data['cai_whitelist']}, 系统:{data['os']}")
+        await websocket.send_text(json.dumps(group_info))
+    elif data['type'] == "cmd":
         if data['result']:
             await GroupHelper.send_group(group.id, MessageSegment.at(data['at']) + f"\n『远程指令』\n"
                                                                                    f"服务器[{index}]返回如下结果:\n" +
@@ -320,14 +337,70 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         byte_value = byte_arr.getvalue()
         await GroupHelper.send_group(group.id, message=MessageSegment.image(byte_value))
     elif data['type'] == "whitelist":
-        user = User.get_user_name(data['name'])
+
+        re = {
+            "type": "whitelist",
+            "name": data['name'],
+            "code": 501,
+            "uuids": []
+        }
+        await send_data(token, re, None)
+
+        group_id = group.id
+        now = datetime.datetime.now()
+        if group_id not in last_sent_warning_times or now - last_sent_warning_times[group_id] > datetime.timedelta(hours=1):
+            last_sent_warning_times[group_id] = now
+            await GroupHelper.send_group(group_id, f"『需要更新』\n"
+                                                   f"CaiBot无法完成白名单校验!\n"
+                                                   f"请更新服务器[{index}]的插件/MOD到最新版本~")
+        return
+    elif data['type'] == "whitelistV2":
+        if websocket.plugin_version == "2024.10.13.1":
+            re = {
+                "type": "whitelist",
+                "name": data['name'],
+                "code": 404
+            }
+            await send_data(token, re, None)
+            group_id = group.id
+            now = datetime.datetime.now()
+            if group_id not in last_sent_warning_times or now - last_sent_warning_times[group_id] > datetime.timedelta(
+                    hours=1):
+                last_sent_warning_times[group_id] = now
+                await GroupHelper.send_group(group_id, f"『需要更新』\n"
+                                                       f"无法校验白名单!\n"
+                                                       f"请更新服务器[{index}]的插件/MOD到最新版本~")
+            return
+        if websocket.plugin_version == "2024.10.12.1":
+            re = {
+                "type": "whitelist",
+                "name": data['name'],
+                "code": 404
+            }
+            await send_data(token, re, None)
+            group_id = group.id
+            now = datetime.datetime.now()
+            if group_id not in last_sent_warning_times or now - last_sent_warning_times[group_id] > datetime.timedelta(
+                    hours=1):
+                last_sent_warning_times[group_id] = now
+                await GroupHelper.send_group(group_id, f"『需要更新』\n"
+                                                       f"不安全的插件版本!\n"
+                                                       f"请更新服务器[{index}]的插件/MOD到最新版本~")
+            return
+
+        name = data['name']
+        uuid = data['uuid']
+        current_time = time.time()
+        ip = data['ip']
+        user = User.get_user_name(name)
         statistics.Statistics.add_check_whitelist()
+        if uuid is None:
+            return
         if user is None:
             re = {
                 "type": "whitelist",
                 "name": data['name'],
-                "code": 404,
-                "uuids": []
+                "code": 404
             }
             await send_data(token, re, None)
             return
@@ -336,8 +409,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             re = {
                 "type": "whitelist",
                 "name": data['name'],
-                "code": 403,
-                "uuids": []
+                "code": 403
             }
             await send_data(token, re, None)
             return
@@ -345,8 +417,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             re = {
                 "type": "whitelist",
                 "name": data['name'],
-                "code": 403,
-                "uuids": []
+                "code": 403
             }
             await send_data(token, re, None)
             return
@@ -362,76 +433,72 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             re = {
                 "type": "whitelist",
                 "name": data['name'],
-                "code": 401,
-                "uuids": []
+                "code": 401
             }
 
             await send_data(token, re, None)
             return
-        re = {
-            "type": "whitelist",
-            "name": data['name'],
-            "code": 200,
-            "uuids": user.uuid
-        }
-        await send_data(token, re, None)
-    elif data['type'] == "device":
-        # {"uuid", plr.UUID},
-        # {"ip", plr.IP}
-        # 获取当前时间
-        current_time = time.time()
-        ip = data['ip']
-        name = data['name']
-        uuid = data['uuid']
-        user = User.get_user_name(name)
-        if user is None:
-            return
-        if (ip not in login_attempts or current_time - login_attempts[ip] >= 120) or ip == "127.0.0.1":
-            login_attempts[ip] = current_time
-            addr = requests.get(f"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}&json=true", timeout=5.0).json()[
-                'addr']
+        if uuid in user.uuid:
+            re = {
+                "type": "whitelist",
+                "name": data['name'],
+                "code": 200
+            }
+        else:
+            re = {
+                "type": "whitelist",
+                "name": data['name'],
+                "code": 405
+            }
+            await send_data(token, re, None)
+            if (ip not in login_attempts or current_time - login_attempts[ip] >= 120) or ip == "127.0.0.1":
+                login_attempts[ip] = current_time
+                addr = requests.get(f"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}&json=true", timeout=5.0).json()[
+                    'addr']
 
-            same_device_users = User.get_users_uuid(uuid)
-            user.login_request = LoginRequest(datetime.datetime.now(), uuid)
-            user.update()
-            if len(same_device_users) == 0:
-                if await GroupHelper.is_member(server.owner, user.id):
-                    await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
-                                                                       f"\n『登录请求』\n" +
-                                                                       f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
-                                                                       f"✅回复'登录'允许登录\n" +
-                                                                       f"❌回复'拒绝'拒绝登录")
-                    return
-                for i in server.shared:
-                    if await GroupHelper.is_member(i, user.id):
-                        await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
-                                                                f"\n『登录请求』\n" +
-                                                                f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
-                                                                f"✅回复'登录'允许登录\n" +
-                                                                f"❌回复'拒绝'拒绝登录")
+                same_device_users = User.get_users_uuid(uuid)
+                user.login_request = LoginRequest(datetime.datetime.now(), uuid)
+                user.update()
+                if len(same_device_users) == 0:
+                    if await GroupHelper.is_member(server.owner, user.id):
+                        await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
+                                                                           f"\n『登录请求』\n" +
+                                                                           f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                           f"✅回复'登录'允许登录\n" +
+                                                                           f"❌回复'拒绝'拒绝登录")
                         return
-            else:
-                if await GroupHelper.is_member(server.owner, user.id):
-                    await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
-                                                                       f"\n『登录请求』\n" +
-                                                                       f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
-                                                                       "⚠️此设备登录过以下账户:\n" +
-                                                                       ",".join([f"{i.name}({i.id})" for i in
-                                                                                 same_device_users]) +
-                                                                       f"\n✅回复'登录'允许登录\n" +
-                                                                       f"❌回复'拒绝'拒绝登录")
-                    return
-                for i in server.shared:
-                    if await GroupHelper.is_member(i, user.id):
-                        await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
-                                                                f"\n『登录请求』\n" +
-                                                                f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
-                                                                "⚠️此设备登录过以下账户:\n" +
-                                                                ",".join([f"{i.name}({i.id})" for i in
-                                                                          same_device_users]) +
-                                                                f"\n✅回复'登录'允许登录\n" +
-                                                                f"❌回复'拒绝'拒绝登录")
+                    for i in server.shared:
+                        if await GroupHelper.is_member(i, user.id):
+                            await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
+                                                                    f"\n『登录请求』\n" +
+                                                                    f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                    f"✅回复'登录'允许登录\n" +
+                                                                    f"❌回复'拒绝'拒绝登录")
+                            return
+                else:
+                    if await GroupHelper.is_member(server.owner, user.id):
+                        await GroupHelper.send_group(server.owner, message=MessageSegment.at(user.id) +
+                                                                           f"\n『登录请求』\n" +
+                                                                           f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                           "⚠️此设备登录过以下账户:\n" +
+                                                                           ",".join([f"{i.name}({i.id})" for i in
+                                                                                     same_device_users]) +
+                                                                           f"\n✅回复'登录'允许登录\n" +
+                                                                           f"❌回复'拒绝'拒绝登录")
                         return
+                    for i in server.shared:
+                        if await GroupHelper.is_member(i, user.id):
+                            await GroupHelper.send_group(i, message=MessageSegment.at(user.id) +
+                                                                    f"\n『登录请求』\n" +
+                                                                    f"有新的设备请求登录您的账号({addr.replace(' ', ',').replace('移通', '移动').lstrip(',')})\n" +
+                                                                    "⚠️此设备登录过以下账户:\n" +
+                                                                    ",".join([f"{i.name}({i.id})" for i in
+                                                                              same_device_users]) +
+                                                                    f"\n✅回复'登录'允许登录\n" +
+                                                                    f"❌回复'拒绝'拒绝登录")
+                            return
+
+        await send_data(token, re, None)
     elif data['type'] == "mappng":
         base64_string = data['result']
         decoded_bytes = base64.b64decode(base64_string)
@@ -468,22 +535,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             img.save(byte_arr, format='PNG')
             byte_value = byte_arr.getvalue()
             await GroupHelper.send_group(group.id, message=MessageSegment.image(byte_value))
-    elif data['type'] == "hello":
-        # "tshock_version":"5.2.0.0","plugin_version":"2024.6.7.0","terraria_version":"v1.4.4.9","cai_whitelist":false,"os":"win10-x64"
-        websocket.tshock_version = data['tshock_version']
-        websocket.plugin_version = data['plugin_version']
-        websocket.terraria_version = data['terraria_version']
-        websocket.whitelist = data['cai_whitelist']
-        websocket.world = data['world']
-        websocket.os = data['os']
-        plugins.API.websocket_connections[token] = websocket
-        group_info = {
-            "type": "groupid",
-            "groupid": int(group.id)
-        }
-        logger.log(233, f"获取到{group.id}({token})的服务器信息: \n"
-                        f"CaiBot版本: {data['plugin_version']}, TShock版本: {data['tshock_version']}, Cai白名单: {data['cai_whitelist']}, 系统:{data['os']}")
-        await websocket.send_text(json.dumps(group_info))
+
     elif data['type'] == "worldfile":
         await nonebot.get_bot().call_api("upload_group_file", group_id=group.id, file=f"base64://{data['base64']}",
                                          name=data['name'])

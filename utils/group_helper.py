@@ -201,14 +201,17 @@ class GroupHelper:
             if qq in group.admins:
                 return True
         bot = nonebot.get_bot()
-        result = await bot.call_api("get_group_member_info", group_id=group_id, user_id=qq)
-        if result['role'] == 'owner':
-            return True
-        if result['role'] == 'admin':
-            if group is None:
+        try:
+            result = await bot.call_api("get_group_member_info", group_id=group_id, user_id=qq)
+            if result['role'] == 'owner':
                 return True
-            return group.config.get('group_admin_has_permission') != False
-        else:
+            if result['role'] == 'admin':
+                if group is None:
+                    return True
+                return group.config.get('group_admin_has_permission') != False
+            else:
+                return False
+        except:
             return False
 
     @staticmethod

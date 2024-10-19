@@ -91,11 +91,11 @@ share_server = on_command("共享服务器", force_whitespace=True)
 
 @share_server.handle()
 async def share_server_handle(event: GroupMessageEvent):
-    if not await GroupHelper.HasPermission(event.group_id, event.user_id):
+    if not await GroupHelper.is_owner(event.group_id, event.user_id):
         await share_server.finish(MessageSegment.at(event.user_id) +
                                   f'\n『共享服务器』\n' +
                                   "没有权限!\n"
-                                  "只允许群主和管理员设置")
+                                  "只允许群主设置")
     group = Group.get_group(event.group_id)
     if group is None:
         await share_server.finish(MessageSegment.at(event.user_id) +
