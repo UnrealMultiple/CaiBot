@@ -462,7 +462,9 @@ async def server_info_handle(event: GroupMessageEvent):
                                f"TShock版本: {tshock_version}\n"
                                f"CaiBot扩展版本: {plugin_version}\n"
                                f"Cai白名单: {whitelist}\n"
-                               f"服务器系统: {os}")
+                               f"服务器系统: {os}\n"
+                               f"所属群: {i.owner}\n"
+                               f"共享群: {'无' if not i.shared else ','.join(map(str, i.shared))}")
         return
     except:
         await server_info.finish(MessageSegment.at(event.user_id) +
