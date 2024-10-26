@@ -44,18 +44,20 @@ def decompress_base64_gzip(base64_string):
 
 
 async def download_and_upload():
-    file_data = await nonebot.get_bot().call_api("get_group_root_files", group_id=TSHOCK_GROUP)
+    root_file_data = await nonebot.get_bot().call_api("get_group_root_files", group_id=TSHOCK_GROUP)
+    folder = next(filter(lambda x: x['folder_name'] == 'TShock仓库插件包', root_file_data['folders']))
+    file_data = await nonebot.get_bot().call_api("get_group_files_by_folder", group_id=TSHOCK_GROUP,folder_id=folder['folder_id'])
     files = [i for i in file_data['files'] if i['uploader'] == 2990574917]
     files.sort(key=lambda x: x['modify_time'], reverse=True)
     if len(files) >= 10:
         files_to_delete = files[9:]
         for file in files_to_delete:
-            await nonebot.get_bot().call_api("delete_group_file", group_id=TSHOCK_GROUP,
+            await nonebot.get_bot().call_api("delete_group_file", group_id=TSHOCK_GROUP,folder_id=folder['folder_id'],
                                              file_id=file['file_id'], busid=file['busid'])
 
     for file in files:
         if file['file_name'] == f"(v{datetime.datetime.now().strftime('%Y.%m.%d')})Plugins.zip":
-            await nonebot.get_bot().call_api("delete_group_file", group_id=TSHOCK_GROUP,
+            await nonebot.get_bot().call_api("delete_group_file", group_id=TSHOCK_GROUP,folder_id=folder['folder_id'],
                                              file_id=file['file_id'], busid=file['busid'])
 
     async with aiohttp.ClientSession() as session:
@@ -63,7 +65,7 @@ async def download_and_upload():
                 "https://gitee.com/kksjsj/TShockPlugin/releases/download/V1.0.0.0/Plugins.zip") as response:
             file_data = await response.read()
             base64_data = base64.b64encode(file_data).decode('utf-8')
-    await nonebot.get_bot().call_api("upload_group_file", group_id=TSHOCK_GROUP,
+    await nonebot.get_bot().call_api("upload_group_file", group_id=TSHOCK_GROUP,folder_id=folder['folder_id'],
                                      file=f"base64://{base64_data}",
                                      name=f"(v{datetime.datetime.now().strftime('%Y.%m.%d')})Plugins.zip")
     print("插件包已推送！")
@@ -94,7 +96,7 @@ async def handle_github_push(request: Request):
                         f"查看差异 > {payload['compare']}")
         if payload['repository']['name'] == "TShockPlugin":
             await GroupHelper.send_group(TSHOCK_GROUP, push_message)
-        if payload['repository']['name'] == "CaiBot" and {payload['ref'].split('/')[-1]} == "master":
+        if payload['repository']['name'] == "CaiBot":
             await GroupHelper.send_group(FEEDBACK_GROUP, push_message)
             # + "\n✨已发起自动更新..."
             # url = 'https://github.com/UnrealMultiple/CaiBot/archive/refs/heads/master.zip'
