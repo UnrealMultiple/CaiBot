@@ -167,7 +167,7 @@ tokens = {}
 
 
 @app.get("/bot/get_token")
-async def send_reset(code: int):
+async def get_token(code: int):
     current_time = datetime.datetime.now()
     if code in tokens:
         server, expiry_time = tokens[code]
@@ -204,7 +204,7 @@ async def send_reset(token: str, server_name: str, seed: str):
                                                    f"种子: {seed}")
 
     for i in server.shared:
-        if await GroupHelper.is_bot_admin(server.owner):
+        if await GroupHelper.is_bot_admin(i):
             await GroupHelper.send_group(i, MessageSegment.at("all") + f"\n『自动重置』\n"
                                                                        f"[{server_name}]已重置\n"
                                                                        f"种子: {seed}")
@@ -603,6 +603,20 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                          "\n".join(
                                              [f"{i['Name']} v{i['Version']}" for i in
                                               mods]))
+    elif data['type'] == "post_ban_add":
+        await GroupHelper.send_group(server.owner, f"『Ban封禁』\n"
+                                                              f"玩家名: {data['name']}\n"
+                                                              f"理由: {data['reason']}\n"
+                                                              f"执行者: {data['admin']}\n"
+                                                              f"到期时间: {data['expire_time']}")
+
+
+        for i in server.shared:
+            await GroupHelper.send_group(i, f"『Ban封禁』\n"
+                                                       f"玩家名: {data['name']}\n"
+                                                       f"理由: {data['reason']}\n"
+                                                       f"执行者: {data['admin']}\n"
+                                                       f"到期时间: {data['expire_time']}")
 
 
 # 外部方法：查询服务器是否连接
