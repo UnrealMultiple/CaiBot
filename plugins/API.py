@@ -117,6 +117,16 @@ async def handle_github_push(request: Request):
             #                 target.write(source.read())
             # await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, "#️⃣代码下载完成, 需要手动重启")
         return {"message": "推送成功!"}
+    # if event_type == "issue_comment":
+    #     if payload['action'] == "created":
+    #         img = EdgeHelper.get_web_png(payload['comment']['html_url'])
+    #         buffered = io.BytesIO()
+    #         img.save(buffered, format="PNG")
+    #         if payload['repository']['name'] == "TShockPlugin":
+    #             await GroupHelper.send_group(plugins.event_handle.TSHOCK_GROUP,MessageSegment.image(buffered))
+    #         if payload['repository']['name'] == "CaiBot":
+    #             await GroupHelper.send_group(plugins.event_handle.FEEDBACK_GROUP, MessageSegment.image(buffered))
+    #         return {"message": "推送成功!"}
     if event_type == "ping":
         return {"message": "pong"}
     if event_type == "star":
@@ -537,7 +547,8 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             img.save(byte_arr, format='PNG')
             byte_value = byte_arr.getvalue()
             await GroupHelper.send_group(group.id, message=MessageSegment.image(byte_value))
-
+    elif data['type'] == "lookbag_text":
+        await GroupHelper.send_group(group.id, f"『查背包』\n" + data['inventory'])
     elif data['type'] == "worldfile":
         await nonebot.get_bot().call_api("upload_group_file", group_id=group.id, file=f"base64://{data['base64']}",
                                          name=data['name'])
