@@ -322,6 +322,12 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         websocket.whitelist = data['cai_whitelist']
         websocket.world = data['world']
         websocket.os = data['os']
+        try:
+            websocket.sync_group_chat = data['sync_group_chat']
+            websocket.sync_server_chat = data['sync_server_chat']
+        except:
+            websocket.sync_group_chat = False
+            websocket.sync_server_chat = False
 
         plugins.API.websocket_connections[token] = websocket
         group_info = {
@@ -348,6 +354,8 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         progress_img.save(byte_arr, format='PNG')
         byte_value = byte_arr.getvalue()
         await GroupHelper.send_group(group.id, message=MessageSegment.image(byte_value))
+    elif data['type'] == "process_text":
+        await GroupHelper.send_group(group.id, f"『进度查询』\n" + data['process'])
     elif data['type'] == "whitelist":
 
         re = {
@@ -628,6 +636,16 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                                        f"理由: {data['reason']}\n"
                                                        f"执行者: {data['admin']}\n"
                                                        f"到期时间: {data['expire_time']}")
+    elif data['type'] == "chat":
+        url= "http://127.0.0.1:8082/send_group_chat"
+        data['chat'] = TextHandle.all(data['chat'])
+        async with aiohttp.ClientSession() as session:
+          data = {'chat': data['chat'], 'groupid': server.owner}
+          await session.post(url, json=data)
+          for i in server.shared:
+            data = {'chat': data['chat'], 'groupid': i}
+            await session.post(url, json=data)
+
 
 
 # 外部方法：查询服务器是否连接

@@ -19,6 +19,12 @@ class Group:
         self.enable_server_bot = enable_server_bot
         self.config = config
         self.servers = servers
+        try:
+            self.connected_servers = [ i for i in servers if i.is_connected()]
+            self.chat_sync_servers = [ i for i in servers if i.is_connected() and i.get_settings().sync_group_chat]
+        except:
+            self.connected_servers = []
+            self.chat_sync_servers = []
 
     async def can_add_max(self) -> int:
         members = await GroupHelper.get_group_members(self.id)
