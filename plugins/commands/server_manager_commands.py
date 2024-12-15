@@ -1,4 +1,3 @@
-import re
 import uuid
 
 from nonebot import on_command
@@ -7,7 +6,7 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 from common.group import Group
 from common.group_helper import GroupHelper
 from common.server import Server
-from common.server_helper import set_server
+from plugins import cai_api
 from plugins.cai_api import server_connection_manager
 
 
@@ -51,38 +50,77 @@ async def add_server_handle(event: GroupMessageEvent):
         await add_server.finish(MessageSegment.at(event.user_id) +
                                 f'\n『添加服务器』\n' +
                                 f"格式错误!正确格式: 添加服务器 <IP地址> <端口> <验证码> [需要服务器适配插件]")
-    try:
-        res = await set_server(msg[1], int(msg[2]), int(msg[3]))
-    except:
-        API.add_token(int(msg[3]), Server(str(uuid.uuid4()), event.group_id, [], msg[1], int(msg[2])), 300)
-        await add_server.finish(MessageSegment.at(event.user_id) +
-                                f'\n『添加服务器』\n' +
-                                f"服务器连接失败,请检查地址、端口是否正确\n"
-                                f"正在尝试被动连接! (请确保你的绑定码正确)")
-    if res is None:
-        await add_server.finish(MessageSegment.at(event.user_id) +
-                                f'\n『添加服务器』\n' +
-                                f"目标服务器没有添加机器人适配插件")
-    elif res == 'exist':
-        await add_server.finish(MessageSegment.at(event.user_id) +
-                                f'\n『添加服务器』\n' +
-                                f"绑定失败！\n此服务器已被绑定！")
-    elif res == 'code':
-        await add_server.finish(MessageSegment.at(event.user_id) +
-                                f'\n『添加服务器』\n' +
-                                f"验证码错误！")
-    else:
-        pattern = r'^\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}?$'
-        match = re.match(pattern, res)
-        if not bool(match):
-            await add_server.finish(MessageSegment.at(event.user_id) +
-                                    f'\n『添加服务器』\n' +
-                                    f"绑定失败！\n服务器绑定无效，请重试！")
-        # group.servers.append(Server(res, event.group_id, [], msg[1], int(msg[2])))
-        Server.add_server(res, event.group_id, msg[1], int(msg[2]))
-        await add_server.finish(MessageSegment.at(event.user_id) +
-                                f'\n『添加服务器』\n' +
-                                f"服务器绑定成功")
+    # try:
+    #     res = await set_server(msg[1], int(msg[2]), int(msg[3]))
+    # except:
+    cai_api.add_token(int(msg[3]), Server(str(uuid.uuid4()), event.group_id, [], msg[1], int(msg[2])), 300)
+    await add_server.finish(MessageSegment.at(event.user_id) +
+                            f'\n『添加服务器』\n' +
+                            f"正在绑定服务器中...\n"
+                            f"请确保你的服务器绑定码为: {int(msg[3])}")
+    # if res is None:
+    #     await add_server.finish(MessageSegment.at(event.user_id) +
+    #                             f'\n『添加服务器』\n' +
+    #                             f"目标服务器没有添加机器人适配插件")
+    # elif res == 'exist':
+    #     await add_server.finish(MessageSegment.at(event.user_id) +
+    #                             f'\n『添加服务器』\n' +
+    #                             f"绑定失败！\n此服务器已被绑定！")
+    # elif res == 'code':
+    #     await add_server.finish(MessageSegment.at(event.user_id) +
+    #                             f'\n『添加服务器』\n' +
+    #                             f"验证码错误！")
+    # else:
+    #     pattern = r'^\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}?$'
+    #     match = re.match(pattern, res)
+    #     if not bool(match):
+    #         await add_server.finish(MessageSegment.at(event.user_id) +
+    #                                 f'\n『添加服务器』\n' +
+    #                                 f"绑定失败！\n服务器绑定无效，请重试！")
+    #     # group.servers.append(Server(res, event.group_id, [], msg[1], int(msg[2])))
+    #     Server.add_server(res, event.group_id, msg[1], int(msg[2]))
+    #     await add_server.finish(MessageSegment.at(event.user_id) +
+    #                             f'\n『添加服务器』\n' +
+    #                             f"服务器绑定成功")
+
+edit_server = on_command("修改服务器", force_whitespace=True)
+
+
+@edit_server.handle()
+async def edit_server_handle(event: GroupMessageEvent):
+    if not await GroupHelper.HasPermission(event.group_id, event.user_id):
+        await edit_server.finish(MessageSegment.at(event.user_id) +
+                                f'\n『修改服务器』\n' +
+                                "没有权限!\n"
+                                "只允许群主和管理员设置")
+    group = Group.get_group(event.group_id)
+    if group is None:
+        await edit_server.finish(MessageSegment.at(event.user_id) +
+                                f'\n『修改服务器』\n' +
+                                "请先加入云黑!\n" +
+                                "群内发送'启用云黑'")
+    if not group.enable_server_bot:
+        await edit_server.finish(MessageSegment.at(event.user_id) +
+                                f'\n『修改服务器\n' +
+                                "请启用群机器人!" +
+                                "群内发送'启用群机器人'")
+    msg = msg_cut(event.get_plaintext())
+    if len(msg) != 4:
+        await edit_server.finish(MessageSegment.at(event.user_id) +
+                                f'\n『修改服务器』\n' +
+                                f"格式错误!正确格式: 修改服务器 <服务器序号> <新IP地址> <新端口>")
+    if not msg[1].isdigit() or int(msg[1]) > len(group.servers):
+        await edit_server.finish(MessageSegment.at(event.user_id) +
+                                  f'\n『修改服务器』\n'
+                                  f"服务器序号错误!")
+    index = int(msg[1]) - 1
+    group.servers[index].ip = int(msg[2])
+    group.servers[index].port = int(msg[3])
+    group.servers[index].update()
+    await edit_server.finish(MessageSegment.at(event.user_id) +
+                              f'\n『修改服务器』\n'
+                              f"修改成功!\n"
+                              f"服务器IP信息已改为: {group.servers[index].ip}:{group.servers[index].port}~")
 
 
 share_server = on_command("共享服务器", force_whitespace=True)
