@@ -4,9 +4,9 @@ import re
 import nonebot
 from nonebot.log import logger
 
-from utils.global_const import FEEDBACK_GROUP
-from utils.ban_user import UserBan
-from utils.user import User
+from common.ban_user import UserBan
+from common.global_const import FEEDBACK_GROUP
+from common.user import User
 
 
 class GroupHelper:
@@ -195,7 +195,7 @@ class GroupHelper:
     async def HasPermission(group_id: int, qq: int) -> bool:
         if qq == 3042538328:
             return True
-        from utils.group import Group
+        from common.group import Group
         group = Group.get_group(group_id)
         if group is not None:
             if qq in group.admins:

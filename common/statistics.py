@@ -1,6 +1,6 @@
 from typing import Optional
 
-from utils.sql import Sql
+from common.sql import Sql
 
 
 class Statistics:

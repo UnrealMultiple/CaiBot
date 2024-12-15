@@ -1,25 +1,25 @@
-import html
+﻿import html
 import json
 import re
 
 from nonebot import logger
 
 with open("terraria_id/Item_ID.json", encoding='utf-8', errors='ignore') as fp:
-    item_info = json.loads(fp.read())
+    item_json = json.loads(fp.read())
 
 with open("terraria_id/Prefix_ID.json", encoding='utf-8', errors='ignore') as fp:
-    prefix_info = json.loads(fp.read())
+    prefix_json = json.loads(fp.read())
 
-print("[TextHandle]物品、前缀已缓存!")
+item_info = {item['ItemId']: item for item in item_json}
+prefix_info = {prefix['PrefixId']: prefix for prefix in prefix_json}
+
+logger.warning("[TextHandle]物品、前缀已缓存!")
 
 
 class TextHandle:
     @staticmethod
     def check_name(name: str):
-        # Define the pattern: only Chinese characters, English letters, and numbers are allowed
         pattern = re.compile(r'^[\u4e00-\u9fa5a-zA-Z0-9]+$')
-
-        # Check if the string matches the pattern
         if pattern.match(name):
             return True
         else:
@@ -50,7 +50,7 @@ class TextHandle:
                 item = item + "]"
                 text = re.sub("\[i?(?:\/s(\d{1,4}))?(?:\/p(\d{1,3}))?:(-?\d{1,4})\]", item, text, 1)
             except IndexError:
-                logger.error("错误物品ID:" + str(item_id))
+                logger.error("错误物品Tag:" + str(i))
 
         return text
 
@@ -58,26 +58,11 @@ class TextHandle:
     def all(text: str):
         return TextHandle.item(TextHandle.color(text))
 
-    # @staticmethod
-    # def at_to_name(text: str):
-    #     print(text)
-    #     find = re.findall("\[CQ:at,qq=+(\d+)\]", text)
-    #     if not find:
-    #         print(text)
-    #         return text
-    #     for i in find:
-    #         result, data = SQL.user_qq(i)
-    #         if result == 1 and data[6] is not None:
-    #             text = re.sub("\[CQ:at,qq=+(\d+)\]", data[6], text, 1)
-    #         else:
-    #             text = re.sub("\[CQ:at,qq=+(\d+)\]", "[未知]", text, 1)
-    #     return text
-
     @staticmethod
     def html_decode(text: str):
         return html.unescape(text)
 
     @staticmethod
-    def add_line_break(text:str, n:int) -> str:
+    def add_line_break(text: str, n: int) -> str:
         lines = [text[i:i + n] for i in range(0, len(text), n)]
         return "\n".join(lines)

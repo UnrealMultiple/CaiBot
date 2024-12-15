@@ -1,10 +1,11 @@
 from nonebot import on_request, on_notice
 from nonebot.adapters.onebot.v11 import MessageSegment, Event, Bot, GroupRequestEvent, GroupIncreaseNoticeEvent, \
     RequestEvent
-from utils.global_const import FEEDBACK_GROUP,TSHOCK_GROUP
-from utils.ban_user import UserBan
-from utils.group_helper import GroupHelper
-from utils.statistics import Statistics
+
+from common.ban_user import UserBan
+from common.global_const import FEEDBACK_GROUP, TSHOCK_GROUP
+from common.group_helper import GroupHelper
+from common.statistics import Statistics
 
 dict1 = {}
 

@@ -5,10 +5,10 @@ import aiohttp
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from utils.group import Group
-from utils.group_helper import GroupHelper
-from utils.text_handle import TextHandle
-from utils.user import User
+from common.group import Group
+from common.group_helper import GroupHelper
+from common.text_handle import TextHandle
+from common.user import User
 
 
 def msg_cut(msg: str) -> list:
@@ -69,7 +69,8 @@ async def bind_handle(event: GroupMessageEvent):
         await bind.finish(MessageSegment.at(event.user_id) +
                           f'\n『白名单』\n' +
                           "你已经在BOT中绑定过白名单了哦！\n"
-                          f"你绑定的角色为[{user.name}]")
+                          f"你绑定的角色为[{user.name}]\n"
+                          f"*可以使用'修改白名单 <名字>'重绑哦~")
     if len(msg) != 2:
         await bind.finish(MessageSegment.at(event.user_id) +
                           f'\n『白名单』\n' +
@@ -123,8 +124,8 @@ async def rebind_handle(event: GroupMessageEvent):
 
     days_since_last_rename = (now - user.last_rename.date()).days
 
-    if days_since_last_rename < 30:
-        days_left = 30 - days_since_last_rename
+    if days_since_last_rename < 3:
+        days_left = 3 - days_since_last_rename
         next_rename_date = now + datetime.timedelta(days=days_left)
         await rebind.finish(MessageSegment.at(event.user_id) +
                             f'\n『白名单』\n' +

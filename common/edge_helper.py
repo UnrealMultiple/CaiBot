@@ -1,8 +1,9 @@
 from io import BytesIO
-from selenium import webdriver
-from selenium.webdriver.edge.service import Service
-from selenium.webdriver.common.by import By
+
 from PIL import Image
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.service import Service
 
 
 class EdgeHelper:

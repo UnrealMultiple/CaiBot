@@ -1,9 +1,9 @@
 import json
 from typing import List, Optional
 
+from common.server_settings import ServerSettings
+from common.sql import Sql
 
-from utils.sql import Sql
-from utils.server_settings import ServerSettings
 
 class Server:
 
@@ -58,19 +58,19 @@ class Server:
             index += 1
 
     def is_connected(self):
-        import plugins.API
-        return plugins.API.server_available(self.token)
+        import plugins.cai_api
+        return plugins.API.server_connection_manager.get_server_connection(self.token)
 
     def get_connection(self):
-        import plugins.API
-        return plugins.API.get_server(self.token)
+        import plugins.cai_api
+        return plugins.API.server_connection_manager.get_server_connection(self.token)
 
     def get_settings(self):
         return ServerSettings(self.token)
 
     async def send_data(self,data,group:int):
-       import plugins.API
-       await plugins.API.send_data(self.token, data,group)
+       import plugins.cai_api
+       await plugins.API.server_connection_manager.get_server_connection.send_data(self.token, data,group)
 
     def is_owner_server(self, id: int) -> bool:
         return self.owner == id

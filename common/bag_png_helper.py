@@ -2,6 +2,7 @@ import os
 import time
 
 from PIL import Image, ImageDraw, ImageFont
+from nonebot.log import logger
 
 
 def load_all_images():
@@ -126,7 +127,7 @@ _, _, _, a2 = back2.split()
 font = "font/LXGWWenKaiMono-Medium.ttf"
 load_all_images()
 
-print("[查背包]图片缓存完毕...")
+logger.warning("[查背包]图片缓存完毕...")
 
 
 def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: str, mana: str,

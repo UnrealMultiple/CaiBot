@@ -1,8 +1,8 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from utils.group import Group
-from utils.group_helper import GroupHelper
+from common.group import Group
+from common.group_helper import GroupHelper
 
 
 def msg_cut(msg: str) -> list:
@@ -189,7 +189,7 @@ async def agreement4_handle(event: GroupMessageEvent):
     if group is None:
         await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '无法获取群信息')
     has_perm = group.config.get('group_admin_has_permission')
-    if has_perm != False:
+    if has_perm:
         await agreement4.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限已开启')
     else:
         group.config['group_admin_has_permission'] = True
@@ -208,7 +208,7 @@ async def agreement5_handle(event: GroupMessageEvent):
     if group is None:
         await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '无法获取群信息')
     has_perm = group.config.get('group_admin_has_permission')
-    if has_perm != False:
+    if has_perm:
         group.config['group_admin_has_permission'] = False
         group.update()
         await agreement5.finish(MessageSegment.at(event.user_id) + '\n『群机器人』\n' + '群管理员权限关闭成功')

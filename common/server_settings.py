@@ -1,7 +1,7 @@
 class ServerSettings:
     def __init__(self,token) -> None:
         try:
-            import plugins.API
+            import plugins.cai_api
             server = plugins.API.get_server(token)
             self.server_version = server.terraria_version
             self.world = server.world

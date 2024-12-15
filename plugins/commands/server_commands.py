@@ -3,10 +3,10 @@ import html
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from plugins.API import send_data, wait_for_online, server_available, get_server
-from utils.group import Group
-from utils.group_helper import GroupHelper
-from utils.user import User
+from common.group import Group
+from common.group_helper import GroupHelper
+from common.user import User
+from plugins.cai_api import wait_for_online, server_connection_manager
 
 
 def msg_cut(msg: str) -> list:
@@ -21,63 +21,6 @@ def paginate(data, page_size, page_number):
     end = start + page_size
     # 返回分页后的数据
     return data[start:end]
-
-
-# debug_remote_command = on_command("d#", force_whitespace=True)
-#
-#
-# @debug_remote_command.handle()
-# async def remote_command_handle(event: GroupMessageEvent):
-#     msg = GroupHelper.at_to_name(html.unescape(event.raw_message)).split(" ", 3)
-#     if await GroupHelper.is_admin(FEED_BACK_GROUP, event.user_id):
-#         if len(msg) != 4:
-#             await debug_remote_command.finish(MessageSegment.at(event.user_id) +
-#                                         f'\n『d#』\n' +
-#                                         f"格式错误!正确格式: d# <群号> <服务器序号> <命令内容>")
-#         if msg[3][0] != "/":
-#             msg[3] = "/" + msg[3]
-#         cmd = {
-#             "type": "cmd",
-#             "cmd": msg[3],
-#             "at": str(event.user_id)
-#         }
-#         group = Group.get_group(int(msg[1]))
-#         if group is None or not group.enable_server_bot:
-#             await debug_remote_command.finish(MessageSegment.at(event.user_id) +
-#                                         f'\n『d#』\n' +
-#                                         f"你好像还没有绑定服务器捏？")
-#         if len(group.servers) == 0:
-#             await debug_remote_command.finish(MessageSegment.at(event.user_id) +
-#                                         f'\n『d#』\n' +
-#                                         f"你好像还没有绑定服务器捏？")
-#         if msg[2] == "all" or msg[2] == "*":
-#             id = 0
-#             for i in group.servers:
-#                 id += 1
-#                 if not server_available(i.token):
-#                     await debug_remote_command.send(MessageSegment.at(event.user_id) +
-#                                               f'\n『d#』\n' +
-#                                               f"执行失败！\n"
-#                                               f"❌服务器[{id}]处于离线状态")
-#                 else:
-#                     await send_data(i.token, cmd, event.group_id)
-#             return
-#         if not msg[2].isdigit() or int(msg[2]) > len(group.servers):
-#             await debug_remote_command.finish(MessageSegment.at(event.user_id) +
-#                                         f'\n『d#』\n' +
-#                                         f"执行失败！\n"
-#                                         f"服务器序号错误!")
-#         if not server_available(group.servers[int(msg[2]) - 1].token):
-#             await debug_remote_command.finish(MessageSegment.at(event.user_id) +
-#                                         f'\n『d#』\n' +
-#                                         f"执行失败！\n"
-#                                         f"❌服务器[{int(msg[2])}]处于离线状态")
-#         await send_data(group.servers[int(msg[2]) - 1].token, cmd, event.group_id)
-#     else:
-#         await debug_remote_command.finish(MessageSegment.at(event.user_id) +
-#                                     f'\n『d#』\n' +
-#                                     "没有权限!")
-
 
 remote_command = on_command("#", aliases={"远程命令", "远程指令", "c"}, force_whitespace=True)
 
@@ -108,25 +51,25 @@ async def remote_command_handle(event: GroupMessageEvent):
             id = 0
             for i in group.servers:
                 id += 1
-                if not server_available(i.token):
+                if not server_connection_manager.server_available(i.token):
                     await remote_command.send(MessageSegment.at(event.user_id) +
                                               f'\n『远程指令』\n' +
                                               f"执行失败！\n"
                                               f"❌服务器[{id}]处于离线状态")
                 else:
-                    await send_data(i.token, cmd, event.group_id)
+                    await server_connection_manager.send_data(i.token, cmd, event.group_id)
             return
         if not msg[1].isdigit() or int(msg[1]) > len(group.servers):
             await remote_command.finish(MessageSegment.at(event.user_id) +
                                         f'\n『远程指令』\n' +
                                         f"执行失败！\n"
                                         f"服务器序号错误!")
-        if not server_available(group.servers[int(msg[1]) - 1].token):
+        if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
             await remote_command.finish(MessageSegment.at(event.user_id) +
                                         f'\n『远程指令』\n' +
                                         f"执行失败！\n"
                                         f"❌服务器[{int(msg[1])}]处于离线状态")
-        await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+        await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
     else:
         await remote_command.finish(MessageSegment.at(event.user_id) +
                                     f'\n『远程指令』\n' +
@@ -167,7 +110,7 @@ async def world_progress_handle(event: GroupMessageEvent):
                                         f'\n『进度查询』\n' +
                                         f"获取失败！\n"
                                         f"服务器序号错误!")
-        if not server_available(group.servers[int(msg[1]) - 1].token):
+        if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
             await world_progress.finish(MessageSegment.at(event.user_id) +
                                         f'\n『进度查询』\n' +
                                         f"执行失败！\n"
@@ -175,7 +118,7 @@ async def world_progress_handle(event: GroupMessageEvent):
         cmd = {
             "type": "process"
         }
-        await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+        await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
     else:
         await world_progress.finish(MessageSegment.at(event.user_id) +
                                     f'\n『进度查询』\n'
@@ -202,7 +145,7 @@ async def self_kick_handle(event: GroupMessageEvent):
         "name": user.name
     }
     for i in group.servers:
-        await send_data(i.token, cmd, event.group_id)
+        await server_connection_manager.send_data(i.token, cmd, event.group_id)
     await self_kick.finish(MessageSegment.at(event.user_id) +
                            f'\n『自踢』\n' +
                            f"自踢成功！")
@@ -231,13 +174,13 @@ async def get_map_png_handle(event: GroupMessageEvent):
                                      f"获取失败！\n"
                                      f"服务器序号错误!")
 
-        if not server_available(group.servers[int(msg[1]) - 1].token):
+        if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
             await get_map_png.finish(MessageSegment.at(event.user_id) +
                                      f'\n『查看地图』\n' +
                                      f"获取失败！\n"
                                      f"❌服务器[{int(msg[1])}]处于离线状态")
         try:
-            server = get_server(group.servers[int(msg[1]) - 1].token)
+            server = server_connection_manager.get_server(group.servers[int(msg[1]) - 1].token)
             if server.terraria_version.startswith("tModLoader"):
                 await get_map_png.finish(MessageSegment.at(event.user_id) +
                                          f'\n『查看地图』\n' +
@@ -246,7 +189,7 @@ async def get_map_png_handle(event: GroupMessageEvent):
         except:
             pass
 
-        await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+        await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
     else:
         await get_map_png.finish(MessageSegment.at(event.user_id) +
                                  f'\n『查看地图』\n' +
@@ -275,12 +218,12 @@ async def get_world_file_handle(event: GroupMessageEvent):
                                         f'\n『下载地图』\n' +
                                         f"获取失败！\n"
                                         f"服务器序号错误!")
-        if not server_available(group.servers[int(msg[1]) - 1].token):
+        if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
             await get_world_file.finish(MessageSegment.at(event.user_id) +
                                         f'\n『下载地图』\n' +
                                         f"获取失败！\n"
                                         f"❌服务器[{int(msg[1])}]处于离线状态")
-        await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+        await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
     else:
         await get_world_file.finish(MessageSegment.at(event.user_id) +
                                     f'\n『下载地图』\n' +
@@ -309,12 +252,12 @@ async def get_world_file_handle(event: GroupMessageEvent):
                                       f'\n『下载小地图』\n' +
                                       f"获取失败！\n"
                                       f"服务器序号错误!")
-        if not server_available(group.servers[int(msg[1]) - 1].token):
+        if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
             await get_map_file.finish(MessageSegment.at(event.user_id) +
                                       f'\n『下载小地图』\n' +
                                       f"获取失败！\n"
                                       f"❌服务器[{int(msg[1])}]处于离线状态")
-        await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+        await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
     else:
         await get_map_file.finish(MessageSegment.at(event.user_id) +
                                   f'\n『下载小地图』\n' +
@@ -342,12 +285,12 @@ async def get_plugin_list_handle(event: GroupMessageEvent):
                                      f'\n『插件列表』\n' +
                                      f"获取失败！\n"
                                      f"服务器序号错误!")
-    if not server_available(group.servers[int(msg[1]) - 1].token):
+    if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
         await get_plugin_list.finish(MessageSegment.at(event.user_id) +
                                      f'\n『插件列表』\n' +
                                      f"获取失败！\n"
                                      f"❌服务器[{int(msg[1])}]处于离线状态")
-    await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+    await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
 
 
 look_bag = on_command("查背包", aliases={"查看背包", "查询背包"}, force_whitespace=True)
@@ -375,12 +318,12 @@ async def look_bag_handle(event: GroupMessageEvent):
                               f'\n『查背包』\n' +
                               f"查询失败！\n"
                               f"服务器序号错误!")
-    if not server_available(group.servers[int(msg[1]) - 1].token):
+    if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
         await look_bag.finish(MessageSegment.at(event.user_id) +
                               f'\n『查背包』\n' +
                               f"查询失败！\n"
                               f"❌服务器[{int(msg[1])}]处于离线状态")
-    await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+    await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
 
 
 server_list = on_command("服务器列表", aliases={"ip", "IP"}, force_whitespace=True)
@@ -394,11 +337,11 @@ async def server_list_handle(event: GroupMessageEvent):
     result = []
     id = 1
     for i in group.servers:
-        if server_available(i.token):
+        if server_connection_manager.server_available(i.token):
             # 『服务器列表』
             # ๑1๑cai的喵窝(v1.4.4.9)
             try:
-                server = get_server(i.token)
+                server = server_connection_manager.get_server(i.token)
                 server_version = server.terraria_version
                 world = server.world
                 if server.whitelist:
@@ -438,7 +381,7 @@ async def server_info_handle(event: GroupMessageEvent):
                                  f'\n『服务器信息』\n' +
                                  f"查询失败！\n"
                                  f"服务器序号错误!")
-    if not server_available(group.servers[int(msg[1]) - 1].token):
+    if not server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
         await server_info.finish(MessageSegment.at(event.user_id) +
                                  f'\n『服务器信息』\n' +
                                  f"查询失败！\n"
@@ -446,7 +389,7 @@ async def server_info_handle(event: GroupMessageEvent):
     i = group.servers[int(msg[1]) - 1]
     try:
         # "tshock_version":"5.2.0.0","plugin_version":"2024.6.7.0","terraria_version":"v1.4.4.9","whitelist":false,"os":"win10-x64"
-        server = get_server(i.token)
+        server = server_connection_manager.get_server(i.token)
         server_version = server.terraria_version
         world = server.world
         tshock_version = server.tshock_version

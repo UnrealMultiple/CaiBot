@@ -2,8 +2,8 @@ import datetime
 import json
 from typing import Optional, List
 
-from utils.ban import Ban
-from utils.sql import Sql
+from common.ban import Ban
+from common.sql import Sql
 
 
 class UserBan:

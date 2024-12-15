@@ -3,8 +3,8 @@ import datetime
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from utils.group import Group
-from utils.user import User, LoginRequest
+from common.group import Group
+from common.user import User, LoginRequest
 
 
 def msg_cut(msg: str) -> list:

@@ -8,10 +8,9 @@ import requests
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from plugins import API
-from utils.group_helper import GroupHelper
-from utils.server_helper import ping_server
-from utils.statistics import Statistics
+from common.group_helper import GroupHelper
+from common.server_helper import ping_server
+from common.statistics import Statistics
 
 
 def msg_cut(msg: str) -> list:

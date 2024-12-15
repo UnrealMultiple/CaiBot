@@ -1,7 +1,7 @@
 /build/
 /pyvenv/
 /plugins/__pycache__/
-/utils/__pycache__/
+/common/__pycache__/
 /__pycache__/
 config.py
 

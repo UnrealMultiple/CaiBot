@@ -3,10 +3,10 @@ import random
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageSegment
 
-from utils.global_const import FEEDBACK_GROUP
-from utils.ban_user import UserBan
-from utils.group import Group
-from utils.group_helper import GroupHelper
+from common.ban_user import UserBan
+from common.global_const import FEEDBACK_GROUP
+from common.group import Group
+from common.group_helper import GroupHelper
 
 
 def msg_cut(msg: str) -> list:

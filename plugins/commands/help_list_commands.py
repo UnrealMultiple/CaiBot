@@ -1,7 +1,8 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from utils.group import Group
+from common.group import Group
+
 
 def msg_cut(msg: str) -> list:
     msg = msg.split(" ")

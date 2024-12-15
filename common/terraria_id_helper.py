@@ -1,5 +1,7 @@
 import json
 
+from nonebot.log import logger
+
 with open("terraria_id/Item_ID.json", encoding='utf-8', errors='ignore') as fp:
     items = json.loads(fp.read())
 
@@ -15,7 +17,7 @@ with open("terraria_id/NPC_ID.json", encoding='utf-8', errors='ignore') as fp:
 with open("terraria_id/Buff_ID.json", encoding='utf-8', errors='ignore') as fp:
     buffs = json.loads(fp.read())
 
-print("[terraria_id]物品、前缀、生物、Buff、弹幕已缓存!")
+logger.warning("[terraria_id]物品、前缀、生物、Buff、弹幕已缓存!")
 
 
 def get_item_info_string(item):

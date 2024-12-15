@@ -3,8 +3,8 @@ from urllib import parse
 from nonebot import on_command, on_startswith
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from utils.group import Group
-from utils.terraria_id_helper import GetItemByNameOrId, GetNpcByNameOrId, GetProjectByNameOrId, GetBuffByNameOrId, \
+from common.group import Group
+from common.terraria_id_helper import GetItemByNameOrId, GetNpcByNameOrId, GetProjectByNameOrId, GetBuffByNameOrId, \
     GetPrefixByNameOrId
 
 

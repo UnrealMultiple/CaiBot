@@ -4,12 +4,11 @@ import uuid
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 
-from plugins import API
-from plugins.API import send_data, server_available, disconnect
-from utils.group import Group
-from utils.group_helper import GroupHelper
-from utils.server import Server
-from utils.server_helper import set_server
+from common.group import Group
+from common.group_helper import GroupHelper
+from common.server import Server
+from common.server_helper import set_server
+from plugins.cai_api import server_connection_manager
 
 
 def msg_cut(msg: str) -> list:
@@ -140,7 +139,7 @@ async def share_server_handle(event: GroupMessageEvent):
                                   f"本群已被共享过此服务器!")
     group.servers[int(msg[1]) - 1].shared.append(int(msg[2]))
     group.servers[int(msg[1]) - 1].update()
-    await disconnect(group.servers[int(msg[1]) - 1].token)
+    await server_connection_manager.disconnect(group.servers[int(msg[1]) - 1].token)
     await share_server.finish(MessageSegment.at(event.user_id) +
                               f'\n『共享服务器』\n'
                               f"共享成功!\n"
@@ -191,7 +190,7 @@ async def unshare_server_handle(event: GroupMessageEvent):
                                     f"本群没有被共享过此服务器!")
     group.servers[int(msg[1]) - 1].shared.remove(int(msg[2]))
     group.servers[int(msg[1]) - 1].update()
-    await disconnect(group.servers[int(msg[1]) - 1].token)
+    await server_connection_manager.disconnect(group.servers[int(msg[1]) - 1].token)
     await unshare_server.finish(MessageSegment.at(event.user_id) +
                                 f'\n『共享服务器』\n'
                                 f"取消共享成功!\n")
@@ -232,10 +231,10 @@ async def del_server_handle(event: GroupMessageEvent):
                                 f"删除失败！\n"
                                 f"服务器序号错误!")
     if group.servers[int(msg[1]) - 1].is_owner_server(event.group_id):
-        if server_available(group.servers[int(msg[1]) - 1].token):
-            await send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
+        if server_connection_manager.server_available(group.servers[int(msg[1]) - 1].token):
+            await server_connection_manager.send_data(group.servers[int(msg[1]) - 1].token, cmd, event.group_id)
         Server.del_server(group.servers[int(msg[1]) - 1].token)
-        await disconnect(group.servers[int(msg[1]) - 1].token)
+        await server_connection_manager.disconnect(group.servers[int(msg[1]) - 1].token)
         del group.servers[int(msg[1]) - 1]
         await del_server.finish(MessageSegment.at(event.user_id) +
                                 f'\n『删除服务器』\n' +
@@ -244,7 +243,7 @@ async def del_server_handle(event: GroupMessageEvent):
     else:
         group.servers[int(msg[1]) - 1].shared.remove(group.id)
         group.servers[int(msg[1]) - 1].update()
-        await disconnect(group.servers[int(msg[1]) - 1].token)
+        await server_connection_manager.disconnect(group.servers[int(msg[1]) - 1].token)
         await del_server.finish(MessageSegment.at(event.user_id) +
                                 f'\n『删除服务器』\n' +
                                 f"服务器已被取消共享!")
