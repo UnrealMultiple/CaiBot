@@ -61,6 +61,16 @@ class ServerConnectionManager:
         else:
             logger.error(f"断开连接失败,服务器连接不存在: {token}")
 
+    async def disconnect(self, token):
+
+        if token in self.connections:
+            try:
+                await self.connections[token].close(CaiWebSocketStatus.DISCONNECT)
+            except:
+                pass
+        else:
+            logger.error(f"断开连接失败,服务器连接不存在: {token}")
+
     async def send_data(self, token: str, data, group: int | None) -> None:
         data['group'] = group
         if token in self.connections:

@@ -113,8 +113,12 @@ async def edit_server_handle(event: GroupMessageEvent):
         await edit_server.finish(MessageSegment.at(event.user_id) +
                                   f'\n『修改服务器』\n'
                                   f"服务器序号错误!")
+    if not msg[3].isdigit():
+        await edit_server.finish(MessageSegment.at(event.user_id) +
+                                  f'\n『修改服务器』\n'
+                                  f"无效端口号!")
     index = int(msg[1]) - 1
-    group.servers[index].ip = int(msg[2])
+    group.servers[index].ip = msg[2]
     group.servers[index].port = int(msg[3])
     group.servers[index].update()
     await edit_server.finish(MessageSegment.at(event.user_id) +
