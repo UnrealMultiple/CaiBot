@@ -154,6 +154,7 @@ async def get_token(code: int):
         if current_time < expiry_time:
             server.add_self_server()
             tokens.pop(code)
+            logger.warning(f"服务器({server.token})被动被动成功!")
             return {"status": 200, "token": server.token}
         else:
             tokens.pop(code)
@@ -174,6 +175,7 @@ async def send_reset(token: str, server_name: str, seed: str):
         logger.warning(f"拒绝CaiAPI请求: {token},原因：不属于任何群的服务器")
         raise HTTPException(status_code=403,
                             detail="无效Token.")
+    logger.warning(f"收到服务器来自{server.token}({server.token})的重置通知~")
     if await GroupHelper.is_bot_admin(server.owner):
         await GroupHelper.send_group(server.owner, MessageSegment.at("all") + f"\n『自动重置』\n"
                                                                               f"[{server_name}]已重置\n"
