@@ -337,7 +337,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         ip = data['ip']
         user = User.get_user_name(name)
         statistics.Statistics.add_check_whitelist()
-        if plr_uuid is None:
+        if plr_uuid is None or not is_valid_guid(plr_uuid):
             return
         if user is None:
             re = {
@@ -381,7 +381,8 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
 
             await server_connection_manager.send_data(token, re, None)
             return
-        if plr_uuid in user.uuid:
+        safe_uuid = plr_uuid if ip == "127.0.0.1" else plr_uuid + "+" + ip
+        if safe_uuid in user.uuid:
             re = {
                 "type": "whitelist",
                 "name": data['name'],
@@ -400,7 +401,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                 addr = requests.get(f"https://whois.pconline.com.cn/ipJson.jsp?ip={ip}&json=true", timeout=5.0).json()[
                     'addr']
                 same_device_users = User.get_users_uuid(plr_uuid)
-                user.login_request = LoginRequest(datetime.datetime.now(), plr_uuid)
+                user.login_request = LoginRequest(datetime.datetime.now(), plr_uuid if ip == "127.0.0.1" else plr_uuid + "+" + ip)
                 user.update()
                 await server_connection_manager.send_data(token, re, None)
                 if len(same_device_users) == 0:

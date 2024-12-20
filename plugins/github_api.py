@@ -1,23 +1,41 @@
 import asyncio
 import base64
 import datetime
+import hashlib
+import hmac
 
 import aiohttp
 import nonebot
-from fastapi import Request
+from fastapi import Request, HTTPException
 
+import config
 import plugins.cai_api
 from common.global_const import TSHOCK_GROUP, FEEDBACK_GROUP
 from common.group_helper import GroupHelper
 
 app = plugins.cai_api.app
 
+
+
+def verify_signature(payload, signature, secret):
+    mac = hmac.new(secret.encode(), msg=payload, digestmod=hashlib.sha256)
+    expected_signature = 'sha256=' + mac.hexdigest()
+    return hmac.compare_digest(expected_signature, signature)
+
+
 star_user = []
 @app.post("/plugins/github/")
 async def handle_github_push(request: Request):
-    payload = await request.json()
-    event_type = request.headers.get("X-GitHub-Event")
 
+    event_type = request.headers.get("X-GitHub-Event")
+    signature = request.headers.get('X-Hub-Signature-256')
+    if signature is None:
+        raise HTTPException(status_code=403, detail="需要验证身份！")
+
+    if not verify_signature(await request.body(), signature, config.GITHUB_TOKEN):
+        raise HTTPException(status_code=418, detail="你看起来像是假的Github?")
+
+    payload = await request.json()
     cst = datetime.timezone(datetime.timedelta(hours=8))  # 定义 CST 时区
     current_time = datetime.datetime.now(cst).strftime('%H:%M:%S')
     if event_type == "push":

@@ -58,6 +58,8 @@ async def login_handle(event: GroupMessageEvent):
                            f"\n『登录系统』\n"
                            f"登录请求已失效！")
     user.uuid.append(user.login_request.uuid)
+    if len(user.uuid) >5:
+        user.uuid.pop(0)
     user.login_request = LoginRequest(datetime.datetime.min, "")
     user.update()
     await login.finish(MessageSegment.at(event.user_id) +
