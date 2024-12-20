@@ -59,18 +59,18 @@ class Server:
 
     def is_connected(self):
         import plugins.cai_api
-        return plugins.API.server_connection_manager.get_server_connection(self.token)
+        return plugins.cai_api.server_connection_manager.get_server_connection(self.token)
 
     def get_connection(self):
         import plugins.cai_api
-        return plugins.API.server_connection_manager.get_server_connection(self.token)
+        return plugins.cai_api.server_connection_manager.get_server_connection(self.token)
 
     def get_settings(self):
         return ServerSettings(self.token)
 
     async def send_data(self,data,group:int):
        import plugins.cai_api
-       await plugins.API.server_connection_manager.get_server_connection.send_data(self.token, data,group)
+       await plugins.cai_api.server_connection_manager.get_server_connection.send_data(self.token, data,group)
 
     def is_owner_server(self, id: int) -> bool:
         return self.owner == id

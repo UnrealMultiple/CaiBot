@@ -180,7 +180,7 @@ async def get_map_png_handle(event: GroupMessageEvent):
                                      f"获取失败！\n"
                                      f"❌服务器[{int(msg[1])}]处于离线状态")
         try:
-            server = server_connection_manager.get_server(group.servers[int(msg[1]) - 1].token)
+            server = server_connection_manager.get_server_connection(group.servers[int(msg[1]) - 1].token)
             if server.terraria_version.startswith("tModLoader"):
                 await get_map_png.finish(MessageSegment.at(event.user_id) +
                                          f'\n『查看地图』\n' +
@@ -341,7 +341,7 @@ async def server_list_handle(event: GroupMessageEvent):
             # 『服务器列表』
             # ๑1๑cai的喵窝(v1.4.4.9)
             try:
-                server = server_connection_manager.get_server(i.token)
+                server = server_connection_manager.get_server_connection(i.token)
                 server_version = server.terraria_version
                 world = server.world
                 if server.whitelist:
@@ -389,7 +389,7 @@ async def server_info_handle(event: GroupMessageEvent):
     i = group.servers[int(msg[1]) - 1]
     try:
         # "tshock_version":"5.2.0.0","plugin_version":"2024.6.7.0","terraria_version":"v1.4.4.9","whitelist":false,"os":"win10-x64"
-        server = server_connection_manager.get_server(i.token)
+        server = server_connection_manager.get_server_connection(i.token)
         server_version = server.terraria_version
         world = server.world
         tshock_version = server.tshock_version

@@ -46,9 +46,6 @@ class ServerConnectionManager:
     def get_server_connection(self, token):
         return self.connections.get(token)
 
-    def get_server(self, token):
-        return self.connections.get(token)
-
     def server_available(self, token):
         if token in self.connections:
             return True
@@ -57,19 +54,13 @@ class ServerConnectionManager:
 
     async def disconnect_server(self, token):
         if token in self.connections:
-            await self.connections[token].close(CaiWebSocketStatus.DISCONNECT)
-        else:
-            logger.error(f"断开连接失败,服务器连接不存在: {token}")
-
-    async def disconnect(self, token):
-
-        if token in self.connections:
             try:
                 await self.connections[token].close(CaiWebSocketStatus.DISCONNECT)
             except:
                 pass
         else:
             logger.error(f"断开连接失败,服务器连接不存在: {token}")
+
 
     async def send_data(self, token: str, data, group: int | None) -> None:
         data['group'] = group

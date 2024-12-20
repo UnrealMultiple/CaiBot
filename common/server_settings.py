@@ -2,7 +2,7 @@ class ServerSettings:
     def __init__(self,token) -> None:
         try:
             import plugins.cai_api
-            server = plugins.API.get_server(token)
+            server = plugins.cai_api.server_connection_manager.get_server_connection(token)
             self.server_version = server.terraria_version
             self.world = server.world
             self.tshock_version = server.tshock_version
