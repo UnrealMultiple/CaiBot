@@ -95,9 +95,8 @@ tshock_guide = """📖开服基础教程
 • 插件开发教程(RenderBr版): https://github.com/RenderBr/TShockTutorials
 💊TS插件库
 • GitHub仓库: https://github.com/UnrealMultiple/TShockPlugin
-• Gitee仓库(镜像): https://gitee.com/kksjsj/TShockPlugin
 • 插件包下载: http://plugins.terraria.ink
-• 官方插件库: https://github.com/Pryaxis/Plugins
+• 插件文档: http://docs.terraria.ink/zh
 🔭论坛插件资源
 • https://tr.monika.love
 • https://trhub.cn

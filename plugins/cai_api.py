@@ -410,6 +410,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                     address = "获取失败"
 
                 same_device_users = User.get_users_uuid(plr_uuid)
+                same_device_users = [i for i in same_device_users if i.id != user.id]
                 user.login_request = LoginRequest(datetime.datetime.now(), plr_uuid if ip == "127.0.0.1" else plr_uuid + "+" + ip)
                 user.update()
                 await server_connection_manager.send_data(token, re, None)
@@ -533,7 +534,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         tshock_plugins = data['plugins']
         tshock_plugins.sort(key=lambda x: x['Name'])
         has_new_version = False
-        remote_plugins = requests.get("https://gitee.com/kksjsj/TShockPlugin/raw/master/Plugins.json").json()
+        remote_plugins = requests.get("http://api.terraria.ink:11434/plugin/get_plugin_list").json()
         for local in tshock_plugins:
             for remote in remote_plugins:
                 if local["Name"] == remote["Name"]:

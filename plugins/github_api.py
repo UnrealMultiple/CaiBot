@@ -95,7 +95,7 @@ async def handle_github_push(request: Request):
 
                 async with aiohttp.ClientSession() as session:
                     async with session.get(
-                            "https://gitee.com/kksjsj/TShockPlugin/releases/download/V1.0.0.0/Plugins.zip") as response:
+                            "http://api.terraria.ink:11434/plugin/get_all_plugins") as response:
                         file_data = await response.read()
                         base64_data = base64.b64encode(file_data).decode('utf-8')
                 await nonebot.get_bot().call_api("upload_group_file", group_id=TSHOCK_GROUP,
