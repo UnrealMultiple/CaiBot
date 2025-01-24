@@ -209,6 +209,8 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
         logger.warning(f"群服务器已连接:{group.id}({token})")
         while True:
             data = await websocket.receive_text()
+            if not server_connection_manager.server_available(token):
+                raise WebSocketDisconnect(CaiWebSocketStatus.DISCONNECT,"无效连接")
             try:
                 await handle_message(data, group, token, server, websocket)
             except Exception:
@@ -365,13 +367,16 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
             await server_connection_manager.send_data(token, re, None)
             return
         member = False
-        if await GroupHelper.is_member(group.id, user.id):
+        try:
+            if await GroupHelper.is_member(group.id, user.id):
+                member = True
+            else:
+                for i in server.shared:
+                    if await GroupHelper.is_member(i, user.id):
+                        member = True
+                        break
+        except:
             member = True
-        else:
-            for i in server.shared:
-                if await GroupHelper.is_member(i, user.id):
-                    member = True
-                    break
         if not member:
             re = {
                 "type": "whitelist",
@@ -544,14 +549,14 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
 
         if has_new_version:
             await GroupHelper.send_group(group.id, f"『插件列表』\n" +
-                                         "\n".join([f"{i['Name']} v{i['Version']} (by {i['Author']})" for i in
+                                         "\n".join([f"{i['Name']} v{i['Version']}" for i in
                                                     tshock_plugins]) +
                                          "\n🔭插件新版本:\n" + update_check_result
                                          + "*数据来源于UnrealMultiple/TShockPlugin仓库")
         else:
             await GroupHelper.send_group(group.id, f"『插件列表』\n" +
                                          "\n".join(
-                                             [f"{i['Name']} v{i['Version']} (by {i['Author']})" for i in
+                                             [f"{i['Name']} v{i['Version']}" for i in
                                               tshock_plugins]))
     elif data['type'] == "modlist":
         mods = data['mods']
@@ -576,13 +581,15 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
     elif data['type'] == "chat":
         url = "http://127.0.0.1:8082/send_group_chat"
         data['chat'] = TextHandle.all(data['chat'])
-        async with aiohttp.ClientSession() as session:
-            data = {'chat': data['chat'], 'groupid': server.owner}
-            await session.post(url, json=data)
+        session = aiohttp.ClientSession()
+        data = {'chat': data['chat'], 'groupid': server.owner}
+        await session.post(url, json=data)
+        await session.close()
         for i in server.shared:
-            async with aiohttp.ClientSession() as session:
-                data = {'chat': data['chat'], 'groupid': i}
-                await session.post(url, json=data)
+            session = aiohttp.ClientSession()
+            data = {'chat': data['chat'], 'groupid': i}
+            await session.post(url, json=data)
+            await session.close()
 
 
 start_api = get_driver()

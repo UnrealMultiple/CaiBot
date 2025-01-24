@@ -385,8 +385,8 @@ def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: s
         img.paste(defender_medal, (915 + 50 + 75, 250 + 120 + 280 + 30 + 30 + 30), mask=adefender_medal)
         draw.text((915 + 50 + 60 + 50, 120 + 250 + 280 + 30 + 30 + 30), economic['Coins'], font=font2,
                   fill=(255, 215, 0))
-
-        h = 1
+        economic['Coins']: str
+        h = economic['Coins'].count("\n")+1
         if economic['LevelName'] != "":
             img.paste(warrior_emblem, (915 + 50 + 75, 250 + 120 + 280 + 30 + 30 + 30 + 40 * h), mask=awarrior_emblem)
             draw.text((915 + 50 + 60 + 50, 250 + 120 + 280 + 30 + 30 + 30 + 40 * h), economic['LevelName'], font=font2,

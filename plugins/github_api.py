@@ -51,8 +51,9 @@ async def handle_github_push(request: Request):
                         f"{commits_message}\n"
                         f"查看差异 > {payload['compare']}")
         if payload['repository']['name'] == "TShockPlugin":
-            await GroupHelper.send_group(TSHOCK_GROUP, push_message)
-        if payload['repository']['name'] == "CaiBot":
+            if payload['ref'].split('/')[-1] == "master":
+                await GroupHelper.send_group(TSHOCK_GROUP, push_message)
+        if payload['repository']['name'] == "CaiBot" or payload['repository']['name'] == "CaiBotMod":
             await GroupHelper.send_group(FEEDBACK_GROUP, push_message)
         return {"message": "推送成功!"}
 

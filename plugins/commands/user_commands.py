@@ -288,7 +288,6 @@ async def find_player_function(event: GroupMessageEvent):
     if group is None or not group.enable_server_bot:
         return
     msg = msg_cut(GroupHelper.replace_at(event.raw_message))
-    print(msg)
     if len(msg) == 2:
         user = None
         try:
