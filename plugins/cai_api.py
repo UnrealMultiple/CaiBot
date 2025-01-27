@@ -273,7 +273,12 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
         result = f"๑{index}๑⚡{data['worldname']} 「{data['process']}」\n" + data['result']
         online_request[token] = result
     elif data['type'] == "process":
-        progress_img = get_process_png(data)
+        try:
+            progress_img = get_process_png(data)
+        except:
+            await GroupHelper.send_group(group.id,f"『需要更新』\n"
+                                                   f"请使用最新版的CaiBot适配插件!")
+            return
         byte_arr = io.BytesIO()
         progress_img.save(byte_arr, format='PNG')
         byte_value = byte_arr.getvalue()
@@ -459,8 +464,6 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                             return
             else:
                 await server_connection_manager.send_data(token, re, None)
-
-
     elif data['type'] == "mappng":
         base64_string = data['result']
         decoded_bytes = base64.b64decode(base64_string)

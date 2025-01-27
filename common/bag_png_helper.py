@@ -132,11 +132,11 @@ logger.warning("[查背包]图片缓存完毕...")
 
 def get_bag_png(name: str, inv: list['()'], buffs: list, enhances: list, life: str, mana: str,
                 quests_completed: int, economic: dict) -> Image:
-    img = Image.open("img/lookbag_bg.png").convert('RGBA')
+    img = Image.open("img/Background_4.png").convert('RGBA')
     ft = ImageFont.truetype(font=font, size=100)
     w, h = img.size
-    text_w, text_h = ft.getsize(name)
     draw = ImageDraw.Draw(img)
+    _, _, text_w, text_h = draw.textbbox((0, 0), "name", font=ft)
     draw.text(((w - text_w) / 2, 0), name, font=ft)
     draw = ImageDraw.Draw(img)
     ft = ImageFont.truetype(font="font/LXGWWenKaiMono-Medium.ttf", size=30)
