@@ -582,6 +582,7 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                                             f"执行者: {data['admin']}\n"
                                             f"到期时间: {data['expire_time']}")
     elif data['type'] == "chat":
+        return
         url = "http://127.0.0.1:8082/send_group_chat"
         data['chat'] = TextHandle.all(data['chat'])
         session = aiohttp.ClientSession()

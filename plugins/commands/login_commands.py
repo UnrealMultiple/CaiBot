@@ -58,7 +58,7 @@ async def login_handle(event: GroupMessageEvent):
                            f"\n『登录系统』\n"
                            f"登录请求已失效！")
     user.uuid.append(user.login_request.uuid)
-    if len(user.uuid) >5:
+    if len(user.uuid) >10:
         user.uuid.pop(0)
     user.login_request = LoginRequest(datetime.datetime.min, "")
     user.update()
@@ -94,7 +94,7 @@ async def reject_login_handle(event: GroupMessageEvent):
     user.update()
     await reject_login.finish(MessageSegment.at(event.user_id) +
                               f"\n『登录系统』\n"
-                              f"❌已拒绝此批准！")
+                              f"❌已拒绝此登录请求！")
 
 
 clean_device = on_command('清空设备', aliases={"清除绑定"}, force_whitespace=True)

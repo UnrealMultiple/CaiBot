@@ -45,7 +45,6 @@ def get_process_png(process_data) -> Image:
         img.paste(event_img, (x, y), mask=ba)
         _, _, tw, th = draw.textbbox((0, 0), show_name + ":", font=ft_25)
         draw.text((x + event_img.size[0], y), show_name+ ":", font=ft_25)
-        print(x + event_img.size[0])
         if name == "Old Ones Army":
             if process['DD2InvasionT3']:
                 draw.text((x + event_img.size[0] + tw, y), "T1", font=ft_25,
@@ -89,8 +88,6 @@ def get_process_png(process_data) -> Image:
         _, _, _, ba = boss_img.split()
         img.paste(boss_img, (x, y - up), mask=ba)
         _, _, tw, th = draw.textbbox((0, 0), "已击败", font=ft_40)
-
-        print(x + boss_img.size[0] / 2 - tw / 2, y + boss_img.size[1] - 695 - 207)
         if name == "Mechdusa":
             if process['The Destroyer'] and process['The Twins'] and process['Skeletron Prime']:
                 _, _, tw, th = draw.textbbox((0, 0), "已击败", font=ft_40)
@@ -123,7 +120,7 @@ def get_process_png(process_data) -> Image:
     MAX_W, MAX_H = img.size
 
     if len(process_data["worldname"])>7:
-        process_data["worldname"] = process_data["worldname"][:6]+"..."
+         process_data["worldname"] = process_data["worldname"][:6]+"..."
 
     _, _, w, h = draw.textbbox((0, 0), process_data["worldname"], font=ft_100)
     draw.text(((MAX_W - w) / 2, 0), process_data["worldname"], font=ft_100)
