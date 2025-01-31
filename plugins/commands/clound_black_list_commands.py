@@ -4,7 +4,7 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageSegment
 
 from common.ban_user import UserBan
-from common.global_const import FEEDBACK_GROUP
+from common.global_const import FEEDBACK_GROUP, TSHOCK_GROUP
 from common.group import Group
 from common.group_helper import GroupHelper
 
@@ -287,6 +287,8 @@ random_ban = on_command("随机云黑", force_whitespace=True)
 
 @random_ban.handle()
 async def random_ban_handle(event: GroupMessageEvent):
+    if event.group_id == TSHOCK_GROUP:
+        return
     group = Group.get_group(event.group_id)
     if group is None:
         await random_ban.finish(MessageSegment.at(event.user_id) +
