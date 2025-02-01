@@ -85,14 +85,14 @@ def _check1(event: Event):
     return isinstance(event, GroupIncreaseNoticeEvent)
 
 
-tshock_guide = """📖开服基础教程
+tshock_guide = """📖必看文档
 • TS开服基础教程: https://tr.monika.love/docs/tshock-tutorial-1
-• TS仓库: https://github.com/Pryaxis/TShock/releases
+• 插件文档: http://docs.terraria.ink/zh
 📘TS相关文档
 • TS中文文档(熙恩版): http://tsdoc.terraria.ink
-• 官方英文文档: https://ikebukuro.tshock.co/#
-• 插件开发指南(Cai版): https://gitee.com/e7udyuu/tshock-plugin-document
-• 插件开发教程(RenderBr版): https://github.com/RenderBr/TShockTutorials
+• 官方英文文档: https://github.com/Pryaxis/TShock/wiki
+• 插件开发指南(Cai版): http://docs.terraria.ink/zh/plugin-dev/get-start.html
+• 插件开发教程(RenderBr版): https://github.com/RenderBr/TShockTutorials/wiki
 💊TS插件库
 • GitHub仓库: https://github.com/UnrealMultiple/TShockPlugin
 • 插件包下载: http://plugins.terraria.ink
@@ -101,7 +101,7 @@ tshock_guide = """📖开服基础教程
 • https://tr.monika.love
 • https://trhub.cn
 • https://bbstr.net
-❤️ Powered by 熙恩"""
+❤️ Powered by 熙恩 & Cai"""
 
 incr = on_notice(rule=_check1)
 
