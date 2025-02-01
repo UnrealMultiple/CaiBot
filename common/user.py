@@ -69,8 +69,7 @@ class User:
             result = result[0]
             return User(result['id'], result['name'], json.loads(result['join_group']), result['money'],
                         datetime.datetime.fromisoformat(result['last_sign']), result['sign_count'],
-                        json.loads(result['uuid']),
-                        datetime.datetime.fromisoformat(result['last_rename']))
+                        json.loads(result['uuid']),datetime.datetime.fromisoformat(result['last_rename']))
 
     @staticmethod
     def get_users_uuid(uuid: str) -> list['User']:

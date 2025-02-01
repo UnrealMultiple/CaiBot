@@ -21,10 +21,10 @@ login = on_command('登录', aliases={"批准", "允许", "登陆"}, force_white
 
 @login.handle()
 async def login_handle(event: GroupMessageEvent):
-    group = Group.get_group(event.group_openid)
+    group = Group.get_group(event.group_id)
     if group is None:
         return
-    user = User.get_user(event.author.union_openid)
+    user = User.get_user(event.user_id)
     if user is None:
         await login.finish(f'\n『登录系统』\n' +
                            "你还没有添加白名单！\n"
@@ -50,10 +50,10 @@ reject_login = on_command('拒绝', aliases={"不批准", "不允许"}, force_wh
 
 @reject_login.handle()
 async def reject_login_handle(event: GroupMessageEvent):
-    group = Group.get_group(event.group_openid)
+    group = Group.get_group(event.group_id)
     if group is None:
         return
-    user = User.get_user(event.author.union_openid)
+    user = User.get_user(event.user_id)
     if user is None:
         await reject_login.finish(f'\n『登录系统』\n' +
                                   "你还没有添加白名单！\n"
