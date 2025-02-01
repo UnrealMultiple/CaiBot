@@ -35,7 +35,8 @@ async def login_handle(event: GroupMessageEvent):
                            f"\n『登录系统』\n"
                            f"你目前没有收到任何登录请求！")
     if not is_within_5_minutes(plugins.cai_api.login_requests[user.id].time):
-        await login.finish(f"\n『登录系统』\n"
+        await login.finish(MessageSegment.at(event.user_id) +
+                           f"\n『登录系统』\n"
                            f"登录请求已失效！")
     user.uuid.append(plugins.cai_api.login_requests[user.id].uuid)
     if len(user.uuid) > 10:

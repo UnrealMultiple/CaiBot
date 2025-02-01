@@ -1,6 +1,6 @@
 [project]
 name = "CaiBot"
-version = "2024.10.1"
+version = "2025.2.2"
 description = "CaiBot"
 readme = "README.md"
 requires-python = ">=3.8, <4.0"
