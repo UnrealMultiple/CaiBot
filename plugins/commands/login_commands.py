@@ -26,11 +26,13 @@ async def login_handle(event: GroupMessageEvent):
         return
     user = User.get_user(event.user_id)
     if user is None:
-        await login.finish(f'\n『登录系统』\n' +
+        await login.finish(MessageSegment.at(event.user_id) +
+                           f'\n『登录系统』\n' +
                            "你还没有添加白名单！\n"
                            f"发送'添加白名单 <名字>'来添加白名单")
     if user.id not in plugins.cai_api.login_requests or plugins.cai_api.login_requests[user.id].time == datetime.datetime.min:
-        await login.finish(f"\n『登录系统』\n"
+        await login.finish(MessageSegment.at(event.user_id) +
+                           f"\n『登录系统』\n"
                            f"你目前没有收到任何登录请求！")
     if not is_within_5_minutes(plugins.cai_api.login_requests[user.id].time):
         await login.finish(f"\n『登录系统』\n"
@@ -40,7 +42,7 @@ async def login_handle(event: GroupMessageEvent):
         user.uuid.pop(0)
     user.update()
     plugins.cai_api.login_requests[user.id] = LoginRequest(datetime.datetime.min, "")
-    await login.finish(f"\n『登录系统』\n"
+    await login.finish(MessageSegment.at(event.user_id) +f"\n『登录系统』\n"
                        f"✅已接受此登录请求！\n"
                        f"使用'清空设备'解除所有绑定")
 
@@ -55,19 +57,22 @@ async def reject_login_handle(event: GroupMessageEvent):
         return
     user = User.get_user(event.user_id)
     if user is None:
-        await reject_login.finish(f'\n『登录系统』\n' +
+        await reject_login.finish(MessageSegment.at(event.user_id) +
+                                  f'\n『登录系统』\n' +
                                   "你还没有添加白名单！\n"
                                   f"发送'添加白名单 <名字>'来添加白名单")
     if user.id not in plugins.cai_api.login_requests or plugins.cai_api.login_requests[
         user.id].time == datetime.datetime.min:
-        await login.finish(f"\n『登录系统』\n"
+        await login.finish(MessageSegment.at(event.user_id) +
+                           f"\n『登录系统』\n"
                            f"你目前没有收到任何登录请求！")
     if not is_within_5_minutes(plugins.cai_api.login_requests[user.id].time):
-        await login.finish(f"\n『登录系统』\n"
+        await login.finish(MessageSegment.at(event.user_id) +f"\n『登录系统』\n"
                            f"登录请求已失效！")
 
     plugins.cai_api.login_requests[user.id] = LoginRequest(datetime.datetime.min, "")
-    await reject_login.finish(f"\n『登录系统』\n"
+    await reject_login.finish(MessageSegment.at(event.user_id) +
+                              f"\n『登录系统』\n"
                               f"❌已拒绝此登录请求！")
 
 
