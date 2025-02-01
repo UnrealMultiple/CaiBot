@@ -399,6 +399,11 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                 "code": 200
             }
             await server_connection_manager.send_data(token, re, None)
+
+            if group.id not in user.join_group:
+                user.join_group.append(group.id)
+                user.update()
+
         else:
             re = {
                 "type": "whitelist",
