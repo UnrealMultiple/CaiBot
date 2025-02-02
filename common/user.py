@@ -43,8 +43,7 @@ class User:
         Sql.query(
             'INSERT INTO "Users" ("id", "name", "join_group", "money", "last_sign","sign_count","uuid",'
             '"last_rename") '
-            'VALUES (?,?,?,?,?,?,?,?);', id, name, json.dumps([group]), 0, datetime.datetime.min.isoformat(), 0, "[]",
-            json.dumps(LoginRequest(datetime.datetime.min, "").to_dict()), datetime.datetime.min.isoformat())
+            'VALUES (?,?,?,?,?,?,?,?);', id, name, json.dumps([group]), 0, datetime.datetime.min.isoformat(), 0, "[]", datetime.datetime.min.isoformat())
         return User(id, name, [group], 0, datetime.datetime.min, 0, [],
                     datetime.datetime.min)
 
