@@ -15,13 +15,6 @@ def msg_cut(msg: str) -> list:
     return msg
 
 
-def paginate(data, page_size, page_number):
-    # 计算开始和结束的索引
-    start = (page_number - 1) * page_size
-    end = start + page_size
-    # 返回分页后的数据
-    return data[start:end]
-
 
 about = on_command("关于", force_whitespace=True)
 
@@ -34,10 +27,10 @@ async def ban_about_handle(event: GroupMessageEvent):
                        f'📖小小Cai\n'
                        f'🎉开发者: Cai(3042538328)\n'
                        f'✨贡献者: \n'
-                       f'迅猛龙(3407905827) [提供服务器]\n'
-                       f'羽学(1242509682) [代码贡献]\n'
-                       f'2409:(1651309670) [代码贡献]\n'
-                       f'西江(3082068984) [代码贡献]\n'
+                       f'迅猛龙 [提供服务器]\n'
+                       f'羽学 [代码贡献]\n'
+                       f'2409: [代码贡献]\n'
+                       f'西江 [代码贡献]\n'
                        f'🌐反馈群: 991556763\n'
                        f'⚡小小Cai已加入{statistics.total_group}个群,已记录{statistics.total_ban}名云黑用户\n'
                        f'入群检测{statistics.total_check}次,拒绝了{statistics.total_kick}次入群请求\n'

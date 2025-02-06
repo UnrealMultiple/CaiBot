@@ -3,6 +3,7 @@ import random
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageSegment
 
+from common.ban_request import BanRequest
 from common.ban_user import UserBan
 from common.global_const import FEEDBACK_GROUP, TSHOCK_GROUP
 from common.group import Group
@@ -21,6 +22,84 @@ def paginate(data, page_size, page_number):
     end = start + page_size
     # 返回分页后的数据
     return data[start:end]
+
+
+pending_list = on_command("审核列表", force_whitespace=True)
+@pending_list.handle()
+async def pending_list_handle(event: GroupMessageEvent):
+    if await GroupHelper.is_superadmin(event.user_id):
+        ban_requests = BanRequest.get_all()
+        if len(ban_requests) == 0:
+            await pending_list.finish(MessageSegment.at(event.user_id) +
+                                      f'\n『云黑审核』\n' +
+                                      "当前没有待审核的云黑捏~")
+        await pending_list.finish(MessageSegment.at(event.user_id) +
+                             f'\n『云黑审核』\n' +
+                             '\n'.join([await i.to_oneline_string() for i in ban_requests]))
+
+approve = on_command("批准云黑", force_whitespace=True, aliases= {"云黑批准"})
+@approve.handle()
+async def approve_handle(event: GroupMessageEvent):
+    msg = msg_cut(GroupHelper.replace_at(event.raw_message))
+    if await GroupHelper.is_superadmin(event.user_id):
+        if len(msg) != 2:
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『云黑审核』\n' +
+                                 f"格式错误!正确格式: 批准云黑 <请求ID>")
+        if not msg[1].isdigit():
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『云黑审核』\n' +
+                                 f"请求ID格式错误!")
+
+        ban_request = BanRequest.get_by_id(msg[1])
+        if ban_request is not None and not ban_request.handled:
+            ban = UserBan.get_user(ban_request.target)
+            if ban is None:
+                ban = UserBan.add_user(ban_request.target)
+            ban.add_ban(ban_request.group, ban_request.admin, ban_request.reason)
+            ban_request.handled = True
+            ban_request.update()
+            await GroupHelper.send_group(ban_request.group, MessageSegment.at(ban_request.admin) +
+                                      f'\n『云黑审核·{ban_request.target}』\n' +
+                                      f'云黑请求#{ban_request.id}已被批准!')
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                      f'\n『云黑审核』\n' +
+                                      f'已批准#{ban_request.id}!')
+        else:
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                      f'\n『云黑审核』\n' +
+                                      '无效的请求ID')
+
+deny = on_command("驳回云黑", force_whitespace=True, aliases= {"云黑驳回"})
+@deny.handle()
+async def deny_handle(event: GroupMessageEvent):
+    msg = msg_cut(GroupHelper.replace_at(event.raw_message))
+    if await GroupHelper.is_superadmin(event.user_id):
+        if len(msg) != 3:
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『云黑审核』\n' +
+                                 f"格式错误!正确格式: 驳回云黑 <请求ID> <原因>")
+        if not msg[1].isdigit():
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『云黑审核』\n' +
+                                 f"请求ID格式错误!")
+
+        ban_request = BanRequest.get_by_id(msg[1])
+        if ban_request is not None and not ban_request.handled:
+            ban_request.handled = True
+            ban_request.update()
+            await GroupHelper.send_group(ban_request.group, MessageSegment.at(ban_request.admin) +
+                                         f'\n『云黑审核·{ban_request.target}』\n' +
+                                         f'云黑请求#{ban_request.id}已被驳回!\n'+
+                                         f'原因: {msg[2]}')
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『云黑审核』\n' +
+                                 f'已驳回#{ban_request.id}!')
+        else:
+            await approve.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『云黑审核』\n' +
+                                 '无效的请求ID')
+
 
 check_details = on_command("云黑详细", force_whitespace=True)
 
@@ -49,7 +128,7 @@ async def check_details_handle(event: GroupMessageEvent):
             if len(ban.bans) != 0:
                 await check_details.finish(MessageSegment.at(event.user_id) +
                                            f'\n『云黑详细』\n' +
-                                           f'⚠检测到云黑记录({int(msg[1])})\n' +
+                                           f'⚠️检测到云黑记录({int(msg[1])})\n' +
                                            f'\n'.join([await x.to_details_string() for x in
                                                        ban.bans]))
             else:
@@ -92,7 +171,7 @@ async def check_ban_handle(event: GroupMessageEvent):
         else:
             await check_ban.finish(MessageSegment.at(event.user_id) +
                                    f'\n『云黑检测』\n' +
-                                   "⚠检测到云黑记录:\n" +
+                                   "⚠️检测到云黑记录:\n" +
                                    "\n".join(result))
 
         pass
@@ -106,7 +185,7 @@ async def check_ban_handle(event: GroupMessageEvent):
         if len(ban.bans) != 0:
             await check_ban.finish(MessageSegment.at(event.user_id) +
                                    f'\n『云黑检测』\n' +
-                                   f'⚠检测到云黑记录({int(msg[1])})\n' +
+                                   f'⚠️检测到云黑记录({int(msg[1])})\n' +
                                    f'\n'.join([await x.to_string() for x in
                                                ban.bans]))
         else:
@@ -141,18 +220,36 @@ async def del_ban_handle(bot: Bot, event: GroupMessageEvent):
                                  f'\n『删除云黑』\n' +
                                  f"QQ号格式错误!")
 
-        ban = UserBan.get_user(int(msg[1]))
+        target = msg[1]
+
+        ban = UserBan.get_user(target)
         if ban is not None:
             if ban.check_ban(event.group_id):
                 ban.del_ban(event.group_id)
                 await del_ban.send(MessageSegment.at(event.user_id) +
                                    f'\n『添加云黑』\n' +
                                    "云黑删除成功!")
-                await bot.send_group_msg(group_id=FEEDBACK_GROUP, message=
-                f'🔄️删除云黑 {await GroupHelper.GetName(int(msg[1]))} ({int(msg[1])})\n' +
-                f"剩余云黑数: {len(ban.bans)}\n" +
-                f"操作群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})")
+                if event.group_id != FEEDBACK_GROUP:
+                    await bot.send_group_msg(group_id=FEEDBACK_GROUP, message=
+                    f'🗑️删除云黑 {await GroupHelper.GetName(target )} ({target})\n' +
+                    f"剩余云黑数: {len(ban.bans)}\n" +
+                    f"操作群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})")
             else:
+                ban_request = BanRequest.get_by_target_and_group(target, event.group_id)
+                if ban_request is not None:
+                    ban_request.handled = True
+                    ban_request.update()
+                    if event.group_id != FEEDBACK_GROUP:
+                        await bot.send_group_msg(group_id=FEEDBACK_GROUP, message=
+                        f'🗑️撤销云黑请求#{ban_request.id} {await GroupHelper.GetName(target)} ({target})\n' +
+                        f"管理员: {await GroupHelper.GetName(event.user_id)} ({event.user_id})\n"
+                        f"操作群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})")
+
+                    await del_ban.finish(MessageSegment.at(event.user_id) +
+                                         f'\n『删除云黑』\n' +
+                                         f"已撤销云黑申请#{ban_request.id}!")
+
+
                 if len(ban.bans) == 0:
                     await del_ban.finish(MessageSegment.at(event.user_id) +
                                          f'\n『删除云黑』\n' +
@@ -180,12 +277,14 @@ add_ban = on_command("添加云黑", force_whitespace=True)
 async def add_ban_handle(bot: Bot, event: GroupMessageEvent):
     message_text = GroupHelper.replace_at(event.raw_message)
     msg = message_text.split(" ", 2)
+
     if await GroupHelper.HasPermission(event.group_id, event.user_id):
         group = Group.get_group(event.group_id)
         if group is None:
             await add_ban.finish(MessageSegment.at(event.user_id) +
                                  f'\n『添加云黑』\n' +
-                                 "请启用云黑!\n发送'启用云黑'在本群启用本BOT")
+                                 "请启用云黑!\n"
+                                 "发送'启用云黑'在本群启用本BOT")
         if len(msg) != 3:
             await add_ban.finish(MessageSegment.at(event.user_id) +
                                  f'\n『添加云黑』\n'
@@ -204,7 +303,16 @@ async def add_ban_handle(bot: Bot, event: GroupMessageEvent):
                                    f'\n『添加云黑』\n'
                                    + "本群被开发者标记为禁止添加云黑!\n"
                                      "申诉请直接加Cai(3042538328)[仅周六]")
-        ban = UserBan.get_user(int(msg[1]))
+        target = int(msg[1])
+
+
+        ban_request = BanRequest.get_by_target_and_group(target, event.group_id)
+        if ban_request is not None:
+            await add_ban.finish(MessageSegment.at(event.user_id) +
+                                 f'\n『添加云黑』\n' +
+                                 f"你已经提交过本云黑申请!")
+
+        ban = UserBan.get_user(target)
 
         if ban is not None:
             if ban.check_ban_user(event.user_id):
@@ -215,20 +323,19 @@ async def add_ban_handle(bot: Bot, event: GroupMessageEvent):
                 await add_ban.finish(MessageSegment.at(event.user_id) +
                                      f'\n『添加云黑』\n' +
                                      f"该账户已存在于本群云黑名单!")
-        else:
-            ban = UserBan.add_user(int(msg[1]))
 
         if await group.can_add() or event.group_id == FEEDBACK_GROUP:
-            ban.add_ban(event.group_id, event.user_id, msg[2])
-            group.add_ban(int(msg[1]))
+            id = BanRequest.add(target,event.group_id,event.user_id,msg[2])
+            group.add_ban(target)
             await add_ban.send(MessageSegment.at(event.user_id) +
                                f'\n『添加云黑』\n' +
-                               f"云黑已添加!({int(msg[1])})")
+                               f"已向反馈群提交申请#{id}!({target})")
             if event.group_id != FEEDBACK_GROUP:
                 await bot.send_group_msg(group_id=FEEDBACK_GROUP, message=
-                f'⬇️新云黑 {await GroupHelper.GetName(int(msg[1]))} ({int(msg[1])})\n' +
-                f"理由: {msg[2]}\n"
-                f"添加群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})")
+                f'🙏云黑请求#{id} {await GroupHelper.GetName(target)} ({target})\n' +
+                f"管理员: {await GroupHelper.GetName(event.user_id)} ({event.user_id})\n"
+                f"添加群: {await GroupHelper.GetGroupName(event.group_id)} ({event.group_id})\n"
+                f"理由: {msg[2]}")
         else:
             has_add = group.count_bans_in_last_day()
             max_add = await group.can_add_max()
@@ -277,7 +384,7 @@ async def ban_list_handle(event: GroupMessageEvent):
     else:
         await ban_list.finish(MessageSegment.at(event.user_id) +
                               f'\n『云黑列表』\n' +
-                              "⚠检测到云黑记录:\n" +
+                              "⚠️检测到云黑记录:\n" +
                               "\n".join(bans) +
                               "\n翻页：云黑列表 <页码>")
 
@@ -301,7 +408,7 @@ async def random_ban_handle(event: GroupMessageEvent):
 
     await random_ban.finish(MessageSegment.at(event.user_id) +
                             f'\n『随机云黑』\n' +
-                            f'⚠检测到云黑记录({ban.id})\n' +
+                            f'⚠️检测到云黑记录({ban.id})\n' +
                             f'\n'.join([await x.to_string() for x in
                                         ban.bans]))
 
@@ -348,7 +455,7 @@ async def group_ban_list_handle(event: GroupMessageEvent):
 
         await group_ban_list.finish(MessageSegment.at(event.user_id) +
                                     f'\n『云黑列表({group_num})』\n' +
-                                    "⚠检测到云黑记录:\n" +
+                                    "⚠️检测到云黑记录:\n" +
                                     f'\n'.join([await x.to_group_string() for x in
                                                 bans]))
 

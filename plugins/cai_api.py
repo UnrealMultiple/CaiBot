@@ -193,6 +193,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
     if not is_valid_guid(token):
         raise WebSocketException(CaiWebSocketStatus.I_IM_A_TEAPOT)
     await websocket.accept()
+    logger.warning(f"[DEBUG]{websocket.client.host}:{websocket.client.port}正在连接...")
     server_connection_manager.add_server_connection(token, websocket)
     try:
         server = Server.get_server(token)
