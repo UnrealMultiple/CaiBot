@@ -1,24 +1,31 @@
 from nonebot import on_request, on_notice
 from nonebot.adapters.onebot.v11 import MessageSegment, Event, Bot, GroupRequestEvent, GroupIncreaseNoticeEvent, \
-    RequestEvent
+    RequestEvent, GroupBanNoticeEvent
 
 from common.ban_user import UserBan
 from common.global_const import FEEDBACK_GROUP, TSHOCK_GROUP
 from common.group_helper import GroupHelper
 from common.statistics import Statistics
 
-dict1 = {}
-
-
-def _check2(event: Event):
+def is_request_event(event: Event) -> bool:
     return isinstance(event, RequestEvent)
 
+def is_group_request_event(event: Event) -> bool:
+    return isinstance(event, GroupRequestEvent)
 
-request = on_request(rule=_check2)
+def group_increase_notice_event(event: Event) -> bool:
+    return isinstance(event, GroupIncreaseNoticeEvent)
+
+def is_group_ban(event: Event) -> bool:
+    return isinstance(event, GroupBanNoticeEvent)
+
+
+
+request = on_request(rule=is_request_event)
 
 
 @request.handle()
-async def _(event: RequestEvent, bot: Bot):
+async def request_handle(event: RequestEvent, bot: Bot):
     if event.request_type == "friend":
         await bot.call_api("set_friend_add_request", flag=event.flag, approve=True)
         return
@@ -27,17 +34,13 @@ async def _(event: RequestEvent, bot: Bot):
                            approve=True)
 
 
-def _check0(event: Event):
-    return isinstance(event, GroupRequestEvent)
-
-
 has_reject = []
 
-request = on_request(rule=_check0)
+group_join = on_request(rule=is_group_request_event)
 
 
-@request.handle()
-async def _(event: GroupRequestEvent, bot: Bot):
+@group_join.handle()
+async def group_join_handle(event: GroupRequestEvent, bot: Bot):
     Statistics.add_check()
     if event.group_id == FEEDBACK_GROUP:
         return
@@ -50,8 +53,8 @@ async def _(event: GroupRequestEvent, bot: Bot):
         f'[{event.user_id}]是CaiBot管理成员.')
         return
 
-    ban = UserBan.get_user(event.user_id)
-    if ban is not None and len(ban.bans) > 1:
+    user_ban = UserBan.get_user(event.user_id)
+    if user_ban is not None and len(user_ban.bans) > 1:
         await bot.call_api("set_group_add_request", flag=event.flag, sub_type=event.sub_type,
                            approve=False, reason='你已被加入云黑名单，无法加入此服务器群!')
         if event.group_id + event.user_id not in has_reject:
@@ -60,12 +63,12 @@ async def _(event: GroupRequestEvent, bot: Bot):
             f'『云黑名单•拒绝加入』\n' +
             f'❌检测到云黑记录({event.user_id})\n' +
             f'\n'.join([await x.to_string() for x in
-                        ban.bans]))
-        ban.has_kicked += 1
-        ban.update_user()
+                        user_ban.bans]))
+        user_ban.has_kicked += 1
+        user_ban.update_user()
         Statistics.add_kick()
         await request.finish()
-    if ban is not None and ban.check_ban(event.group_id):
+    if user_ban is not None and user_ban.check_ban(event.group_id):
         await bot.call_api("set_group_add_request", flag=event.flag, sub_type=event.sub_type,
                            approve=False, reason='你已被加入此群黑名单，无法加入此服务器群!')
         if event.group_id + event.user_id not in has_reject:
@@ -74,15 +77,14 @@ async def _(event: GroupRequestEvent, bot: Bot):
             f'『云黑名单•拒绝加入』\n' +
             f'❌检测到云黑记录({event.user_id})\n' +
             f'\n'.join([await x.to_string() for x in
-                        ban.bans]))
-        ban.has_kicked += 1
-        ban.update_user()
+                        user_ban.bans]))
+        user_ban.has_kicked += 1
+        user_ban.update_user()
         Statistics.add_kick()
         await request.finish()
 
 
-def _check1(event: Event):
-    return isinstance(event, GroupIncreaseNoticeEvent)
+
 
 
 tshock_guide = """📖必看文档
@@ -103,7 +105,7 @@ tshock_guide = """📖必看文档
 • https://bbstr.net
 ❤️ Powered by 熙恩 & Cai"""
 
-incr = on_notice(rule=_check1)
+incr = on_notice(rule=group_increase_notice_event)
 
 
 @incr.handle()
@@ -148,3 +150,15 @@ async def _(event: GroupIncreaseNoticeEvent, bot: Bot):
                                                                               '\n『云黑名单』\n' +
                                                                               f'✅没有检测到云黑记录({event.user_id})!\n' +
                                                                               f'本机器人已检查{statistics.total_check}名用户,拒绝{statistics.total_kick}人加群.')
+
+
+
+# 感谢未琉
+ban = on_notice(rule=is_group_ban)
+@ban.handle()
+async def handle_group_ban(bot: Bot, event: GroupBanNoticeEvent):
+    if event.user_id == event.self_id and event.group_id not in [FEEDBACK_GROUP, TSHOCK_GROUP, 1134311185]:
+        group_id = event.group_id
+        duration = event.duration
+        if duration > 0:
+            await bot.set_group_leave(group_id=group_id)

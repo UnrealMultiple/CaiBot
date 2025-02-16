@@ -36,7 +36,13 @@ class ServerConnectionManager:
     def __init__(self):
         self.connections: Dict[str, WebSocket] = {}
 
-    def add_server_connection(self, token, websocket):
+    async def add_server_connection(self, token, websocket):
+        if token in self.connections:
+            try:
+                await self.connections[token].close()
+            except:
+                pass
+
         self.connections[token] = websocket
 
     def del_server_connection(self, token):
@@ -194,7 +200,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
         raise WebSocketException(CaiWebSocketStatus.I_IM_A_TEAPOT)
     await websocket.accept()
     logger.warning(f"[DEBUG]{websocket.client.host}:{websocket.client.port}正在连接...")
-    server_connection_manager.add_server_connection(token, websocket)
+    await server_connection_manager.add_server_connection(token, websocket)
     try:
         server = Server.get_server(token)
         if server is None:
@@ -488,9 +494,12 @@ async def handle_message(data: str, group: Group, token: str, server: Server, we
                 await GroupHelper.send_group(group.id, f"『查背包』\n" +
                                              f"✨新版插件新增Economic查询\n"
                                              f"请及时升级插件哦~")
-            data['economic']['Coins'] = TextHandle.all(data['economic']['Coins'])
-            data['economic']['LevelName'] = TextHandle.all(data['economic']['LevelName'])
-            data['economic']['Skill'] = TextHandle.add_line_break(TextHandle.all(data['economic']['Skill']), 9)
+            if 'Coins' in data['economic']:
+                data['economic']['Coins'] = TextHandle.all(data['economic']['Coins'])
+            if 'LevelName' in data['economic']:
+                data['economic']['LevelName'] = TextHandle.all(data['economic']['LevelName'])
+            if 'Skill' in data['economic']:
+                data['economic']['Skill'] = TextHandle.add_line_break(TextHandle.all(data['economic']['Skill']), 9)
             img = get_bag_png(data['name'], data['inventory'], data['buffs'], data['enhances'], data['life'],
                               data['mana'], data['quests_completed'], data['economic'])
             byte_arr = io.BytesIO()

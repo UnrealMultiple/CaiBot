@@ -57,7 +57,7 @@ def get_process_png(process_data) -> Image:
                           fill='red')
             else:
                 draw.text((x + event_img.size[0] + tw, y), "未击败", font=ft_25,
-                          fill='gray')
+                          fill='purple')
             return
         if name == "Pillars":
             if process[name]:
@@ -73,12 +73,12 @@ def get_process_png(process_data) -> Image:
                 if not process['Tower Solar']:
                     notDefeat.append("日耀")
                 draw.text((x + event_img.size[0] + tw, y), f"未击败({','.join(notDefeat)})", font=ft_25,
-                          fill='gray')
+                          fill='purple')
         if process[name]:
             draw.text((x + event_img.size[0] + tw, y), "已击败", font=ft_25, fill='red')
         else:
             draw.text((x + event_img.size[0] + tw, y), "未击败", font=ft_25,
-                      fill='gray')
+                      fill='purple')
 
     def draw_boss(name, x, y, up=0):
         boss_img = Image.open(f"img/process/{name}.png")
@@ -103,7 +103,7 @@ def get_process_png(process_data) -> Image:
                     notDefeat.append("眼")
 
                 _, _, tw, th = draw.textbbox((0, 0), f"未击败({','.join(notDefeat)})", font=ft_40)
-                draw.text((x + boss_img.size[0] / 2 - tw / 2, y + boss_img.size[1] + 10), f"未击败({','.join(notDefeat)})", font=ft_40)
+                draw.text((x + boss_img.size[0] / 2 - tw / 2, y + boss_img.size[1] + 10), f"未击败({','.join(notDefeat)})", font=ft_40 , fill= 'purple')
 
             return
         if process[name]:
@@ -115,7 +115,7 @@ def get_process_png(process_data) -> Image:
                 draw.text((x + boss_img.size[0] / 2 - tw / 2, y + boss_img.size[1] + 10), "未击败", font=ft_40)
             else:
                 draw.text((x + boss_img.size[0] / 2 - tw / 2, y + boss_img.size[1] + 10), "未击败", font=ft_40,
-                          fill='black')
+                          fill='purple')
 
     MAX_W, MAX_H = img.size
 
@@ -235,7 +235,7 @@ if __name__ == '__main__':
                 "Lunatic Cultist": 5,
                 "Moon Lord": 9
             },
-            "worldname": "啊da啊啊啊啊aaaaaa...",
+            "worldname": "TEST",
             "drunk_world": False,
             "zenith_world": False,
             "world_icon": "IconHallowCrimsonNotTheBees",
