@@ -21,3 +21,4 @@ async def _startup():
     await init_db()
 
 from .command import *
+from .event import *
