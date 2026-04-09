@@ -24,7 +24,7 @@ async def _(bot: Bot, event: GroupJoinRequestEvent, session: Session):
         return
 
     await event.reject(
-        reason=f"你在云黑名单中，申诉请加: {config.bot_admin_group_id}"
+        reason=f"你在云黑名单中，申诉请加反馈群!"
     )
 
     log_repo = CheckLogRepo(session)
