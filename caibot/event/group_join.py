@@ -45,6 +45,15 @@ async def _(bot: Bot, event: GroupMemberIncreaseEvent, session: Session):
         title="云黑名单"
     )
 
+    log_repo = CheckLogRepo(session)
+    await log_repo.create(
+        CheckLog(
+            user_id=event.data.user_id,
+            group_id=event.data.group_id,
+            rejected=False,
+        )
+    )
+
     if len(ban_records) == 0:
         await bot.send_group_message(
             group_id=event.data.group_id,
@@ -65,14 +74,5 @@ async def _(bot: Bot, event: GroupMemberIncreaseEvent, session: Session):
         message=msg.success(
             f"❌检测到{username} ({event.data.user_id})有{len(ban_records)}条云黑记录:\n" +
             "\n".join(result)
-        )
-    )
-
-    log_repo = CheckLogRepo(session)
-    await log_repo.create(
-        CheckLog(
-            user_id=event.data.user_id,
-            group_id=event.data.group_id,
-            rejected=False,
         )
     )
