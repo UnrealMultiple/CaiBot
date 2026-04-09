@@ -5,13 +5,12 @@ description = "CaiBot"
 readme = "README.md"
 requires-python = ">=3.10, <4.0"
 dependencies = [
-    "aiosqlite>=0.22.1",
+    "asyncpg>=0.30.0",
     "cachetools>=6.2.6",
     "nb-cli>=1.5.0",
     "sqlalchemy[asyncio]>=2.0.49",
     "nonebot-adapter-milky>=1.2.0",
     "nonebot2[fastapi]>=2.5.0",
-    "agrs",
 ]
 
 [tool.nonebot]
@@ -24,3 +23,8 @@ builtin_plugins = []
 [tool.nonebot.adapters]
 "@local" = []
 nonebot-adapter-milky = [{name = "nonebot-adapter-milky", module_name = "nonebot.adapters.milky"}]
+
+[index]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true

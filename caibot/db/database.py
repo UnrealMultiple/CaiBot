@@ -1,8 +1,12 @@
+from nonebot import get_plugin_config
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
+from caibot.config import Config
 from caibot.db.model.base import Base
 
-engine = create_async_engine('sqlite+aiosqlite:///data/bot.db', echo=False, future=True)
+_config = get_plugin_config(Config)
+
+engine = create_async_engine(_config.db_url, echo=False, future=True, pool_pre_ping=True)
 async_session = async_sessionmaker(engine, expire_on_commit=False, autoflush=True)
 
 

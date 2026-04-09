@@ -14,7 +14,7 @@ class GroupAdminRepo:
         return group_admin
 
     async def get_by_group_id(self, group_id: int) -> list[GroupAdmin]:
-        query = select(GroupAdmin).where(GroupAdmin.id == group_id)
+        query = select(GroupAdmin).where(GroupAdmin.group_id == group_id)
         result = await self.session.execute(query)
         return list(result.scalars().all())
 

@@ -1,6 +1,4 @@
-import asyncio
-
-from nonebot import get_plugin_config
+from nonebot import get_driver, get_plugin_config
 from nonebot.plugin import PluginMetadata
 from .command_msg import CommandMsg
 from .config import Config
@@ -16,6 +14,10 @@ config = get_plugin_config(Config)
 
 from .db.database import init_db
 
-asyncio.run(init_db())
+driver = get_driver()
+
+@driver.on_startup
+async def _startup():
+    await init_db()
 
 from .command import *

@@ -13,8 +13,10 @@ class BanRequestRepo:
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
-    async def get_by_group_id_and_user_id(self, group_id: int, user_id: int) -> BanRequest | None:
+    async def get_by_group_id_and_user_id(self, group_id: int, user_id: int, only_not_review: bool = True) -> BanRequest | None:
         query = select(BanRequest).where(BanRequest.user_id == user_id, BanRequest.creator_group_id == group_id)
+        if only_not_review:
+            query = query.where(BanRequest.reviewed==False)
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 

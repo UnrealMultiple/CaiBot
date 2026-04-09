@@ -22,3 +22,9 @@ class UserRepo:
         self.session.add(user)
         await self.session.commit()
         return user
+
+    async def update(self, user: User) -> User:
+        self.session.add(user)
+        await self.session.commit()
+        return user
+

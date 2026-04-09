@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.functions import func
 
@@ -29,6 +29,11 @@ class BanRecordRepo:
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
+    async def get_all(self) -> list[BanRecord]:
+        query = select(BanRecord).order_by(BanRecord.id)
+        result = await self.session.execute(query)
+        return list(result.scalars().all())
+
     async def create(self, ban_record: BanRecord) -> BanRecord:
         self.session.add(ban_record)
         await self.session.commit()
@@ -43,3 +48,14 @@ class BanRecordRepo:
         query = select(func.count(BanRecord.id)).select_from(BanRecord)
         result = await self.session.execute(query)
         return result.scalar_one()
+
+    async def delete_by_group_id_and_user_id(self, group_id: int, user_id: int) -> None:
+        query = delete(BanRecord).where(BanRecord.creator_group_id == group_id, BanRecord.user_id == user_id)
+        await self.session.execute(query)
+        await self.session.commit()
+
+    async def delete_by_id(self, record_id: int) -> None:
+        query = delete(BanRecord).where(BanRecord.id == record_id)
+        await self.session.execute(query)
+        await self.session.commit()
+

@@ -1,5 +1,5 @@
 from nonebot import on_command
-from nonebot.adapters.milky import Bot, MessageSegment
+from nonebot.adapters.milky import Bot
 
 from caibot import CommandMsg
 from caibot.db import BanRequestRepo, BanRecordRepo
@@ -110,6 +110,7 @@ async def _(bot: Bot, session: Session, args: Args, user: User,
     await approve.finish(
         msg.success(f"✅已批准#{request.id}！")
     )
+
 
 reject = on_command("云黑驳回", force_whitespace=True)
 

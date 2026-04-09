@@ -8,7 +8,7 @@ class CommandMsg:
         self._title: str = title
         self._success_msg: str | None = success_msg
         self._failed_msg: str | None = failed_msg
-        self._sub_title: str | None = sub_title
+        self.sub_title: str | None = sub_title
         self._syntax: str | None = syntax
 
     def _get_base_msg(self) -> MessageSegment:
@@ -17,8 +17,8 @@ class CommandMsg:
             msg += MessageSegment.mention(self._user_id)
             msg += MessageSegment.text("\n")
 
-        if self._sub_title:
-            msg += MessageSegment.text(f"『{self._title}•{self._sub_title}』\n")
+        if self.sub_title:
+            msg += MessageSegment.text(f"『{self._title} • {self.sub_title}』\n")
         else:
             msg += MessageSegment.text(f"『{self._title}』\n")
 
