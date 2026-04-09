@@ -18,6 +18,6 @@ TSHOCK_GUIDE = """📖必看文档
 • https://bbstr.net
 ❤️ Powered by 熙恩 & Cai"""
 
-CAIBOT_GUIDE = """📖CaiBot默认开启云黑检测功能, 其他功能看下面链接哦~\n'
-🔭教程: https://docs.terraria.ink/zh/other/CaiBot.html\n'
+CAIBOT_GUIDE = """📖CaiBot默认开启云黑检测功能, 其他功能看下面链接哦~\n
+🔭教程: https://docs.terraria.ink/zh/other/CaiBot.html\n
 ❤️ Developed by Cai & Contributors"""
