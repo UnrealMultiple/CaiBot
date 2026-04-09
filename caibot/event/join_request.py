@@ -16,6 +16,9 @@ _handled_cache: TTLCache = TTLCache(maxsize=1024, ttl=60 * 60)
 
 @join_request.handle()
 async def _(bot: Bot, event: GroupJoinRequestEvent, session: Session):
+    if event.data.group_id == config.bot_admin_group_id:
+        return
+
     repo = BanRecordRepo(session)
 
     ban_records = await repo.get_by_user_id(event.data.initiator_id)
