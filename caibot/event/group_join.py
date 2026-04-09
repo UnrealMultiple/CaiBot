@@ -14,7 +14,7 @@ group_join = on_notice()
 
 @group_join.handle()
 async def _(bot: Bot, event: GroupMemberIncreaseEvent, session: Session):
-    if event.data.user_id == bot.self_id:
+    if event.data.user_id == event.self_id:
         msg = CommandMsg(
             user_id=event.data.user_id,
             title="欢迎使用CaiBot"
