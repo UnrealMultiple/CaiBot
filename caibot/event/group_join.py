@@ -3,7 +3,7 @@ from nonebot.plugin.on import on_notice
 from nonebot.adapters.milky.event import GroupMemberIncreaseEvent
 
 from caibot import CommandMsg
-from caibot.constants import TSHOCK_GROUP_ID, CAIBOT_GUIDE
+from caibot.constants import TSHOCK_GROUP_ID, CAIBOT_GUIDE, TSHOCK_GUIDE
 from caibot.db import BanRecordRepo, CheckLogRepo
 from caibot.db.model import CheckLog
 from caibot.dependency import Session
@@ -32,7 +32,7 @@ async def _(bot: Bot, event: GroupMemberIncreaseEvent, session: Session):
         )
         await bot.send_group_message(
             group_id=event.data.group_id,
-            message=msg.success(CAIBOT_GUIDE)
+            message=msg.success(TSHOCK_GUIDE)
         )
         return
 
