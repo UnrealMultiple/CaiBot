@@ -188,7 +188,7 @@ async def _(bot: Bot, event: MessageEvent, args: Args):
     msg = CommandMsg(
         user_id=event.data.sender.user_id,
         title="下载",
-        syntax="/下载 <ID> [版本号]",
+        syntax="下载 <ID> [版本号]",
     )
 
     if len(args) == 0:
@@ -229,7 +229,7 @@ async def _(bot: Bot, event: MessageEvent, args: Args):
         filtered.sort(key=_version_key, reverse=True)
         msg.sub_title = "可用版本"
         lines = [f"• {v['name']}" for v in filtered]
-        lines.append(f"* 使用\"/下载 {mod_id} <版本号>\"指定版本")
+        lines.append(f"* 使用\"下载 {mod_id} <版本号>\"指定版本")
         await download_mod.finish(msg.success("\n".join(lines)))
         return
 
