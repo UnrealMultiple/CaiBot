@@ -11,6 +11,8 @@ dependencies = [
     "sqlalchemy[asyncio]>=2.0.49",
     "nonebot-adapter-milky>=1.2.0",
     "nonebot2[fastapi]>=2.5.0",
+    "httpx>=0.28.1",
+    "packaging>=26.0",
 ]
 
 [tool.nonebot]

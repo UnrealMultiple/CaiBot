@@ -140,9 +140,11 @@ source = { virtual = "." }
 dependencies = [
     { name = "asyncpg" },
     { name = "cachetools" },
+    { name = "httpx" },
     { name = "nb-cli" },
     { name = "nonebot-adapter-milky" },
     { name = "nonebot2", extra = ["fastapi"] },
+    { name = "packaging" },
     { name = "sqlalchemy", extra = ["asyncio"] },
 ]
 
@@ -150,9 +152,11 @@ dependencies = [
 requires-dist = [
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "cachetools", specifier = ">=6.2.6" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "nb-cli", specifier = ">=1.5.0" },
     { name = "nonebot-adapter-milky", specifier = ">=1.2.0" },
     { name = "nonebot2", extras = ["fastapi"], specifier = ">=2.5.0" },
+    { name = "packaging", specifier = ">=26.0" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.49" },
 ]
 

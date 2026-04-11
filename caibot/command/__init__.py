@@ -11,6 +11,7 @@ from .admin import (
 )
 from .group_admin_cmd import add_group_admin, del_group_admin
 from .help import help_cmd
+from .workshop import search_resource, download_mod
 
 __all__ = [
     "about_bot",
@@ -31,4 +32,6 @@ __all__ = [
     "add_group_admin",
     "del_group_admin",
     "help_cmd",
+    "search_resource",
+    "download_mod",
 ]
