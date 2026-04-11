@@ -68,6 +68,8 @@ async def _(event: MessageEvent, args: Args):
             (f"\n前置: {mod.kvtags_dict['modreferences']}" if mod.kvtags_dict.get('modreferences') else "")
         )
 
+    lines.append("* 使用\"下载 <ID>\"下载模组")
+
     msg.sub_title = f"{page}/{total_pages}页"
 
     await search_mod.finish(msg.success("\n\n".join(lines)))
@@ -122,6 +124,7 @@ async def _(event: MessageEvent, args: Args):
         )
 
     msg.sub_title = f"第{page}/{total_pages}页"
+    lines.append("* 使用\"下载 <ID>\"下载资源包")
 
     await search_resource.finish(msg.success("\n\n".join(lines)))
 
