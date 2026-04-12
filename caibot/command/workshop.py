@@ -188,7 +188,7 @@ async def _download_and_upload(
                 group_id=event.data.group.group_id,
                 message_seq=event.message_id,
                 reaction_type="emoji",
-                reaction="121009",
+                reaction="127881",
             )
         else:
             await bot.send_private_message(
