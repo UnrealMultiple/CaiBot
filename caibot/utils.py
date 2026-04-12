@@ -56,9 +56,9 @@ async def ban_request_to_str(ban_request: BanRequest, emoji: bool = True) -> str
     creator_group_name = await get_group_name(ban_request.creator_group_id, bot)
     creator_username = await get_username(ban_request.creator_user_id, bot)
 
-    tag = f"#" if not emoji else "#⃣"
+    tag = f"#{ban_request.id}" if not emoji else f"#⃣[{ban_request.id}]"
 
-    return (f"{tag}{ban_request.id} {target_username} ({ban_request.user_id})\n"
+    return (f"{tag} {target_username} ({ban_request.user_id})\n"
             f"管理员: {creator_username} ({ban_request.creator_user_id})\n"
             f"添加群: {creator_group_name} ({ban_request.creator_group_id})\n"
             f"理由: {ban_request.reason}")
@@ -67,8 +67,8 @@ async def ban_request_to_str(ban_request: BanRequest, emoji: bool = True) -> str
 async def ban_record_to_str(ban_record: BanRecord, emoji: bool = True) -> str:
     bot: Bot = nonebot.get_bot()
     creator_group_name = await get_group_name(ban_record.creator_group_id, bot)
-    tag = f"#" if not emoji else "#⃣"
-    return f"{tag}{ban_record.id} {creator_group_name}: {ban_record.reason} ({ban_record.time.date().isoformat()})"
+    tag = f"#{ban_record.id}" if not emoji else f"#⃣[{ban_record.id}]"
+    return f"{tag} {creator_group_name}: {ban_record.reason} ({ban_record.time.date().isoformat()})"
 
 
 async def ban_record_to_detail(ban_record: BanRecord, emoji: bool = True) -> str:
@@ -77,8 +77,8 @@ async def ban_record_to_detail(ban_record: BanRecord, emoji: bool = True) -> str
     creator_group_name = await get_group_name(ban_record.creator_group_id, bot)
     creator_username = await get_username(ban_record.creator_user_id, bot)
     reviewer_name = await get_username(ban_record.reviewer_id, bot)
-    tag = f"#" if not emoji else "#⃣"
-    return (f"{tag}{ban_record.id} {target_username} ({ban_record.user_id})\n"
+    tag = f"#{ban_record.id}" if not emoji else f"#⃣[{ban_record.id}]"
+    return (f"{tag} {target_username} ({ban_record.user_id})\n"
             f"管理员: {creator_username} ({ban_record.creator_user_id})\n"
             f"添加群: {creator_group_name} ({ban_record.creator_group_id})\n"
             f"审核人: {reviewer_name} ({ban_record.reviewer_id})\n"

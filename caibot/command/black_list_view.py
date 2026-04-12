@@ -14,7 +14,7 @@ class BanUser:
         self.ban_count = ban_count
 
     def __str__(self):
-        return f'#⃣{self.username} ({self.user_id}) - {self.ban_count}条'
+        return f'#⃣[{self.username}] ({self.user_id}) - {self.ban_count}条'
 
 PAGE_SIZE = 10
 
@@ -142,7 +142,7 @@ async def _(bot: Bot, args: Args, session: Session, user: User, permission: BotA
     result_lines: list[str] = []
     for record in page_records:
         username = await get_username(record.user_id, bot)
-        result_lines.append(f"#⃣{record.id} {username} ({record.user_id}): {record.reason}")
+        result_lines.append(f"#⃣[{record.id}] {username} ({record.user_id}): {record.reason}")
 
     group_name = await get_group_name(target_group_id, bot)
     msg._sub_title = f"{page}/{total_pages}页"
