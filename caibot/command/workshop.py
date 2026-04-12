@@ -1,4 +1,8 @@
 import base64
+import hashlib
+import tempfile
+import time
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -18,6 +22,36 @@ from caibot.steamapi import SteamAPI
 
 PAGE_SIZE = 5
 
+_CACHE_DIR = Path(tempfile.gettempdir()) / "caibot_file_cache"
+_CACHE_TTL = 86400
+
+
+def _cache_path(file_url: str, file_name: str) -> Path:
+    url_hash = hashlib.sha256(file_url.encode()).hexdigest()[:16]
+    return _CACHE_DIR / url_hash / file_name
+
+
+def _is_cache_valid(path: Path) -> bool:
+    return path.exists() and (time.time() - path.stat().st_mtime) < _CACHE_TTL
+
+
+def _cleanup_cache() -> None:
+    if not _CACHE_DIR.exists():
+        return
+    now = time.time()
+    for file in _CACHE_DIR.rglob("*"):
+        if file.is_file() and (now - file.stat().st_mtime) >= _CACHE_TTL:
+            file.unlink(missing_ok=True)
+    for directory in sorted(_CACHE_DIR.rglob("*"), reverse=True):
+        if directory.is_dir():
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
+
+
+_cleanup_cache()
+
 search_mod = on_command("搜模组", force_whitespace=True, aliases={"搜mod", "搜MOD"})
 
 
@@ -32,7 +66,6 @@ async def _(event: MessageEvent, args: Args):
     if len(args) == 0:
         await search_mod.finish(msg.syntax_error())
 
-    # 检测末尾是否为页码
     page = 1
     if len(args) >= 2 and args[-1].isdigit() and int(args[-1]) >= 1:
         page = int(args[-1])
@@ -147,24 +180,42 @@ async def _download_and_upload(
         file_url: str,
         file_name: str,
 ) -> None:
-    if isinstance(event, GroupMessageEvent):
-        assert event.data.group is not None
-        await bot.send_group_message_reaction(
-            group_id=event.data.group.group_id,
-            message_seq=event.message_id,
-            reaction_type="emoji",
-            reaction="128164",
-        )
+    cached = _cache_path(file_url, file_name)
+    if _is_cache_valid(cached):
+        if isinstance(event, GroupMessageEvent):
+            assert event.data.group is not None
+            await bot.send_group_message_reaction(
+                group_id=event.data.group.group_id,
+                message_seq=event.message_id,
+                reaction_type="emoji",
+                reaction="121009",
+            )
+        else:
+            await bot.send_private_message(
+                user_id=event.data.sender.user_id,
+                message="缓存命中，正在上传...",
+            )
+        file_bytes: bytes = cached.read_bytes()
     else:
-        await bot.send_private_message(
-            user_id=event.data.sender.user_id,
-            message="正在下载文件，请稍候...",
-        )
-
-    async with httpx.AsyncClient(timeout=120) as client:
-        resp = await client.get(file_url)
-        resp.raise_for_status()
-        file_bytes: bytes = resp.content
+        if isinstance(event, GroupMessageEvent):
+            assert event.data.group is not None
+            await bot.send_group_message_reaction(
+                group_id=event.data.group.group_id,
+                message_seq=event.message_id,
+                reaction_type="emoji",
+                reaction="128164",
+            )
+        else:
+            await bot.send_private_message(
+                user_id=event.data.sender.user_id,
+                message="正在下载文件，请稍候...",
+            )
+        async with httpx.AsyncClient(timeout=120) as client:
+            resp = await client.get(file_url)
+            resp.raise_for_status()
+            file_bytes = resp.content
+        cached.parent.mkdir(parents=True, exist_ok=True)
+        cached.write_bytes(file_bytes)
 
     file_b64 = base64.b64encode(file_bytes).decode()
 
