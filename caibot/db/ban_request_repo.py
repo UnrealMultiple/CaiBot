@@ -28,7 +28,7 @@ class BanRequestRepo:
     async def review_request(self,ban_request: BanRequest, approve: bool, reviewer_user_id: int) -> BanRequest:
         ban_request.approve = approve
         ban_request.reviewed = True
-        ban_request.reviewer_user_id = reviewer_user_id
+        ban_request.reviewer_id = reviewer_user_id
         self.session.add(ban_request)
         await self.session.commit()
 
