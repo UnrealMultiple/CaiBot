@@ -1,6 +1,6 @@
 from nonebot import on_command
 from nonebot.adapters.milky import Bot
-from nonebot.adapters.milky.event import MessageEvent
+from nonebot.adapters.milky.event import MessageEvent, GroupMessageEvent
 
 from caibot import CommandMsg
 from caibot.db import CheckLogRepo, GroupRepo
@@ -10,9 +10,9 @@ about_bot = on_command("关于", force_whitespace=True)
 
 
 @about_bot.handle()
-async def _(event: MessageEvent, user: User, session: Session):
+async def _(event: MessageEvent, session: Session):
     msg = CommandMsg(
-        user_id=user.user_id,
+        user_id=event.data.sender.user_id if isinstance(event, GroupMessageEvent) else None,
         title="关于"
     )
 

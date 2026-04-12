@@ -1,4 +1,5 @@
 import base64
+from typing import Any
 
 import httpx
 from nonebot import on_command
@@ -23,7 +24,7 @@ search_mod = on_command("搜模组", force_whitespace=True, aliases={"搜mod", "
 @search_mod.handle()
 async def _(event: MessageEvent, args: Args):
     msg = CommandMsg(
-        user_id=event.data.sender.user_id,
+        user_id=event.data.sender.user_id if isinstance(event, GroupMessageEvent) else None,
         title="搜模组",
         syntax="搜模组 <关键词> [页码]"
     )
@@ -81,7 +82,7 @@ search_resource = on_command("搜资源包", force_whitespace=True)
 @search_resource.handle()
 async def _(event: MessageEvent, args: Args):
     msg = CommandMsg(
-        user_id=event.data.sender.user_id,
+        user_id=event.data.sender.user_id if isinstance(event, GroupMessageEvent) else None,
         title="搜资源包",
         syntax="搜资源包 <关键词> [页码]"
     )
@@ -146,7 +147,6 @@ async def _download_and_upload(
         file_url: str,
         file_name: str,
 ) -> None:
-    """React to the triggering message, fetch *file_url*, and upload the file to the group."""
     if isinstance(event, GroupMessageEvent):
         assert event.data.group is not None
         await bot.send_group_message_reaction(
@@ -183,10 +183,23 @@ async def _download_and_upload(
         )
 
 
+def _tshock_platform(asset_name: str) -> str:
+    name = asset_name.removesuffix("-Release.zip")
+    parts = name.split("-for-Terraria-", 1)
+    if len(parts) == 2:
+        rest = parts[1]
+        idx = 0
+        while idx < len(rest) and (rest[idx].isdigit() or rest[idx] == "."):
+            idx += 1
+        if idx < len(rest) and rest[idx] == "-":
+            return rest[idx + 1:]
+    return asset_name
+
+
 @download_mod.handle()
 async def _(bot: Bot, event: MessageEvent, args: Args):
     msg = CommandMsg(
-        user_id=event.data.sender.user_id,
+        user_id=event.data.sender.user_id if isinstance(event, GroupMessageEvent) else None,
         title="下载",
         syntax="下载 <ID> [版本号]",
     )
@@ -196,6 +209,54 @@ async def _(bot: Bot, event: MessageEvent, args: Args):
 
     mod_id: str = args[0]
     version: str | None = args[1] if len(args) >= 2 else None
+
+    if mod_id.lower() == "tmodloader":
+        try:
+            await _download_and_upload(
+                bot, event,
+                "https://xget.xi-xu.me/gh/tModLoader/tModLoader/releases/latest/download/tModLoader.zip",
+                "tModLoader.zip",
+            )
+        except Exception as e:
+            await download_mod.finish(msg.failed(f"下载失败: {e}"))
+        return
+
+    if mod_id.lower() == "tshock":
+        try:
+            async with httpx.AsyncClient(timeout=30) as client:
+                api_resp = await client.get(
+                    "https://api.github.com/repos/Pryaxis/TShock/releases/latest",
+                    headers={"Accept": "application/vnd.github+json"},
+                )
+                api_resp.raise_for_status()
+                release_info = api_resp.json()
+        except Exception as e:
+            await download_mod.finish(msg.failed(f"获取TShock版本信息失败: {e}"))
+            return
+
+        zip_assets = [a for a in release_info["assets"] if a["name"].endswith(".zip")]
+        if version is None:
+            msg.sub_title = f"可用平台"
+            lines = [f"• {_tshock_platform(a['name'])}" for a in zip_assets]
+            lines.append(f"* 使用\"下载 tshock <平台>\"下载")
+            await download_mod.finish(msg.success("\n".join(lines)))
+            return
+
+        matched_asset: dict[str, Any] | None = next(
+            (a for a in zip_assets if version.lower() in a["name"].lower()), None
+        )
+
+        if matched_asset is None:
+            await download_mod.finish(msg.failed(f"平台{version}不存在！"))
+            return
+
+        file_name = matched_asset["name"]
+        file_url = f"https://xget.xi-xu.me/gh/Pryaxis/TShock/releases/latest/download/{file_name}"
+        try:
+            await _download_and_upload(bot, event, file_url, file_name)
+        except Exception as e:
+            await download_mod.finish(msg.failed(f"下载失败: {e}"))
+        return
 
     if version is None:
         try:
@@ -240,7 +301,7 @@ async def _(bot: Bot, event: MessageEvent, args: Args):
         return
 
     if files is None:
-        await download_mod.finish(msg.failed(f"版本 {version} 不存在！"))
+        await download_mod.finish(msg.failed(f"版本{version}不存在！"))
         return
 
     non_dir_files = [f for f in files if not f["isDirectory"]]
