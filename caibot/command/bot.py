@@ -1,10 +1,9 @@
-from importlib.metadata import version
-
 from nonebot import on_command
 from nonebot.adapters.milky import Bot
 from nonebot.adapters.milky.event import GroupMessageEvent
 
 from caibot import CommandMsg
+from caibot.constants import VERSION
 from caibot.db import CheckLogRepo, GroupRepo
 from caibot.dependency import Args, Session, BotAdminPermission, User
 

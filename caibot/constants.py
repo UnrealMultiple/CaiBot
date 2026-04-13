@@ -1,3 +1,9 @@
+import tomllib
+from pathlib import Path
+
+with open(Path(__file__).parent.parent / "pyproject.toml", "rb") as _f:
+    VERSION: str = tomllib.load(_f)["project"]["version"]
+
 TSHOCK_GROUP_ID = 816771079
 
 TSHOCK_GUIDE = """📖必看文档
