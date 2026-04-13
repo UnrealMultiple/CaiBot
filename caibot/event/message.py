@@ -7,8 +7,9 @@ message = on_message()
 async def _(event: GroupMessageEvent, bot: Bot):
     # 喜多
     if event.data.sender.user_id == 3292922753:
+        assert event.data.group is not None
         await bot.send_group_message_reaction(
-            group_id=3292922753,
+            group_id=event.data.group.group_id,
             message_seq=event.message_id,
             reaction="12951",
             reaction_type="emoji"
