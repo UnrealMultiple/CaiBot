@@ -28,7 +28,7 @@ async def _(event: GroupMessageEvent, session: Session):
     group_reject = await check_log_repo.count_group_reject(event.data.group.group_id)
 
     await about_bot.finish(
-        msg.success(f'📖CaiBot v{version("CaiBot")}\n'
+        msg.success(f'📖CaiBot v{VERSION}\n'
                     f'🎉开发者: Cai\n'
                     f'✨感谢: \n'
                     f'迅猛龙 [提供服务器]\n'
