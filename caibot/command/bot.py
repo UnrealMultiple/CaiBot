@@ -1,8 +1,8 @@
-import nonebot
+from importlib.metadata import version
 
 from nonebot import on_command
 from nonebot.adapters.milky import Bot
-from nonebot.adapters.milky.event import MessageEvent, GroupMessageEvent
+from nonebot.adapters.milky.event import GroupMessageEvent
 
 from caibot import CommandMsg
 from caibot.db import CheckLogRepo, GroupRepo
@@ -12,9 +12,9 @@ about_bot = on_command("关于", force_whitespace=True)
 
 
 @about_bot.handle()
-async def _(event: MessageEvent, session: Session):
+async def _(event: GroupMessageEvent, session: Session):
     msg = CommandMsg(
-        user_id=event.data.sender.user_id if isinstance(event, GroupMessageEvent) else None,
+        user_id=event.data.sender.user_id,
         title="关于"
     )
 
@@ -29,7 +29,7 @@ async def _(event: MessageEvent, session: Session):
     group_reject = await check_log_repo.count_group_reject(event.data.group.group_id)
 
     await about_bot.finish(
-        msg.success(f'📖CaiBot v{nonebot.version("CaiBot")}\n'
+        msg.success(f'📖CaiBot v{version("CaiBot")}\n'
                     f'🎉开发者: Cai\n'
                     f'✨感谢: \n'
                     f'迅猛龙 [提供服务器]\n'
