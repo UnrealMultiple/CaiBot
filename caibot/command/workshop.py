@@ -102,8 +102,8 @@ async def _(event: MessageEvent, args: Args):
             (f"\n前置: {mod.kvtags_dict['modreferences']}" if mod.kvtags_dict.get('modreferences') else "")
         )
 
-    lines.append("* 使用\"下载 <ID>\"下载模组")
-    lines.append(f"* 使用\"搜模组 {search_text} [页码]\"翻页")
+    lines.append(f"* 使用\"下载 <ID>\"下载模组\n"
+                 f"* 使用\"搜模组 {search_text} [页码]\"翻页")
 
     msg.sub_title = f"{page}/{total_pages}页"
 
@@ -159,8 +159,8 @@ async def _(event: MessageEvent, args: Args):
         )
 
     msg.sub_title = f"第{page}/{total_pages}页"
-    lines.append("* 使用\"下载 <ID>\"下载资源包")
-    lines.append(f"* 使用\"搜资源包 {search_text} [页码]\"翻页")
+    lines.append(f"* 使用\"下载 <ID>\"下载资源包\n"
+                 f"* 使用\"搜资源包 {search_text} [页码]\"翻页")
 
     await search_resource.finish(msg.success("\n\n".join(lines)))
 
@@ -291,7 +291,7 @@ async def _(bot: Bot, event: MessageEvent, args: Args):
         if version is None:
             msg.sub_title = f"可用平台"
             lines = [f"• {_tshock_platform(a['name'])}" for a in zip_assets]
-            lines.append(f"* 使用\"下载 tshock <平台>\"下载")
+            lines.append(f"\n* 使用\"下载 tshock <平台>\"下载")
             await download_mod.finish(msg.success("\n".join(lines)))
             return
 
@@ -343,7 +343,7 @@ async def _(bot: Bot, event: MessageEvent, args: Args):
         filtered.sort(key=_version_key, reverse=True)
         msg.sub_title = "可用版本"
         lines = [f"• {v['name']}" for v in filtered]
-        lines.append(f"* 使用\"下载 {mod_id} <版本号>\"指定版本")
+        lines.append(f"\n* 使用\"下载 {mod_id} <版本号>\"指定版本")
         await download_mod.finish(msg.success("\n".join(lines)))
         return
 

@@ -1,3 +1,5 @@
+import nonebot
+
 from nonebot import on_command
 from nonebot.adapters.milky import Bot
 from nonebot.adapters.milky.event import MessageEvent, GroupMessageEvent
@@ -27,7 +29,7 @@ async def _(event: MessageEvent, session: Session):
     group_reject = await check_log_repo.count_group_reject(event.data.group.group_id)
 
     await about_bot.finish(
-        msg.success(f'📖CaiBot v0.1.0\n'
+        msg.success(f'📖CaiBot v{nonebot.version("CaiBot")}\n'
                     f'🎉开发者: Cai\n'
                     f'✨感谢: \n'
                     f'迅猛龙 [提供服务器]\n'
