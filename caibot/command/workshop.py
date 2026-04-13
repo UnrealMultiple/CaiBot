@@ -103,6 +103,7 @@ async def _(event: MessageEvent, args: Args):
         )
 
     lines.append("* 使用\"下载 <ID>\"下载模组")
+    lines.append(f"* 使用\"搜模组 {search_text} [页码]\"翻页")
 
     msg.sub_title = f"{page}/{total_pages}页"
 
@@ -159,6 +160,7 @@ async def _(event: MessageEvent, args: Args):
 
     msg.sub_title = f"第{page}/{total_pages}页"
     lines.append("* 使用\"下载 <ID>\"下载资源包")
+    lines.append(f"* 使用\"搜资源包 {search_text} [页码]\"翻页")
 
     await search_resource.finish(msg.success("\n\n".join(lines)))
 
